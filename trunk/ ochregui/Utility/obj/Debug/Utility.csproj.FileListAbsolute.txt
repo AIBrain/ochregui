@@ -1,0 +1,16 @@
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\bin\Debug\Utility.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\bin\Debug\Utility.pdb
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\obj\Debug\Utility.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\obj\Debug\Utility.pdb
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\bin\Debug\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\bin\Debug\Utility.pdb
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\obj\Debug\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\obj\Debug\Utility.pdb
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Debug\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Debug\Utility.pdb
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Debug\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Debug\Utility.pdb
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Debug\Utility.XML
