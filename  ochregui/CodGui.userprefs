@@ -1,0 +1,40 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CodGui/Window.cs" ctype="Workbench">
+    <Files>
+      <File FileName="CodGui/Styles.cs" Line="6" Column="21" />
+      <File FileName="CodGui/Application.cs" Line="107" Column="32" />
+      <File FileName="CodGui/Color.cs" Line="195" Column="1" />
+      <File FileName="Test/MyControl.cs" Line="68" Column="1" />
+      <File FileName="CodGui/Window.cs" Line="28" Column="3" />
+      <File FileName="CodGui/Widget.cs" Line="1" Column="1" />
+      <File FileName="CodGui/Control.cs" Line="1" Column="1" />
+      <File FileName="Test/TestWindow.cs" Line="14" Column="3" />
+      <File FileName="Test/MyApp.cs" Line="27" Column="36" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="CodGui" expanded="True">
+            <Node name="Window.cs" selected="True" />
+          </Node>
+          <Node name="Test" expanded="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True">
+          <Node name="CodGui" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>

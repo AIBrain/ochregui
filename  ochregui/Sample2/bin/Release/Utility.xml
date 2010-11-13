@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Utility</name>
+    </assembly>
+    <members>
+        <member name="T:OchreGui.Utility.Point">
+            <summary>
+            Immutable pair of int values, representing an x,y coordinate.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.Point.Shift(System.Int32,System.Int32)">
+            <summary>
+            Returns a new Point instance by adding dx to this.X and dy to this.Y.  This method
+            does not modify this Point instance.
+            </summary>
+            <param name="dx"></param>
+            <param name="dy"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.Utility.Rand">
+            <summary>
+            Utility (static) class with random number helper functions
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.Rand.Int32">
+            <summary>
+            Returns 0 or 1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.Rand.Int32(System.Int32,System.Int32)">
+            <summary>
+            Returns a random value from minimum to maximum, inclusive
+            </summary>
+            <param name="minimum"></param>
+            <param name="maximum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.Rand.Int32(OchreGui.Utility.Dice)">
+            <summary>
+            Returns a randomly generated integer based on the specified Dice object.
+            </summary>
+            <param name="dice"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.Rand.Boolean">
+            <summary>
+            Has an equal chance of return true or false.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.Rand.Float">
+            <summary>
+            Random float between 0.0 and 1.0
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.Utility.Rect">
+            <summary>
+            Immuatable data type representing a rectangle.
+            <remarks>that the terms Upper, Left, Right, Bottom and Top are meaningful only when
+            Size.Width and Size.Height are both positive</remarks>
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.Rect.Inflate(OchreGui.Utility.Rect,System.Int32,System.Int32)">
+            <summary>
+            Adds dx to left and right, and dy to top and bottom
+            New width += dx*2, new height = dy*2
+            </summary>
+            <param name="source"></param>
+            <param name="dx"></param>
+            <param name="dy"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.Utility.Size">
+            <summary>
+            Immutable type representing anything that has a width and a height
+            </summary>
+        </member>
+        <member name="T:OchreGui.Utility.Dice">
+            <summary>
+            An immutable type representing a set of rpg dice along with a modifier.  Use this with
+            Rand.Int32(Dice) to produce randomly generated numbers.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.Dice.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Construct a Dice instanced given the number of dice and number of sides for each die.
+            </summary>
+            <example>
+            To create a Dice object representing two six-sided dice:
+            <code>
+            Dice d = new Dice(2,6);
+            </code>
+            </example>
+            <param name="numberOfDice"></param>
+            <param name="numberOfSides"></param>
+        </member>
+        <member name="M:OchreGui.Utility.Dice.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Construct a Dice instance given the number of dice, number sides per die, and a
+            positive or negative modifier.
+            </summary>
+            <example>To construct a Dice object representing one six-sided die that gets a +2 modifier
+            (which would return a random range of 3 thru 8):
+            <code>Dice d = new Dice(1,6,2);</code></example>
+            <param name="numberOfDice"></param>
+            <param name="numberOfSides"></param>
+            <param name="Modifier"></param>
+        </member>
+        <member name="M:OchreGui.Utility.Dice.#ctor(System.String)">
+            <summary>
+            Coonstructs a Dice object from a string that follows common RPG conventions 
+            when specifying dice.
+            </summary>
+            <example>To create a dice object representing two six sided dice with a -2 modifier:
+            <code>Dice d = new Dice("2d6-2");</code></example>
+            <param name="formatString">
+            In the form of {n}["d"|"D"][s]{"+"|"-"m}, where n=number of dice (optional), s = number of sides,
+            and m=modifier (optional)
+            </param>
+        </member>
+        <member name="P:OchreGui.Utility.Dice.NumberOfDice">
+            <summary>
+            The number of dice this Dice object represents
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.Dice.NumberOfSides">
+            <summary>
+            The number of sides per each die.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.Dice.Modifier">
+            <summary>
+            The linear modifier of the random range obtained with this Dice object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.MyExtensions.IsSet(System.Enum,System.Enum)">
+            <summary>
+            This will be deprecated by .NET 4.0 HasFlag() method.
+            </summary>
+            <param name="e"></param>
+            <param name="flag"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

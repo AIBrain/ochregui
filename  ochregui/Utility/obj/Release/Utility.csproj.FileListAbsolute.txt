@@ -1,0 +1,7 @@
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\bin\Release\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreUI\Utility\obj\Release\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Release\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Release\Utility.dll
+C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Release\Utility.XML
