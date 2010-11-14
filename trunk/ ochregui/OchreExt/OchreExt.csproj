@@ -47,7 +47,9 @@
     <Compile Include="EmitterButton.cs" />
     <Compile Include="NumberEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Slider.cs" />
     <Compile Include="SpinBox.cs" />
+    <Compile Include="ValueBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OchreGui\OchreGui.csproj">

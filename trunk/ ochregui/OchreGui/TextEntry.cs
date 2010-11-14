@@ -79,7 +79,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// Maximum number of accepted characters
+        /// Maximum number of accepted characters.  Defaults to 1.
         /// </summary>
         public int MaximumCharacters { get; set; }
 
@@ -136,8 +136,9 @@ namespace OchreGui
 
             this._maximumCharacters = template.MaximumCharacters;
             this.Validation = template.Validation;
-            Field = template.StartingField;
-            CurrentText = Field;
+            //CommmittedField = template.StartingField;
+            //CurrentText = CommmittedField;
+            TrySetField(template.StartingField);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

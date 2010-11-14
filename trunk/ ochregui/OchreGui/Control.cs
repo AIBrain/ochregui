@@ -297,6 +297,7 @@ namespace OchreGui
         /// Raised when the mouse cursor has left the control region
         /// </summary>
         public event EventHandler MouseLeave;
+
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Constructors

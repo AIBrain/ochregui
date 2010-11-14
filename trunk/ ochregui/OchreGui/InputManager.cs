@@ -71,6 +71,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         private readonly Component attachedComponent;
         private Point lastMousePosition;
+        private Point lastMousePixelPosition;
         private MouseButton lastMouseButton;
         private float lastMouseMoveTime;
         private bool isHovering;
@@ -115,13 +116,21 @@ namespace OchreGui
 		    CheckMouseButtons(mouse);
 				
 			// check for mouse move
-			if (mouse.Position != lastMousePosition)
-			{
-				DoMouseMove(mouse);
+            //if (mouse.Position != lastMousePosition)
+            //{
+            //    DoMouseMove(mouse);
 					
-				lastMousePosition = mouse.Position;
-				lastMouseMoveTime = totalEllapsed;
-			}
+            //    lastMousePosition = mouse.Position;
+            //    lastMouseMoveTime = totalEllapsed;
+            //}
+            if (mouse.PixelPosition != lastMousePixelPosition)
+            {
+                DoMouseMove(mouse);
+
+                lastMousePosition = mouse.Position;
+                lastMousePixelPosition = mouse.PixelPosition;
+                lastMouseMoveTime = totalEllapsed;
+            }
 				
 			// check for hover
 			if ( (totalEllapsed - lastMouseMoveTime) > hoverMSTol &&

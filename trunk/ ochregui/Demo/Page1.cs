@@ -286,9 +286,9 @@ namespace OchreGui.Demo
             
         }
 
-        protected override void OnButtonClicked()
+        protected override void OnButtonPushed()
         {
-            base.OnButtonClicked();
+            base.OnButtonPushed();
 
             if (OwnerDraw)
                 OwnerDraw = false;

@@ -82,13 +82,13 @@ namespace OchreGui.Sample3
 
             ParentWindow.AddControls(quitButton, turnBlueButton, turnRedButton, teleportButton);
 
-            quitButton.ButtonClicked += new EventHandler(quitButton_ButtonClicked);
+            quitButton.ButtonPushed += new EventHandler(quitButton_ButtonClicked);
 
-            teleportButton.ButtonClicked += new EventHandler(teleportButton_ButtonClicked);
+            teleportButton.ButtonPushed += new EventHandler(teleportButton_ButtonClicked);
 
-            turnBlueButton.ButtonClicked += new EventHandler(turnBlueButton_ButtonClicked);
+            turnBlueButton.ButtonPushed += new EventHandler(turnBlueButton_ButtonClicked);
 
-            turnRedButton.ButtonClicked += new EventHandler(turnRedButton_ButtonClicked);
+            turnRedButton.ButtonPushed += new EventHandler(turnRedButton_ButtonClicked);
 
 
 

@@ -66,7 +66,6 @@ namespace OchreGui
     }
     #endregion
 
-
     #region Canvas Class
     /// <summary>
     /// A canvas is basically a wrapper around an off-screen TCODConsole.  Every window
@@ -662,6 +661,15 @@ namespace OchreGui
                 SetColors(defaultColors);
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        static public Size GetCharSize()
+        {
+            int w, h;
+
+            TCODSystem.getCharSize(out w, out h);
+
+            return new Size(w, h);
+        }
         #endregion
         #region Private
         // /////////////////////////////////////////////////////////////////////////////////

@@ -132,12 +132,12 @@ namespace OchreGui.Sample2
             AddControls(quitButton, upButton, downButton, leftButton, rightButton);
 
             /// Hook into each of the required button event handlers.
-            quitButton.ButtonClicked += new EventHandler(quitButton_ButtonClickedEventHandler);
+            quitButton.ButtonPushed += new EventHandler(quitButton_ButtonClickedEventHandler);
 
-            upButton.ButtonClicked += new EventHandler(upButton_ButtonClicked);
-            downButton.ButtonClicked += new EventHandler(downButton_ButtonClicked);
-            rightButton.ButtonClicked += new EventHandler(rightButton_ButtonClicked);
-            leftButton.ButtonClicked += new EventHandler(leftButton_ButtonClicked);
+            upButton.ButtonPushed += new EventHandler(upButton_ButtonClicked);
+            downButton.ButtonPushed += new EventHandler(downButton_ButtonClicked);
+            rightButton.ButtonPushed += new EventHandler(rightButton_ButtonClicked);
+            leftButton.ButtonPushed += new EventHandler(leftButton_ButtonClicked);
         }
 
         /// This will hold the current position of the @ symbol on the screen.

@@ -1,4 +1,25 @@
-﻿using System;
+﻿//Copyright (c) 2010 Shane Baker
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
+//
+
+using System;
 using OchreGui.Utility;
 using libtcod;
 
@@ -15,6 +36,7 @@ namespace OchreGui.Extended
         public NumberEntryTemplate()
         {
             MaximumValue = 1;
+            MinimumValue = 0;
             StartingValue = 0;
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -32,9 +54,18 @@ namespace OchreGui.Extended
             if (Label == null)
                 Label = "";
 
-            int len = Label.Length;
+            int width = Label.Length;
+            int height = 1;
 
-            return new Size(len + CalculateMaxCharacters() + 3, 3);
+            width += CalculateFieldWidth(MaximumValue,MinimumValue);
+
+            if (HasFrameBorder)
+            {
+                width += 2;
+                height += 2;
+            }
+
+            return new Size(width, height);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -42,6 +73,12 @@ namespace OchreGui.Extended
         {
             return Math.Max(MaximumValue.ToString().Length,
                 MinimumValue.ToString().Length);
+        }
+
+        static public int CalculateFieldWidth(int maxValue,int minValue)
+        {
+            return Math.Max(maxValue.ToString().Length,
+                minValue.ToString().Length) + 1;
         }
     }
     #endregion
@@ -58,20 +95,12 @@ namespace OchreGui.Extended
             MaximumValue = template.MaximumValue;
             MinimumValue = template.MinimumValue;
 
-            if (ValidateValue(template.StartingValue))
-            {
-                CurrentValue = template.StartingValue;
-            }
-            else
-            {
-                CurrentValue = MinimumValue;
-            }
+            TrySetField(template.StartingValue.ToString());
 
             _maximumCharacters = template.CalculateMaxCharacters();
 
-            CurrentValue = MinimumValue;
-            Field = CurrentValue.ToString();
-            CurrentText = Field;
+            CommmittedField = CurrentValue.ToString();
+            CurrentText = CommmittedField;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -82,12 +111,19 @@ namespace OchreGui.Extended
         protected int MinimumValue { get; private set; }
 
         // /////////////////////////////////////////////////////////////////////////////////
-        #endregion
-        #region Protected Properties
+        private int _currentValue;
         public int CurrentValue
         {
-            get;
-            set;
+            get { return _currentValue; }
+            set
+            {
+                if(ValidateValue(value))
+                {
+                    _currentValue = value;
+                    CommmittedField = _currentValue.ToString();
+                    CurrentText = CommmittedField;
+                }
+            }
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -158,9 +194,9 @@ namespace OchreGui.Extended
 
         protected override void OnFieldChanged()
         {
-            base.OnFieldChanged();
+            CurrentValue = int.Parse(CommmittedField);
 
-            CurrentValue = int.Parse(Field);
+            base.OnFieldChanged();
         }
         
     #endregion
