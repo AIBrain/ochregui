@@ -14,3 +14,4 @@ C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreG
 C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Debug\Utility.dll
 C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\obj\Debug\Utility.pdb
 C:\Documents and Settings\shamus\My Documents\Visual Studio 2010\Projects\OchreGui\Utility\bin\Debug\Utility.XML
+C:\Documents and Settings\shamus\Desktop\Ochre\Utility\bin\Debug\Utility.XML

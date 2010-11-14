@@ -1,0 +1,124 @@
+﻿//Copyright (c) 2010 Shane Baker
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
+//
+
+using System;
+using System.Collections.Generic;
+using OchreGui.Utility;
+using OchreGui;
+
+namespace OchreGui.Extended
+{
+    public class ValueBarTemplate : ControlTemplate
+    {
+        public ValueBarTemplate()
+        {
+            MinimumValue = 0;
+            MaximumValue = 1;
+            StartingValue = 0;
+            Width = 2;
+        }
+
+        public int MinimumValue { get; set; }
+
+        public int MaximumValue { get; set; }
+
+        public int StartingValue { get; set; }
+
+        public int Width { get; set; }
+
+        public override Size CalculateSize()
+        {
+            return new Size(Width+2, 1);
+        }
+    }
+
+    public class ValueBar : Control
+    {
+        public ValueBar(ValueBarTemplate template)
+            : base(template)
+        {
+            HasFrame = false;
+
+            MinimumValue = template.MinimumValue;
+            MaximumValue = template.MaximumValue;
+            CurrentValue = template.StartingValue;
+
+            rangeWidth = this.Size.Width - 2;
+        }
+
+
+        public int MinimumValue { get; private set; }
+
+        public int MaximumValue { get; private set; }
+
+        int _currValue;
+        public int CurrentValue
+        {
+            get
+            {
+                return _currValue;
+            }
+            set
+            {
+                if (value >= MinimumValue && value <= MaximumValue)
+                {
+                    _currValue = value;
+                }
+            }
+        }
+
+        protected override void Redraw()
+        {
+            base.Redraw();
+
+            float currFinePos = (float)CurrentValue - (float)MinimumValue;
+            currFinePos = currFinePos / (float)(MaximumValue - MinimumValue);
+            currFinePos = currFinePos * (float)rangeWidth;
+            Color bg, fg;
+            float intensity;
+
+            Canvas.PrintChar(0, 0, (int)libtcod.TCODSpecialCharacter.DoubleVertLine);
+            Canvas.PrintChar(this.LocalRect.UpperRight, (int)libtcod.TCODSpecialCharacter.DoubleVertLine);
+
+            for (int x = 0; x < rangeWidth; x++)
+            {
+                float fx = (float)x;
+                float delta = Math.Abs(fx + 0.5f - currFinePos);
+                if (delta <= 3f)
+                {
+                    intensity = (3f - delta) / 3f;
+                }
+                else
+                {
+                    intensity = 0f;
+                }
+
+                bg = GetMainStyle().Background.ReplaceValue(intensity);
+                fg = GetMainStyle().Foreground.ReplaceValue(intensity);
+                Canvas.PrintChar(x+1, 0,
+                    (int)libtcod.TCODSpecialCharacter.HorzLine,
+                    new ColorStyle(fg,bg));
+            }
+        }
+
+        private int rangeWidth;
+    }
+}

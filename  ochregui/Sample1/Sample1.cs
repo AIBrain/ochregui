@@ -105,7 +105,7 @@ namespace OchreGui.Sample1
 
             /// We are going to hook into the button clicked event, so we know when the user has clicked on the
             /// quit button.
-            quitButton.ButtonClicked += new EventHandler(quitButton_ButtonClicked);
+            quitButton.ButtonPushed += new EventHandler(quitButton_ButtonClicked);
 
             /// And, finally, add it to this Window.  Note that all controls added to a window must be unique objects, or
             /// an exception will be thrown by this method.  Also note that some of the properties of a contol (such as

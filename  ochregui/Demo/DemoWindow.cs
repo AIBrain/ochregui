@@ -75,9 +75,9 @@ namespace OchreGui.Demo
 
             AddControls(nextButton, prevButton, quitButton);
 
-            quitButton.ButtonClicked += new EventHandler(quitButton_ButtonClicked);
-            prevButton.ButtonClicked += new EventHandler(prevButton_ButtonClicked);
-            nextButton.ButtonClicked += new EventHandler(nextButton_ButtonClicked);
+            quitButton.ButtonPushed += new EventHandler(quitButton_ButtonClicked);
+            prevButton.ButtonPushed += new EventHandler(prevButton_ButtonClicked);
+            nextButton.ButtonPushed += new EventHandler(nextButton_ButtonClicked);
 
             prevButton.IsActive = hasPrev;
             nextButton.IsActive = hasNext;

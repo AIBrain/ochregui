@@ -420,12 +420,28 @@ namespace OchreGui
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Swaps a ColorStyles's foreground and background
+        /// Swaps a ColorStyles's foreground and background.  Returns a new ColorStyle instance,
+        /// this instance is unchanged.
         /// </summary>
         /// <returns></returns>
         public ColorStyle Invert()
         {
             return new ColorStyle(Background, Foreground);
+        }
+
+        public ColorStyle ReplaceForeground(Color newFGColor)
+        {
+            return new ColorStyle(newFGColor, Background);
+        }
+
+        public ColorStyle ReplaceBackground(Color newBGColor)
+        {
+            return new ColorStyle(Foreground, newBGColor);
+        }
+
+        public ColorStyle ReplaceBGFlag(TCODBackgroundFlag newBGFlag)
+        {
+            return new ColorStyle(Foreground, Background, newBGFlag);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

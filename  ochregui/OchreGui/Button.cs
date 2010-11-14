@@ -136,9 +136,9 @@ namespace OchreGui
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised when a button has been clicked on (mouse down then up).
+        /// Raised when a button has been pushed (mouse down then up).
         /// </summary>
-        public event EventHandler ButtonClicked;
+        public event EventHandler ButtonPushed;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Constructors
@@ -230,7 +230,7 @@ namespace OchreGui
 
             if (mouseData.MouseButton == MouseButton.LeftButton && wasBeingPushed)
             {
-                OnButtonClicked();
+                OnButtonPushed();
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -240,11 +240,11 @@ namespace OchreGui
         /// Triggers the OnButtonClicked() event.  Called by the framework when a buton click
         /// action is performed.
         /// </summary>
-        protected virtual void OnButtonClicked()
+        protected virtual void OnButtonPushed()
         {
-            if (ButtonClicked != null)
+            if (ButtonPushed != null)
             {
-                ButtonClicked(this, EventArgs.Empty);
+                ButtonPushed(this, EventArgs.Empty);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

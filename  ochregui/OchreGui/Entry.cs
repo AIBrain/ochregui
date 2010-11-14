@@ -105,9 +105,9 @@ namespace OchreGui
             this.CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
             this.HilightWhenMouseOver = template.HilightWhenMouseOver;
 
-            this.Field = "";
-            this.CommitText = Field;
-            this.CurrentText = Field;
+            this.CommmittedField = "";
+            this.waitingToCommitText = false;
+            this.CurrentText = CommmittedField;
 
             if (template.HasFrameBorder)
             {
@@ -129,26 +129,46 @@ namespace OchreGui
         /// the same as what is being currently displayed by the entry (as a user types input,
         /// for example).
         /// </summary>
-        public string Field { get; protected set; }
+        public string CommmittedField { get; protected set; }
 
+        /// <summary>
+        /// The current text state of the control as it is typed.  This has not yet been
+        /// validated.
+        /// </summary>
+        public string CurrentText { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
         /// <summary>
-        /// Sets this entry's Field property if the specified field is valid according to 
-        /// the ValidateField method.  Also calls OnFieldChanged if valid.
+        /// Tries to set the entry's Field to the specified text.  This method calls TryCommit()
+        /// to see if the commit was successful, and returns true if the commit was successful.
         /// </summary>
-        /// <param name="field"></param>
+        /// <param name="changeTo"></param>
         /// <returns></returns>
-        public bool TrySetField(string field)
+        public bool TrySetField(string changeTo)
         {
-            if (ValidateField(field))
+            CurrentText = changeTo;
+
+            return TryCommit();
+        }
+
+        /// <summary>
+        /// Trys to commmit the current text, by calling ValidateField.  If successful,
+        /// the CommittedField will be set to the current text, and OnFieldChanged will
+        /// be called.
+        /// </summary>
+        /// <returns></returns>
+        public bool TryCommit()
+        {
+            if (ValidateField(CurrentText) &&
+                CurrentText.Length <= MaximumCharacters)
             {
-                Field = field;
+                CommmittedField = CurrentText;
 
                 OnFieldChanged();
+                return true;
             }
-
+            CurrentText = CommmittedField;
             return false;
         }
         #endregion
@@ -160,7 +180,7 @@ namespace OchreGui
         protected abstract int MaximumCharacters { get; }
 
         /// <summary>
-        /// Gets what the field defaults if there is not current or previous valid entries.
+        /// Gets what the field defaults to if there is not current or previous valid entries.
         /// </summary>
         protected abstract string DefaultField { get; }
 
@@ -169,11 +189,6 @@ namespace OchreGui
         /// </summary>
         protected string Label { get; private set; }
  
-        /// <summary>
-        /// The current text state of the control to track user input
-        /// </summary>
-        protected string CurrentText { get; set; }
-
         /// <summary>
         /// Get the current position of the entry cursor, representing the position
         /// of the next typed character.
@@ -310,22 +325,24 @@ namespace OchreGui
             }
             else if (keyData.KeyCode == TCODKeyCode.Enter)
             {
-                if (ValidateField(CurrentText))
-                {
-                    CommitText = CurrentText;
-                }
-                else
-                {
-                    CommitText = DefaultField;
-                }
+                //if (ValidateField(CurrentText))
+                //{
+                //    waitingToCommitText = CurrentText;
+                //}
+                //else
+                //{
+                //    waitingToCommitText = DefaultField;
+                //}
+                waitingToCommitText = true;
                 ParentWindow.ReleaseKeyboard(this);
 
-                OnFieldChanged();
+                //OnFieldChanged();
 
             }
             else if (keyData.KeyCode == TCODKeyCode.Escape)
             {
-                CurrentText = CommitText;
+                CurrentText = CommmittedField;
+                waitingToCommitText = true;
                 ParentWindow.ReleaseKeyboard(this);
             }
         }
@@ -340,15 +357,15 @@ namespace OchreGui
         {
             base.OnTakeKeyboardFocus();
 
-            CommitText = Field;
-            CurrentText = Field;
+            waitingToCommitText = false;
+            CurrentText = CommmittedField;
 
             if (ReplaceOnFirstKey)
             {
                 waitingToOverwrite = true;
             }
 
-            this.CursorPos = Field.Length;
+            this.CursorPos = CommmittedField.Length;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -361,16 +378,34 @@ namespace OchreGui
         {
             base.OnReleaseKeyboardFocus();
 
-            if (CommitText != CurrentText && CommitOnLostFocus)
-            {
-                if(ValidateField(CurrentText))
-                {
-                    CommitText = CurrentText;
-                }
-            }
+            // waitingToCommitText will be the same as CurrentText if the user has pressed
+            // the ENTER key.  Here we check to see if user has clicked away from control
+            // instead of hitting ENTER
+            //if (waitingToCommitText != CurrentText && CommitOnLostFocus)
+            //{
+            //    if (ValidateField(CurrentText))
+            //    {
+            //        waitingToCommitText = CurrentText;
+            //    }
+            //    else
+            //    {
+            //        waitingToCommitText = Field;
+            //        CurrentText = Field;
+            //    }
+            //}
 
-            Field = CommitText;
-            CurrentText = Field;
+            //if (Field != waitingToCommitText)
+            //{
+            //    Field = waitingToCommitText;
+            //    CurrentText = Field;
+
+            //    OnFieldChanged();
+            //}
+
+            if (waitingToCommitText || CommitOnLostFocus)
+            {
+                TryCommit();
+            }
 
             waitingToOverwrite = false;
         }
@@ -381,7 +416,7 @@ namespace OchreGui
         #region Private
         // /////////////////////////////////////////////////////////////////////////////////
         private bool cursorOn = true;
-        private string CommitText { get; set; }
+        private bool waitingToCommitText { get; set; }
         private bool waitingToOverwrite;
 
         // /////////////////////////////////////////////////////////////////////////////////

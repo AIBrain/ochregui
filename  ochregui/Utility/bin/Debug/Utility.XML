@@ -4,20 +4,6 @@
         <name>Utility</name>
     </assembly>
     <members>
-        <member name="T:OchreGui.Utility.Point">
-            <summary>
-            Immutable pair of int values, representing an x,y coordinate.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Utility.Point.Shift(System.Int32,System.Int32)">
-            <summary>
-            Returns a new Point instance by adding dx to this.X and dy to this.Y.  This method
-            does not modify this Point instance.
-            </summary>
-            <param name="dx"></param>
-            <param name="dy"></param>
-            <returns></returns>
-        </member>
         <member name="T:OchreGui.Utility.Rand">
             <summary>
             Utility (static) class with random number helper functions
@@ -72,11 +58,6 @@
             <param name="dx"></param>
             <param name="dy"></param>
             <returns></returns>
-        </member>
-        <member name="T:OchreGui.Utility.Size">
-            <summary>
-            Immutable type representing anything that has a width and a height
-            </summary>
         </member>
         <member name="T:OchreGui.Utility.Dice">
             <summary>
@@ -135,6 +116,25 @@
             <summary>
             The linear modifier of the random range obtained with this Dice object.
             </summary>
+        </member>
+        <member name="T:OchreGui.Utility.Size">
+            <summary>
+            Immutable type representing anything that has a width and a height
+            </summary>
+        </member>
+        <member name="T:OchreGui.Utility.Point">
+            <summary>
+            Immutable pair of int values, representing an x,y coordinate.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.Point.Shift(System.Int32,System.Int32)">
+            <summary>
+            Returns a new Point instance by adding dx to this.X and dy to this.Y.  This method
+            does not modify this Point instance.
+            </summary>
+            <param name="dx"></param>
+            <param name="dy"></param>
+            <returns></returns>
         </member>
         <member name="M:OchreGui.Utility.MyExtensions.IsSet(System.Enum,System.Enum)">
             <summary>

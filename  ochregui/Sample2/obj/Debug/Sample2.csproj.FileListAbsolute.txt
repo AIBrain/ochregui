@@ -1,0 +1,13 @@
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Sample2.exe.config
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Sample2.exe
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Sample2.pdb
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\libtcod-net.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\OchreGui.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Utility.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\OchreGui.pdb
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\OchreGui.xml
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Utility.pdb
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\bin\Debug\Utility.xml
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\obj\Debug\Sample2.exe
+C:\Documents and Settings\shamus\Desktop\Ochre\Sample2\obj\Debug\Sample2.pdb
