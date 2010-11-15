@@ -29,7 +29,10 @@ namespace OchreGui
     #region Button Template class
 
     /// <summary>
-    /// Contains the setttings needed to construct a Button object.  
+    /// Contains the data needed to construct a Button object.  A button will, by default, automatically
+    /// generate its size based on the Label and MinimumWidth properties of the template, and will always
+    /// have a height of 3 (1 space for the label and 2 spaces for the borders).  Otherwise,
+    /// specify a custom size using the AutoSizeOverride property.
     /// </summary>
     public class ButtonTemplate : ControlTemplate
     {
@@ -128,15 +131,15 @@ namespace OchreGui
 
     #region Button Class
     /// <summary>
-    /// A button can be clicked, which happens when the left mouse button is pressed then released while
-    /// over the button.
+    /// Represents a button control.  A button can be pushed, which happens when the left mouse button is 
+    /// pressed then subsequently released while over the button.
     /// </summary>
     public class Button : Control
     {
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised when a button has been pushed (mouse down then up).
+        /// Raised when a button has been pushed (mouse button down then up over control).
         /// </summary>
         public event EventHandler ButtonPushed;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -164,28 +167,29 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
-        #region Protected Properties
-        // /////////////////////////////////////////////////////////////////////////////////
+        #region Public Properties
         /// <summary>
         /// Get the button Label.
         /// </summary>
-        protected string Label { get; private set; }
+        public string Label { get; private set; }
 
         /// <summary>
         /// Get or set the label's horizontal alignment.
         /// </summary>
-        protected HorizontalAlignment LabelAlignment { get; set; }
+        public HorizontalAlignment LabelAlignment { get; set; }
 
         /// <summary>
-        /// Get or set the label's vertical alignment.
+        /// Get or set the label's vertical alignment.  This will only have an effect if
+        /// the height of the button is larger than 3 as specified by the AutoSizeOverride
+        /// property of the creating template.
         /// </summary>
         protected VerticalAlignment VAlignment { get; set; }
-        // ////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region  Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// This base method draws the label if OwnerDraw is false.  Override to add custom
+        /// This base method clears the Canvas, draws the frame (if any), and draws the label, unless
+        /// OwnerDraw is set to true in which case the base methods do nothing.  Override to add custom
         /// drawing code here.
         /// </summary>
         protected override void Redraw()
@@ -203,7 +207,26 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Returns the color of the main control area based on its current state.
+        /// Override to return a custom color for the main drawing area of the button, or to add
+        /// additional colors for the button based on custom states.
         /// </summary>
+        /// <remarks>
+        /// The possible ColorStyles returned by this base method (based on current state) are as follows:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>Styles.Depressed</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Styles.Active</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Styles.Inactive</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Styles.Hilight</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
         /// <returns></returns>
         protected override ColorStyle GetMainStyle()
         {
@@ -219,7 +242,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called when a mouse button is pressed while over this button.  Triggers proper
-        /// events.
+        /// events.  Override to add custom handling.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseButtonUp(MouseData mouseData)
@@ -237,8 +260,9 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Triggers the OnButtonClicked() event.  Called by the framework when a buton click
-        /// action is performed.
+        /// Called by the framework when a buton click
+        /// action is performed.  Triggers proper
+        /// events.  Override to add custom handling.
         /// </summary>
         protected virtual void OnButtonPushed()
         {

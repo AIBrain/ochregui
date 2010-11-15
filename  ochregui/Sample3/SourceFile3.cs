@@ -94,7 +94,7 @@ namespace OchreGui.Sample3
         /// Note that we have to translate the mouse position to local coordinates.
         protected override string GetTooltipText()
         {
-            if (this.ScreenToLocalPosition(CurrentMousePos) == player.CurrentPosition)
+            if (this.ScreenToLocal(CurrentMousePos) == player.CurrentPosition)
                 return "It's you!";
             else
                 return null;

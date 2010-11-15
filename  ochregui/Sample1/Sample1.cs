@@ -138,7 +138,7 @@ namespace OchreGui.Sample1
         }
     }
 
-
+    #region MainMethod
     /// Here we provide our Main method.
     class MainEntry
     {
@@ -164,6 +164,7 @@ namespace OchreGui.Sample1
             }
         }
     }
+    #endregion
 }
 
 /// To build the application, you will need to add the references for Utility.dll and OchreGui.dll.  You will also need

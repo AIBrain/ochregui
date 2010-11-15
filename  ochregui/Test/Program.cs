@@ -84,11 +84,19 @@ namespace Test
                 MaximumValue = 255,
                 UpperLeftPos = new Point(10,5),
                 MinimumWidth = 12,
-                //Label = "Slide me"
+                Label = "Slide"
+            }));
+
+            AddControl(new TextEntry(new TextEntryTemplate()
+            {
+                MaximumCharacters = 10,
+                UpperLeftPos = new Point(0,15),
+                Validation = TextEntryValidations.Symbols
             }));
 
 
             AddSchedule(new Schedule(TestAnimBar,100));
+
         }
 
         protected override void Redraw()

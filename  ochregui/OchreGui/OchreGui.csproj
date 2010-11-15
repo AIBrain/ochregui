@@ -110,4 +110,8 @@
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="TemplatesDiagram.cd" />
+    <None Include="ComponentsDiagram.cd" />
+  </ItemGroup>
 </Project>

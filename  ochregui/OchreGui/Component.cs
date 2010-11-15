@@ -80,7 +80,7 @@ namespace OchreGui
     }
 
 	/// <summary>
-	/// Base class for any objects that need to receive system and input messages.
+	/// Base class for any objects that need to receive system and action messages.
 	/// </summary>
 	public abstract class Component
     {
@@ -96,14 +96,14 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised every update tick
+        /// Raised every update tick of the application loop.
         /// </summary>
         public event EventHandler Tick;
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised when application is about to quit
+        /// Raised when application is about to quit.
         /// </summary>
 		public event EventHandler Quitting;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -123,8 +123,10 @@ namespace OchreGui
         public event EventHandler<KeyboardEventArgs> KeyReleased;
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised when the mouse has moved to a different cell position.  Active controls 
-        /// will only raise this event if the mouse is currently over the control.
+        /// Raised when the mouse has moved to a different position.  Active controls 
+        /// will only raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.  The framework
+        /// checks the pixel position to see if movement has occurred.
         /// </summary>
 		public event EventHandler<MouseEventArgs> MouseMoved;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +134,8 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Raised when a mouse button has been released.. Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.
         /// </summary>
 		public event EventHandler<MouseEventArgs> MouseButtonUp;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -140,7 +143,8 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Raised when a mouse button has been pressed.  Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the
+        /// control is topmost at that position.
         /// </summary>
 		public event EventHandler<MouseEventArgs> MouseButtonDown;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +153,8 @@ namespace OchreGui
         /// <summary>
         /// Raised when the mouse has started hovering (has stayed still 
         /// for a short time).  Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.
         /// </summary>
 		public event EventHandler<MouseEventArgs> MouseHoverBegin;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +163,8 @@ namespace OchreGui
         /// <summary>
         /// Raised when the mouse has stopped hovering (has moved while
         /// previously hovering).  Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.
         /// </summary>
 		public event EventHandler<MouseEventArgs> MouseHoverEnd;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -167,7 +173,8 @@ namespace OchreGui
         /// <summary>
         /// Raised when the mouse drag has started (mouse has moved a 
         /// small distance with the left button held down).  Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.
         /// </summary>
 		public event EventHandler<MouseDragEventArgs> MouseDragBegin;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -176,23 +183,44 @@ namespace OchreGui
         /// <summary>
         /// Raised when the mouse has stopped a mouse drag (e.g. left button
         /// released).  Controls will only
-        /// raise this event if the mouse is currently over the control.
+        /// raise this event if the mouse is currently over the control and the control
+        /// is topmost at that position.
         /// </summary>
         public event EventHandler<MouseDragEventArgs> MouseDragEnd;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// A callback method for the Schedule object must conform to this delegate.
+        /// </summary>
         public delegate void ScheduleCallback();
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Add a schedule to this component.  All schedule must be reference-unique to this component,
-        /// or this method will throw an ArgumentException.  The schedule(s) added will begin to receive
-        /// update ticks during the next application loop iteration.
+        /// or this method will throw an ArgumentException.  The schedule is actually  added
+        /// to the list on the next tick - this ensures that schedules can be added/removed during
+        /// another schedule's callback method.
         /// </summary>
+        /// <example>
+        /// <code>
+        /// AddSchedule(new Scheduel(MyCallback,100));
+        /// </code>
+        /// This will cause the MyCallback method to be called every 100 milliseconds until removed with
+        /// RemoveSchedule.  Elsewhere the MyCallback method must be defined as follows:
+        /// <code>
+        /// void MyCallback()
+        /// {
+        ///     // insert callback code here
+        /// }
+        /// </code>
+        /// </example>
         /// <param name="schedule"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="schedule"/> is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when <paramref name="schedule"/> is already
+        /// contained by this component</exception>
         public void AddSchedule(Schedule schedule)
         {
             if (schedule == null)
@@ -212,9 +240,12 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Remove the specified schedule from this component.
+        /// Remove the specified schedule from this component.  The schedule is actually  removed
+        /// from the list on the next tick - this ensures that schedules can be added/removed during
+        /// another schedule's callback method.
         /// </summary>
         /// <param name="schedule"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="schedule"/> is null.</exception>
         public void RemoveSchedule(Schedule schedule)
         {
             if (schedule == null)
@@ -231,8 +262,7 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Returns true if the specified schedule has previously been added to this
-        /// component.
+        /// Returns true if the specified schedule is currently contained in this component.
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
@@ -245,19 +275,21 @@ namespace OchreGui
         #region Protected Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Holds last stored mouse position
+        /// Holds the mouse position (in screen space) from the last MouseMove message this
+        /// component has received.
         /// </summary>
         protected Point CurrentMousePos { get; set; }
 
         /// <summary>
-        /// Total ellapsed time since start of application, in milliseconds
+        /// Total ellapsed time since start of application, in milliseconds.
         /// </summary>
         protected uint TotalEllapsed { get; private set; }
 
         /// <summary>
-        /// Ellapsed time in milliseconds since last frame
+        /// Ellapsed time in milliseconds since the last tick message this component
+        /// has received.
         /// </summary>
-        protected uint LastFrameEllapsed { get; private set; }
+        protected uint LastTickEllapsed { get; private set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
@@ -287,7 +319,7 @@ namespace OchreGui
         {
             uint milli = TCODSystem.getElapsedMilli();
 
-            LastFrameEllapsed = milli - TotalEllapsed;
+            LastTickEllapsed = milli - TotalEllapsed;
             TotalEllapsed = milli;
 
             if (Tick != null)
@@ -299,7 +331,7 @@ namespace OchreGui
             {
                 foreach (Schedule s in scheduleList)
                 {
-                    s.Update(LastFrameEllapsed);
+                    s.Update(LastTickEllapsed);
                 }
             }
 
@@ -353,6 +385,8 @@ namespace OchreGui
 			}
 		}
         // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called when the user has released a previously pressed key.  Override to add
         /// key release handling code.
@@ -365,6 +399,8 @@ namespace OchreGui
                 KeyReleased(this, new KeyboardEventArgs(keyData));
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called when the mouse has moved to a new cell position.  Override to add
@@ -424,7 +460,6 @@ namespace OchreGui
 		}
         // /////////////////////////////////////////////////////////////////////////////////
 
-        // /////////////////////////////////////////////////////////////////////////////////
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called when the mouse has left a hover state.  Override to add

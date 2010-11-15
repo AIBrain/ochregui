@@ -27,7 +27,8 @@ namespace OchreGui
 {
     /// <summary>
     /// Implemented by widget templates and their derivatives. Defines the CalculateSize
-    /// method, which should return the exact and final size of the widget.
+    /// method, which should return the exact and final size of the widget.  This size is
+    /// used during the contruction of an object from a template.
     /// </summary>
     public interface ITemplate
     {
@@ -69,13 +70,16 @@ namespace OchreGui
 
     /// <summary>
     /// Base class for any component that gets drawn on the screen.  A widget provides
-    /// an offscreen TCODConsole (Widget.Console) to draw to.  The framework automatically
-    /// blits the Console to the screen each frame.
+    /// a Canvas for drawing operations.
     /// </summary>
 	public abstract class Widget : Component, IDisposable
     {
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Raised when the the Widget receives a draw message from the framework.  Subscribers
+        /// can perform custom drawing when this is raised.
+        /// </summary>
         public event EventHandler Draw;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -115,15 +119,15 @@ namespace OchreGui
         /// <summary>
         /// Get the Canvas object associated with this widget.
         /// </summary>
-        public Canvas Canvas { get; protected set; }
+        public Canvas Canvas { get; private set; }
 
         /// <summary>
         /// Get the default Styles associated with this widget.
         /// </summary>
-        public Styles DefaultStyles { get; protected set; }
+        public Styles DefaultStyles { get; set; }
 
         /// <summary>
-        /// Get the the Size of the widget.
+        /// Get the the size of the widget.
         /// </summary>
         public Size Size { get; private set; }
 
@@ -147,8 +151,8 @@ namespace OchreGui
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// If OwnerDraw is false, this base method sets the Canvas colors according to the
-        /// GetMainStyle() method, and clears the Canvas.
+        /// If OwnerDraw is false, this base method clears the Canvas with the ColorStyle
+        /// returned from GetMainStyle.
         /// </summary>
         protected virtual void Redraw()
         {
@@ -188,7 +192,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called during the drawing phase of the application loop.  Base method calls Redraw(), 
-        /// triggers appropriate event, and blits the canvas to the screen if OwnerDraw is false.
+        /// triggers the Draw event, and blits the canvas to the screen if OwnerDraw is false.
         /// This method should rarely need to be overriden - instead, to provide custom drawing code
         /// (whether OwnerDraw is true or false), override Redraw(), GetMainStyle(), and GetFrameStyle().
         /// </summary>

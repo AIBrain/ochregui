@@ -25,7 +25,12 @@ using libtcod;
 
 namespace OchreGui
 {
-
+    /// <summary>
+    /// Contains the data needed to construct a CheckBox object.  A CheckBox will, by default, automatically
+    /// generate its width based on the Label and MinimumWidth properties of the template, leaving space for
+    /// the check element, and will always
+    /// have a height of 3 (1 space for the label and 2 spaces for the borders).
+    /// </summary>
     public class CheckBoxTemplate : ControlTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +39,7 @@ namespace OchreGui
         /// </summary>
         public CheckBoxTemplate()
         {
-            this.Label = "CheckBox";
+            this.Label = "";
             this.MinimumWidth = 0;
             LabelAlignment = HorizontalAlignment.Left;
             CheckOnLeft = true;
@@ -46,7 +51,7 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// The text displayed by the checkbox.  Defaults to "Checkbox"
+        /// The text displayed by the checkbox.  Defaults to empty string ""
         /// </summary>
         public string Label { get; set; }
 
@@ -58,7 +63,7 @@ namespace OchreGui
 
         /// <summary>
         /// If there is extra spacing in the label area, the label gets aligned
-        /// according to this.  Defautls to TCODAlignment.Left
+        /// according to this.  Defautls to HorizontalAlignment.Left
         /// </summary>
         public HorizontalAlignment LabelAlignment { get; set; }
 
@@ -75,7 +80,7 @@ namespace OchreGui
         public bool HilightWhenMouseOver { get; set; }
 
         /// <summary>
-        /// Set to true if this control can take the keyboard focus by being left-clicked on.
+        /// Set to true if this control can take the keyboard focus.
         /// Defaults to false.
         /// </summary>
         public bool CanHaveKeyboardFocus { get; set; }
@@ -108,15 +113,16 @@ namespace OchreGui
     }
 
     /// <summary>
-    /// A checkbox control has a label and a checkable element that displays current state.  The state
-    /// is toggled by mouse selection, or by setting the IsChecked property.
+    /// Represents a check box control.  A CheckBox has a label and a checkable element that displays the 
+    /// current state of the IsChecked property.  This state
+    /// is toggled by left mouse button clicks, or by setting the IsChecked property manually.
     /// </summary>
     public class CheckBox : Control
     {
         #region Events
         /// <summary>
-        /// Raised when the state of a checkbox has been toggled.  Get IsChecked to get
-        /// current state.
+        /// Raised when the state of a checkbox has been toggled by user input.  Get IsChecked to get
+        /// current state.  Manually setting IsChecked property will not cause this event to be raised.
         /// </summary>
         public event EventHandler CheckBoxToggled;
         #endregion
@@ -173,27 +179,25 @@ namespace OchreGui
         #region Public Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get or set the current state of the checkbox
+        /// Get or set the current checked state of the checkbox.  Setting this property will
+        /// not raise a CheckBoxToggled event.
         /// </summary>
         public bool IsChecked { get; set; }
-        // /////////////////////////////////////////////////////////////////////////////////
-        #endregion
-        #region Protected Properties
-        // /////////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// Get the label string
         /// </summary>
-        protected string Label { get; private set; }
+        public string Label { get; private set; }
 
         /// <summary>
         /// True if the check element appears left of the label, otherwise on right side
         /// </summary>
-        protected bool CheckOnLeft { get; set; }
+        public bool CheckOnLeft { get; private set; }
 
         /// <summary>
         /// Text alignment of the label
         /// </summary>
-        protected HorizontalAlignment LabelAlignment { get; set; }
+        public HorizontalAlignment LabelAlignment { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers

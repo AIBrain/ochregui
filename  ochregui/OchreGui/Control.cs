@@ -45,7 +45,8 @@ namespace OchreGui
     #region ControlInfo
 
     /// <summary>
-    /// This class builds on the Widget Template, and offers some layout helper methods.
+    /// This class builds on the Widget Template, and offers some layout helper methods for
+    /// positioning controls relative to each other.
     /// </summary>
     public abstract class ControlTemplate : WidgetTemplate
     {
@@ -269,8 +270,8 @@ namespace OchreGui
 
     #region Control
     /// <summary>
-    /// Controls are added to a window, and receive the highest level of
-    /// action messages.
+    /// Controls are added to a window, through which they receive action and system
+    /// messages.
     /// </summary>
 	public abstract class Control : Widget
     {
@@ -283,18 +284,20 @@ namespace OchreGui
 		public event EventHandler TakeKeyboardFocus;
 
         /// <summary>
-        /// Raised when the control has released the keyboard focus.  This automatically
+        /// Raised when the control has released the keyboard focus.  This typically
         /// happens when a left mouse button down action happens away from this control.
         /// </summary>
 		public event EventHandler ReleaseKeyboardFocus;
 
         /// <summary>
-        /// Raised when the mouse cursor has entered the control region
+        /// Raised when the mouse cursor has entered the control region and the control
+        /// is topmost at that position.
         /// </summary>
         public event EventHandler MouseEnter;
 
         /// <summary>
-        /// Raised when the mouse cursor has left the control region
+        /// Raised when the mouse cursor has left the control region and the control
+        /// is topmost at that position.
         /// </summary>
         public event EventHandler MouseLeave;
 
@@ -325,25 +328,30 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// True if currently has keyboard focus.  This is set automatically by
-        /// the framework.
+        /// the framework in response to user input, or by calling Window.TakeKeyboard.
         /// </summary>
         public bool HasKeyboardFocus { get; private set; }
 
         /// <summary>
         /// True tells parent window that this control is able to
-        /// capture keyboard focus
+        /// capture keyboard focus.
         /// </summary>
-		public bool CanHaveKeyboardFocus { get; protected set; }
+		public bool CanHaveKeyboardFocus { get; set; }
 
 		/// <summary>
-		/// If false, notifies framework that it does not want to receive user input messages
+		/// If false, notifies framework that it does not want to receive user input messages.  This
+        /// control will stil receive system messages.
 		/// </summary>
 		public bool IsActive { get; set; }
 
-        public bool HilightWhenMouseOver { get; protected set; }
+        /// <summary>
+        /// True if this control will draw itself hilighted when the mouse is over it.
+        /// </summary>
+        public bool HilightWhenMouseOver { get; set; }
 
         /// <summary>
-        /// True if the mouse pointer is currently over this control
+        /// True if the mouse pointer is currently over this control, and the control
+        /// is topmost at that position.
         /// </summary>
         public bool IsMouseOver { get; private set; }
 
@@ -353,24 +361,26 @@ namespace OchreGui
         public bool IsBeingPushed { get; private set; }
 
         /// <summary>
-        /// Set to true if a frame should be drawn around control boder
+        /// Set to true if a frame should be drawn around the boder.
         /// </summary>
         public bool HasFrame { get; protected set; }
 
         /// <summary>
-        /// Set to a non-empty string to display a tooltip over this control on a hover action
+        /// Set to a non-empty string to display a tooltip over this control on a hover action.
         /// </summary>
-        public string TooltipText { get; protected set; }
+        public string TooltipText { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////	    
         /// <summary>
-        /// Translates given screen space position to local control space position
+        /// Translates the given screen space position to local space.  This is often necessary
+        /// when handling mouse messages, since the position contained in MouseData is in screen
+        /// space.
         /// </summary>
         /// <param name="screenPos"></param>
         /// <returns></returns>
-		public Point ScreenToLocalPosition(Point screenPos)
+		public Point ScreenToLocal(Point screenPos)
 		{
 			return new Point(screenPos.X - ScreenRect.UpperLeft.X, screenPos.Y - ScreenRect.UpperLeft.Y);
 		}
@@ -378,7 +388,7 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Translates given control space position to screen space position
+        /// Translates the given local space position to screen space position.
         /// </summary>
         /// <param name="localPos"></param>
         /// <returns></returns>
@@ -394,14 +404,13 @@ namespace OchreGui
         /// Get the current parent window of control
         /// </summary>
         protected internal Window ParentWindow { get; internal set; }
-
-
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Draw a frame around the control border
+        /// Draw a frame around the control border.  If the <paramref name="style"/> is null,
+        /// the frame will drawn with the Canvas' current default style.
         /// </summary>
         protected void DrawFrame(ColorStyle style = null)
         {
@@ -411,8 +420,9 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Base class draws the frame if HasFrame is true.  Override to add custom drawing
-        /// code.
+        /// Base class clears the Canvas and draws the frame if HasFrame is true.  If OwnerDraw
+        /// is true, this method does nothing. Override to add custom drawing
+        /// code after calling base class.
         /// </summary>
         protected override void Redraw()
         {
@@ -427,10 +437,24 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Sets the colors for the control according to its state.  Base
-        /// method sets the colors Hilight, Active or Inactive depending
-        /// on IsActive, IsSelected and IsMouseOver.
+        /// Sets the colors for the control according to its state.
+        /// Override to return a custom color for the main drawing area of the button, or to add
+        /// additional colors for the button based on custom states.
         /// </summary>
+        /// <remarks>
+        /// The possible ColorStyles returned by this base method (based on current state) are as follows:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>Styles.Active</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Styles.Inactive</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Styles.Hilight</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
         protected override ColorStyle GetMainStyle()
         {
             if (IsActive)
@@ -451,8 +475,9 @@ namespace OchreGui
         }
 
         /// <summary>
-        /// Returns a string representing the displayed tooltip or null if none.  Base method
-        /// simply returns the TooltipText property.  Override to add custom tooltip code.
+        /// Returns a string representing the displayed tooltip, or null if none.  Base method
+        /// simply returns the TooltipText property.  Override to add custom tooltip code, e.g.
+        /// when the tooltip depends on where the mouse is positioned.
         /// </summary>
         /// <returns></returns>
         protected virtual string GetTooltipText()
@@ -464,8 +489,8 @@ namespace OchreGui
         #region Message Handlers
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// This method sets HasKeyboardFocus to true, and raises the TakeKBFocusEvent  Override
-        /// to add custom handling code.
+        /// This method sets HasKeyboardFocus to true, and raises the TakeKBFocus event.  Override
+        /// to add custom handling code after calling this base method.
         /// </summary>
         internal protected virtual void OnTakeKeyboardFocus()
 		{
@@ -480,8 +505,8 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// This method sets HasKBFocus to false, and raises the ReleaseKeyboardFocusEvent.
-        /// Override to add custom handling code.
+        /// This method sets HasKBFocus to false, and raises the ReleaseKeyboardFocus event.
+        /// Override to add custom handling code after calling this base method.
         /// </summary>
         internal protected virtual void OnReleaseKeyboardFocus()
 		{
@@ -496,7 +521,7 @@ namespace OchreGui
         /// <summary>
         /// Called by the framework once when this control is first added to a Window.  Later
         /// adds will not cause this method to be called again.  Override and place custom
-        /// startup code here.
+        /// startup code here after calling this base method.
         /// </summary>
         protected internal override void OnSettingUp()
         {
@@ -507,8 +532,8 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// This raises the EnterEvent and sets IsMouseOver to true.  Override to add
-        /// custom handling code.
+        /// This raises the Enter event and sets IsMouseOver to true.  Override to add
+        /// custom handling code after calling this base method.
         /// </summary>
         internal protected virtual void OnMouseEnter()
         {
@@ -523,8 +548,8 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// This method raises the LeaveEvent and sets IsMouseOver to false.  Override to add
-        /// custom handling code.
+        /// This method raises the Leave event and sets IsMouseOver to false.  Override to add
+        /// custom handling code after calling this base method.
         /// </summary>
         internal protected virtual void OnMouseLeave()
         {
@@ -541,7 +566,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Base method sets the IsBeingPushed state if applicable.  Override to add
-        /// custom handling code.
+        /// custom handling code after calling this base method.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseButtonDown(MouseData mouseData)
@@ -558,7 +583,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Base method sets the IsBeingPushed state if applicable.  Override to add
-        /// custom handling code.
+        /// custom handling code after calling this base method.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseButtonUp(MouseData mouseData)
@@ -575,7 +600,8 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Base method requests that a tooltip be displayed, calling this.GetTooltipText()
-        /// to get the displayed text.  Override to add custom handling code.
+        /// to get the displayed text.  Override to add custom handling code after calling 
+        /// this base method.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseHoverBegin(MouseData mouseData)

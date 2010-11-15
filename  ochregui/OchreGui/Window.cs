@@ -272,7 +272,7 @@ namespace OchreGui
         /// <summary>
         /// Forces the keyboard focus to the given control.
         /// </summary>
-        public void ForceTakeKeyboard(Control control)
+        public void TakeKeyboard(Control control)
         {
             if (control == null)
             {
