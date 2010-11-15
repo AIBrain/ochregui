@@ -26,8 +26,8 @@ using libtcod;
 namespace OchreGui
 {
     /// <summary>
-    /// Handles all input polling and message dispatch to attached
-    /// Window
+    /// Handles all the input polling and message dispatch to the attached
+    /// Window.  An InputManager is contained in and controlled by an Application object.
     /// </summary>
 	public class InputManager
     {
@@ -50,7 +50,7 @@ namespace OchreGui
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Call on each update tick to perform input polling.  The InputManager instance
+        /// Called by the Application on each update tick to perform input polling.  The InputManager instance
         /// will send the appropriate user input messages to the attached window provided
         /// during construction.
         /// </summary>
@@ -61,6 +61,14 @@ namespace OchreGui
 			PollKeyboard();
 		}
 
+        /// <summary>
+        /// Returns true if the specified <paramref name="key"/> is currently being
+        /// pushed.  This method is here for non-standard use of the framework - it is
+        /// typically better to use the normal keyboard messaging system provided by
+        /// components.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static bool IsKeyDown(TCODKeyCode key)
         {
             return TCODConsole.isKeyPressed(key);

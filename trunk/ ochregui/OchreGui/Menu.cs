@@ -251,7 +251,7 @@ namespace OchreGui
         {
             base.OnMouseMoved(mouseData);
 
-            Point lPos = ScreenToLocalPosition(mouseData.Position);
+            Point lPos = ScreenToLocal(mouseData.Position);
 
             mouseOverIndex = GetItemAt(lPos);
 

@@ -69,7 +69,9 @@ namespace OchreGui
     #region Canvas Class
     /// <summary>
     /// A canvas is basically a wrapper around an off-screen TCODConsole.  Every window
-    /// exposes a Canvas property to provide drawing functionality.
+    /// exposes a Canvas property to provide drawing functionality.  Drawing can be performed
+    /// using the provided Canvas methods, or by exposing the underlying TCODConsole object
+    /// through the Console property.
     /// </summary>
     public class Canvas : IDisposable
     {
@@ -78,6 +80,8 @@ namespace OchreGui
         /// <summary>
         /// Construct a Canvas object of the given size.
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the specified
+        /// <paramref name="size"/> is larger than the screen size</exception>
         public Canvas(Size size)
         {
             if (size.Width > Application.ScreenSize.Width ||
@@ -120,6 +124,8 @@ namespace OchreGui
         /// Sets the default color style for this Canvas.  If no other color style is specified
         /// for drawing operations, this style is used.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="colorStyle"/> 
+        /// is null</exception>
         public void SetDefaultColors(ColorStyle colorStyle)
         {
             if (colorStyle == null)
@@ -134,6 +140,8 @@ namespace OchreGui
         /// <summary>
         /// Sets the colors of a single character at the given coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="colorStyle"/>
+        /// is null</exception>
         public void SetCharColors(int x, int y, ColorStyle colorStyle)
         {
             if (colorStyle == null)
@@ -146,6 +154,9 @@ namespace OchreGui
         /// <summary>
         /// Sets the colors of a single character at the given coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when colorStyle is null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="position"/> is outside of this Canvas region</exception>
         public void SetCharColors(Point position, ColorStyle colorStyle)
         {
             if (colorStyle == null)
@@ -179,6 +190,8 @@ namespace OchreGui
         /// <summary>
         /// Prints a single character at the specified coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintChar(int x, int y, int character, ColorStyle colorStyle = null)
         {
             if (x < 0 || x >= this.Size.Width)
@@ -205,6 +218,8 @@ namespace OchreGui
         /// <summary>
         /// Prints a single character at the specified coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintChar(Point lPos, int character, ColorStyle colorStyle = null)
         {
             if (lPos.X < 0 || lPos.X >= this.Size.Width)
@@ -225,6 +240,10 @@ namespace OchreGui
         /// <summary>
         /// Prints the specified string at the given coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintString(int x, int y, string text, ColorStyle colorStyle = null)
         {
             if (text == null)
@@ -254,6 +273,10 @@ namespace OchreGui
         /// <summary>
         /// Prints the specified string at the given coordinates.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintString(Point lPos, string text, ColorStyle colorStyle = null)
         {
             if (text == null)
@@ -278,6 +301,10 @@ namespace OchreGui
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// horizontally with the specified alignment and within the specified field length.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintStringAligned(int x, int y, string text,
             HorizontalAlignment alignment, int fieldLength, ColorStyle colorStyle = null)
         {
@@ -305,6 +332,10 @@ namespace OchreGui
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// horizontally with the specified alignment and within the specified field length.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintStringAligned(Point lPos, string text,
             HorizontalAlignment alignment, int fieldLength, ColorStyle colorStyle = null)
         {
@@ -332,6 +363,10 @@ namespace OchreGui
         /// both horizontally and vertically with the specified alignments, and within
         /// the specified size of the field.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintStringAligned(int x, int y, string text, HorizontalAlignment hAlign,
             VerticalAlignment vAlign, Size fieldSize, ColorStyle colorStyle = null)
         {
@@ -360,6 +395,10 @@ namespace OchreGui
         /// both horizontally and vertically with the specified alignments, and within
         /// the specified size of the field.
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintStringAligned(Point lPos, string text, HorizontalAlignment hAlign,
             VerticalAlignment vAlign, Size fieldSize, ColorStyle colorStyle = null)
         {
@@ -383,6 +422,8 @@ namespace OchreGui
         /// <summary>
         /// Draws a horizontal line of the given length and starting coordinates
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void DrawHLine(int startX, int startY, int length, ColorStyle colorStyle = null)
         {
             if (startX < 0 || startX >= this.Size.Width)
@@ -407,6 +448,8 @@ namespace OchreGui
         /// <summary>
         /// Draws a horizontal line of the given length and starting coordinates
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
         public void DrawHLine(Point startPos, int length, ColorStyle colorStyle = null)
         {
             if (startPos.X < 0 || startPos.X >= this.Size.Width)
@@ -425,6 +468,8 @@ namespace OchreGui
         /// <summary>
         /// Draws a vertical line of the given length and starting coordinates
         /// </summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified position is outside of this Canvas region</exception>
         public void DrawVLine(int x, int y, int length, ColorStyle colorStyle = null)
         {
             if (x < 0 || x >= this.Size.Width)
@@ -449,9 +494,8 @@ namespace OchreGui
         /// <summary>
         /// Draws a vertical line of the given length and starting coordinates
         /// </summary>
-        /// <param name="startPos"></param>
-        /// <param name="length"></param>
-        /// <param name="colorStyle"></param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
         public void DrawVLine(Point startPos, int length, ColorStyle colorStyle = null)
         {
             if (startPos.X < 0 || startPos.X >= this.Size.Width)
@@ -582,6 +626,7 @@ namespace OchreGui
         /// </summary>
         /// <param name="source">The destination position in local (to this) coordinate space</param>
         /// <param name="destPos"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source"/> is null</exception>
         public void Blit(Canvas source, Point destPos)
         {
             if (source == null)
@@ -598,6 +643,7 @@ namespace OchreGui
         /// <param name="source"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source"/> is null</exception>
         public void Blit(Canvas source, int x, int y)
         {
             if (source == null)

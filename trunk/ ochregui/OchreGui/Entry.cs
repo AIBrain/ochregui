@@ -132,7 +132,7 @@ namespace OchreGui
         public string CommmittedField { get; protected set; }
 
         /// <summary>
-        /// The current text state of the control as it is typed.  This has not yet been
+        /// The current text state of the control as it is typed.  This text has not yet been
         /// validated.
         /// </summary>
         public string CurrentText { get; protected set; }
@@ -325,18 +325,8 @@ namespace OchreGui
             }
             else if (keyData.KeyCode == TCODKeyCode.Enter)
             {
-                //if (ValidateField(CurrentText))
-                //{
-                //    waitingToCommitText = CurrentText;
-                //}
-                //else
-                //{
-                //    waitingToCommitText = DefaultField;
-                //}
                 waitingToCommitText = true;
                 ParentWindow.ReleaseKeyboard(this);
-
-                //OnFieldChanged();
 
             }
             else if (keyData.KeyCode == TCODKeyCode.Escape)
@@ -351,7 +341,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Base method gets the entry ready for user keyboard input.  Override to add
-        /// custom handling.
+        /// custom handling after calling this base method.
         /// </summary>
         internal protected override void OnTakeKeyboardFocus()
         {
@@ -372,41 +362,20 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Base method performs any necessary cleanup when the keyboard focus is lost.  Override
-        /// to add custom handling.
+        /// to add custom handling after calling this base method.
         /// </summary>
         internal protected override void OnReleaseKeyboardFocus()
         {
             base.OnReleaseKeyboardFocus();
 
-            // waitingToCommitText will be the same as CurrentText if the user has pressed
-            // the ENTER key.  Here we check to see if user has clicked away from control
-            // instead of hitting ENTER
-            //if (waitingToCommitText != CurrentText && CommitOnLostFocus)
-            //{
-            //    if (ValidateField(CurrentText))
-            //    {
-            //        waitingToCommitText = CurrentText;
-            //    }
-            //    else
-            //    {
-            //        waitingToCommitText = Field;
-            //        CurrentText = Field;
-            //    }
-            //}
-
-            //if (Field != waitingToCommitText)
-            //{
-            //    Field = waitingToCommitText;
-            //    CurrentText = Field;
-
-            //    OnFieldChanged();
-            //}
-
             if (waitingToCommitText || CommitOnLostFocus)
             {
                 TryCommit();
             }
-
+            else
+            {
+                CurrentText = CommmittedField;
+            }
             waitingToOverwrite = false;
         }
         // /////////////////////////////////////////////////////////////////////////////////

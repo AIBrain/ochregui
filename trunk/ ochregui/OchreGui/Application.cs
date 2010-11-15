@@ -30,7 +30,7 @@ namespace OchreGui
 {
     #region ApplicationInfo
     /// <summary>
-    /// This class holds the options passed to Application.Start().
+    /// This class holds the application options passed to Application.Start().
     /// </summary>
     public class ApplicationInfo
     {
@@ -49,7 +49,7 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// True if fulscreen, defaults to false
+        /// True if fulscreen.  Defaults to false
         /// </summary>
         public bool Fullscreen { get; set; }
 
@@ -60,23 +60,24 @@ namespace OchreGui
         public Size ScreenSize { get; set; }
 
         /// <summary>
-        /// The title of the system window - only applicable if Fullscreen is false
+        /// The title of the system window.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// The name of the font file to use
+        /// The name of the font file to use, which must be in the same path as the executable.
         /// </summary>
         public string Font { get; set; }
 
         /// <summary>
-        /// Information about the specified font as per TCODFontFlags
+        /// Information about the specified font as per TCODFontFlags.
         /// </summary>
         public TCODFontFlags FontFlags { get; set; }
 
         /// <summary>
-        /// The ColorStyles that are passed down (by default) to child Windows.  Defaults to a 
-        /// pre-generated set of ColorStyles.
+        /// The Styles that are passed to child Windows by default.  Windows and controls can
+        /// override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
+        /// or Redraw methods.  Defaults to a pre-generated set of ColorStyles.
         /// </summary>
         public Styles DefaultStyles { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -86,8 +87,13 @@ namespace OchreGui
 
     #region Application Class
     /// <summary>
-    /// Main application class.  Override Setup() and Update() to add application-specific
-    /// setup code.
+    /// Represents the entire application, and controls top-level logic and state.  The Application
+    /// contains a Window, which is a container for all of the controls.<para>This object, of which there
+    /// is only one being executed, handles libtcod initialization, encapsulates the main application loop,
+    /// and is the ultimate origin for all top level messages</para>
+    /// <remarks>A custom class should be derived from Application to, at minimal, implement setup code by
+    /// overriding OnSetup.  Call Application.Start to initialize and start the application loop, which will
+    /// continue until IsQuitting is set to true.</remarks>
     /// </summary>
     public class Application : IDisposable
     {
@@ -95,12 +101,17 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Raised when the application is setting up.  This is raised after TCODInitRoot() has
-        /// been called (setting the screen size and font).
+        /// been called, so place any intitialization code dependant on libtcod being initialized here.
+        /// This event is provided in case the
+        /// framework is being used in a non-standard way - typically, the derived class will place top level
+        /// setup code in an overriden Setup method.
         /// </summary>
         public event EventHandler SetupEventHandler;
 
         /// <summary>
-        /// Raised each iteration of the main application loop
+        /// Raised each iteration of the main application loop.  This event is provided in case the
+        /// framework is being used in a non-standard way - typically, the derived class will place top level
+        /// logic updating in an overriden Update method, or within a custom Window class.
         /// </summary>
         public event EventHandler UpdateEventHandler;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -116,12 +127,14 @@ namespace OchreGui
         #region Public Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// If the application wants to quit.  Set to true to quit.
+        /// True if the application wants to quit.  Set to true to quit.
         /// </summary>
         public bool IsQuitting { get; set; }
 
         /// <summary>
-        /// The DefaultStyles that are passed to child Windows.
+        /// The Styles that are passed to child Windows by default.  Windows and controls can
+        /// override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
+        /// or Redraw methods.
         /// </summary>
         public Styles DefaultStyles { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -132,6 +145,8 @@ namespace OchreGui
         /// Initializes libtcod and starts the application's main loop.  This will loop 
         /// until IsQuitting is set to true or the main system window is closed.
         /// </summary>
+        /// <param name="setupInfo">An ApplicationInfo object containing the options specific
+        /// to this application</param>
         public void Start(ApplicationInfo setupInfo)
         {
             Setup(setupInfo);
@@ -145,7 +160,9 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Sets the current Window, which will immediately begin to receive
-        /// framework messages.  Windows can be changed at any time.
+        /// framework messages.  Windows can be changed at any time.  If the specified window
+        /// has not yet received a SettingUp message (i.e. it has not already been set as
+        /// an application window previously), then OnSettingUp will be called.
         /// </summary>
         /// <param name="win"></param>
         public void SetWindow(Window win)
@@ -168,7 +185,8 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Gets the size of TCODConsole.root
+        /// Gets the size of TCODConsole.root, which is the size of the screen (or system window)
+        /// in cells.
         /// </summary>
         public static Size ScreenSize
         {
@@ -182,7 +200,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Gets a Rect representing the screen (or the system window).  The UpperLeft position
-        /// will always be 0,0.
+        /// will always be the origin (0,0).
         /// </summary>
         public static Rect ScreenRect
         {
@@ -192,18 +210,18 @@ namespace OchreGui
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Get the Application's current window.
+        /// </summary>
+        public Window CurrentWindow { get; private set; }
+        // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the current window
-        /// </summary>
-        protected Window CurrentWindow { get; private set; }
-        // /////////////////////////////////////////////////////////////////////////////////
-
-        // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Get the current InputManager for the current Window
+        /// Get the current InputManager for the current Window.
         /// </summary>
         protected InputManager Input { get; private set; }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +229,8 @@ namespace OchreGui
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Override and add implementation specific setup code after calling base method
+        /// Called after Application.Start has been called.  Override and place application specific
+        /// setup code here after calling base method.
         /// </summary>
         /// <param name="info"></param>
         protected virtual void Setup(ApplicationInfo info)
@@ -239,7 +258,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Called each iteration of the main loop (each frame).  
-        /// Override and add implentation specific update code after calling base method.
+        /// Override and add specific logic update code after calling base method.
         /// </summary>
         protected virtual void Update()
         {

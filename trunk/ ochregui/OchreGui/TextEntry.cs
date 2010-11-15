@@ -222,7 +222,7 @@ namespace OchreGui
 
             if (Validation.IsSet(TextEntryValidations.Symbols))
             {
-                if("!@#$%^&*()_+-={};:'\",<.>/?".Contains(character.ToString()))
+                if("`~!@#$|^&*()_+-={};:'\",<.>/?".Contains(character.ToString()))
                 {
                     valid = true;
                 }

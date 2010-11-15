@@ -429,16 +429,34 @@ namespace OchreGui
             return new ColorStyle(Background, Foreground);
         }
 
+        /// <summary>
+        /// Returns a new ColorStyle by replacing the foreground color.  This isntance remains
+        /// unchanged.
+        /// </summary>
+        /// <param name="newFGColor"></param>
+        /// <returns></returns>
         public ColorStyle ReplaceForeground(Color newFGColor)
         {
             return new ColorStyle(newFGColor, Background);
         }
 
+        /// <summary>
+        /// Returns a new ColorStyle by replacing the background color.  This isntance remains
+        /// unchanged.
+        /// </summary>
+        /// <param name="newBGColor"></param>
+        /// <returns></returns>
         public ColorStyle ReplaceBackground(Color newBGColor)
         {
             return new ColorStyle(Foreground, newBGColor);
         }
 
+        /// <summary>
+        /// Returns a new ColorStyle by replacing the background flag.  This isntance remains
+        /// unchanged.
+        /// </summary>
+        /// <param name="newBGFlag"></param>
+        /// <returns></returns>
         public ColorStyle ReplaceBGFlag(TCODBackgroundFlag newBGFlag)
         {
             return new ColorStyle(Foreground, Background, newBGFlag);
