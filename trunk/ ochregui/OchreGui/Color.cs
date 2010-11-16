@@ -333,22 +333,22 @@ namespace OchreGui
     #endregion
 
 
-    #region ColorStyle Class
+    #region Pigment Class
     /// <summary>
     /// Stores forground color, background color, and background flag in a convenient
     /// single immutable data type
     /// </summary>
-    public class ColorStyle : IDisposable
+    public class Pigment : IDisposable
     {
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Construct a ColorStyle given foreground and background colors and background flag
+        /// Construct a Pigment given foreground and background colors and background flag
         /// </summary>
         /// <param name="foreground"></param>
         /// <param name="background"></param>
         /// <param name="bgFlag"></param>
-        public ColorStyle(Color foreground, Color background, TCODBackgroundFlag bgFlag)
+        public Pigment(Color foreground, Color background, TCODBackgroundFlag bgFlag)
         {
             fgColor = foreground;
             bgColor = background;
@@ -360,7 +360,7 @@ namespace OchreGui
         /// <summary>
         /// BGFlag defaults to TCODBackgroundFlag.Set
         /// </summary>
-        public ColorStyle(Color foreground, Color background)
+        public Pigment(Color foreground, Color background)
             : this(foreground, background, TCODBackgroundFlag.Set)
         {
         }
@@ -368,9 +368,9 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Construct a ColorStyle given foreground and background colors and background flag.
+        /// Construct a Pigment given foreground and background colors and background flag.
         /// </summary>
-        public ColorStyle(long foreground, long background, TCODBackgroundFlag bgFlag)
+        public Pigment(long foreground, long background, TCODBackgroundFlag bgFlag)
             : this(new Color(foreground), new Color(background), bgFlag)
         {
         }
@@ -380,7 +380,7 @@ namespace OchreGui
         /// <summary>
         /// BGFlag defaults to TCODBackgroundFlag.Set
         /// </summary>
-        public ColorStyle(long foreground, long background)
+        public Pigment(long foreground, long background)
             : this(foreground, background, TCODBackgroundFlag.Set)
         {
         }
@@ -420,46 +420,46 @@ namespace OchreGui
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Swaps a ColorStyles's foreground and background.  Returns a new ColorStyle instance,
+        /// Swaps a Pigments's foreground and background.  Returns a new Pigment instance,
         /// this instance is unchanged.
         /// </summary>
         /// <returns></returns>
-        public ColorStyle Invert()
+        public Pigment Invert()
         {
-            return new ColorStyle(Background, Foreground);
+            return new Pigment(Background, Foreground);
         }
 
         /// <summary>
-        /// Returns a new ColorStyle by replacing the foreground color.  This isntance remains
+        /// Returns a new Pigment by replacing the foreground color.  This isntance remains
         /// unchanged.
         /// </summary>
         /// <param name="newFGColor"></param>
         /// <returns></returns>
-        public ColorStyle ReplaceForeground(Color newFGColor)
+        public Pigment ReplaceForeground(Color newFGColor)
         {
-            return new ColorStyle(newFGColor, Background);
+            return new Pigment(newFGColor, Background);
         }
 
         /// <summary>
-        /// Returns a new ColorStyle by replacing the background color.  This isntance remains
+        /// Returns a new Pigment by replacing the background color.  This isntance remains
         /// unchanged.
         /// </summary>
         /// <param name="newBGColor"></param>
         /// <returns></returns>
-        public ColorStyle ReplaceBackground(Color newBGColor)
+        public Pigment ReplaceBackground(Color newBGColor)
         {
-            return new ColorStyle(Foreground, newBGColor);
+            return new Pigment(Foreground, newBGColor);
         }
 
         /// <summary>
-        /// Returns a new ColorStyle by replacing the background flag.  This isntance remains
+        /// Returns a new Pigment by replacing the background flag.  This isntance remains
         /// unchanged.
         /// </summary>
         /// <param name="newBGFlag"></param>
         /// <returns></returns>
-        public ColorStyle ReplaceBGFlag(TCODBackgroundFlag newBGFlag)
+        public Pigment ReplaceBGFlag(TCODBackgroundFlag newBGFlag)
         {
-            return new ColorStyle(Foreground, Background, newBGFlag);
+            return new Pigment(Foreground, Background, newBGFlag);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -473,7 +473,7 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
-        ~ColorStyle()
+        ~Pigment()
         {
             Dispose(false);
         }

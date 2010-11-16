@@ -379,7 +379,7 @@ namespace OchreGui
 
             if (HasFrame && OwnerDraw == false)
             {
-                Canvas.PrintFrame(null, GetFrameStyle());
+                Canvas.PrintFrame(null, GetFramePigment());
             }
         }
         #endregion
@@ -729,8 +729,8 @@ namespace OchreGui
         {
             base.OnSettingUp();
             
-            if (DefaultStyles == null)
-                DefaultStyles = ParentApplication.DefaultStyles.Copy();
+            if (DefaultPigments == null)
+                DefaultPigments = ParentApplication.DefaultPigments.Copy();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

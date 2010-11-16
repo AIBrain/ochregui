@@ -228,15 +228,15 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Returns the color style based on whether the entry has the keyboard focus or not.
+        /// Returns the color pigment based on whether the entry has the keyboard focus or not.
         /// </summary>
-        protected override ColorStyle GetMainStyle()
+        protected override Pigment GetMainPigment()
         {
             if (this.HasKeyboardFocus)
             {
-                return(DefaultStyles.Hilight);
+                return(DefaultPigments.Hilight);
             }
-            return base.GetMainStyle();
+            return base.GetMainPigment();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -267,7 +267,7 @@ namespace OchreGui
             if (waitingToOverwrite)
             {
                 Canvas.PrintString(Label.Length + labelPosX, labelPosY, 
-                    CurrentText, DefaultStyles.Selected);
+                    CurrentText, DefaultPigments.Selected);
             }
             else
             {
@@ -278,7 +278,7 @@ namespace OchreGui
             {
                 Canvas.PrintChar(Label.Length + labelPosX + CursorPos, labelPosY, 
                     (int)TCODSpecialCharacter.Block1, 
-                    DefaultStyles.Selected);
+                    DefaultPigments.Selected);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

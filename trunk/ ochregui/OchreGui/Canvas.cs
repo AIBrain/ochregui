@@ -121,18 +121,18 @@ namespace OchreGui
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Sets the default color style for this Canvas.  If no other color style is specified
-        /// for drawing operations, this style is used.
+        /// Sets the default pigment for this Canvas.  If no other pigment is specified
+        /// for drawing operations, this pigment is used.
         /// </summary>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="colorStyle"/> 
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="pigment"/> 
         /// is null</exception>
-        public void SetDefaultColors(ColorStyle colorStyle)
+        public void SetDefaultColors(Pigment pigment)
         {
-            if (colorStyle == null)
-                throw new ArgumentNullException("colorStyle");
+            if (pigment == null)
+                throw new ArgumentNullException("pigment");
 
-            defaultColors = colorStyle;
-            SetColors(colorStyle);
+            defaultColors = pigment;
+            SetColors(pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -140,27 +140,27 @@ namespace OchreGui
         /// <summary>
         /// Sets the colors of a single character at the given coordinates.
         /// </summary>
-        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="colorStyle"/>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="pigment"/>
         /// is null</exception>
-        public void SetCharColors(int x, int y, ColorStyle colorStyle)
+        public void SetCharColors(int x, int y, Pigment pigment)
         {
-            if (colorStyle == null)
-                throw new ArgumentNullException("colorStyle");
+            if (pigment == null)
+                throw new ArgumentNullException("pigment");
 
-            Console.setCharBackground(x, y, colorStyle.Background.GetTCODColor());
-            Console.setCharForeground(x, y, colorStyle.Foreground.GetTCODColor());
+            Console.setCharBackground(x, y, pigment.Background.GetTCODColor());
+            Console.setCharForeground(x, y, pigment.Foreground.GetTCODColor());
         }
 
         /// <summary>
         /// Sets the colors of a single character at the given coordinates.
         /// </summary>
-        /// <exception cref="System.ArgumentNullException">Thrown when colorStyle is null</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when pigment is null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="position"/> is outside of this Canvas region</exception>
-        public void SetCharColors(Point position, ColorStyle colorStyle)
+        public void SetCharColors(Point position, Pigment pigment)
         {
-            if (colorStyle == null)
-                throw new ArgumentNullException("colorStyle");
+            if (pigment == null)
+                throw new ArgumentNullException("pigment");
 
             if (position.X < 0 || position.X >= this.Size.Width)
             {
@@ -172,13 +172,13 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("position", "The specified y coordinate is invalid.");
             }
 
-            SetCharColors(position.X, position.Y, colorStyle);
+            SetCharColors(position.X, position.Y, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Clear the Canvas using the default color style
+        /// Clear the Canvas using the default pigment
         /// </summary>
         public void Clear()
         {
@@ -192,7 +192,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
-        public void PrintChar(int x, int y, int character, ColorStyle colorStyle = null)
+        public void PrintChar(int x, int y, int character, Pigment pigment = null)
         {
             if (x < 0 || x >= this.Size.Width)
             {
@@ -204,12 +204,12 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("y", "The specified y coordinate is invalid.");
             }
 
-            if (colorStyle != null)
-                SetColors(colorStyle);
+            if (pigment != null)
+                SetColors(pigment);
 
             Console.putChar(x, y, character);
 
-            if (colorStyle != null)
+            if (pigment != null)
                 SetColors(defaultColors);
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
-        public void PrintChar(Point lPos, int character, ColorStyle colorStyle = null)
+        public void PrintChar(Point lPos, int character, Pigment pigment = null)
         {
             if (lPos.X < 0 || lPos.X >= this.Size.Width)
             {
@@ -232,7 +232,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
             }
 
-            PrintChar(lPos.X, lPos.Y, character,colorStyle);
+            PrintChar(lPos.X, lPos.Y, character,pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -244,7 +244,7 @@ namespace OchreGui
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
-        public void PrintString(int x, int y, string text, ColorStyle colorStyle = null)
+        public void PrintString(int x, int y, string text, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -259,12 +259,12 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("y", "The specified y coordinate is invalid.");
             }
 
-            if (colorStyle != null)
-                SetColors(colorStyle);
+            if (pigment != null)
+                SetColors(pigment);
 
             Console.print(x, y, text);
 
-            if (colorStyle != null)
+            if (pigment != null)
                 SetColors(defaultColors);
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -277,7 +277,7 @@ namespace OchreGui
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
-        public void PrintString(Point lPos, string text, ColorStyle colorStyle = null)
+        public void PrintString(Point lPos, string text, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -292,7 +292,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
             }
 
-            PrintString(lPos.X, lPos.Y, text, colorStyle);
+            PrintString(lPos.X, lPos.Y, text, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -306,7 +306,7 @@ namespace OchreGui
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintStringAligned(int x, int y, string text,
-            HorizontalAlignment alignment, int fieldLength, ColorStyle colorStyle = null)
+            HorizontalAlignment alignment, int fieldLength, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -323,7 +323,7 @@ namespace OchreGui
 
             Point pos = GetHorAlign(new Point(x, y), text, alignment, fieldLength);
 
-            PrintString(pos, text, colorStyle);
+            PrintString(pos, text, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -337,7 +337,7 @@ namespace OchreGui
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintStringAligned(Point lPos, string text,
-            HorizontalAlignment alignment, int fieldLength, ColorStyle colorStyle = null)
+            HorizontalAlignment alignment, int fieldLength, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -352,7 +352,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
             }
 
-            PrintStringAligned(lPos.X, lPos.Y, text, alignment, fieldLength, colorStyle);
+            PrintStringAligned(lPos.X, lPos.Y, text, alignment, fieldLength, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -368,7 +368,7 @@ namespace OchreGui
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
         public void PrintStringAligned(int x, int y, string text, HorizontalAlignment hAlign,
-            VerticalAlignment vAlign, Size fieldSize, ColorStyle colorStyle = null)
+            VerticalAlignment vAlign, Size fieldSize, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -385,7 +385,7 @@ namespace OchreGui
 
             Point pos = GetHVAlign(new Point(x, y), text, hAlign, vAlign, fieldSize);
 
-            PrintString(pos, text, colorStyle);
+            PrintString(pos, text, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -400,7 +400,7 @@ namespace OchreGui
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         public void PrintStringAligned(Point lPos, string text, HorizontalAlignment hAlign,
-            VerticalAlignment vAlign, Size fieldSize, ColorStyle colorStyle = null)
+            VerticalAlignment vAlign, Size fieldSize, Pigment pigment = null)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -415,7 +415,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
             }
 
-            PrintStringAligned(lPos.X, lPos.Y, text, hAlign, vAlign, fieldSize, colorStyle);
+            PrintStringAligned(lPos.X, lPos.Y, text, hAlign, vAlign, fieldSize, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -424,7 +424,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
-        public void DrawHLine(int startX, int startY, int length, ColorStyle colorStyle = null)
+        public void DrawHLine(int startX, int startY, int length, Pigment pigment = null)
         {
             if (startX < 0 || startX >= this.Size.Width)
             {
@@ -436,12 +436,12 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("startY", "The specified y coordinate is invalid.");
             }
 
-            if (colorStyle != null)
-                SetColors(colorStyle);
+            if (pigment != null)
+                SetColors(pigment);
 
             Console.hline(startX, startY, length);
 
-            if (colorStyle != null)
+            if (pigment != null)
                 SetColors(defaultColors);
         }
 
@@ -450,7 +450,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
-        public void DrawHLine(Point startPos, int length, ColorStyle colorStyle = null)
+        public void DrawHLine(Point startPos, int length, Pigment pigment = null)
         {
             if (startPos.X < 0 || startPos.X >= this.Size.Width)
             {
@@ -462,7 +462,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("startPos", "The specified y coordinate is invalid.");
             }
 
-            DrawHLine(startPos.X, startPos.Y, length, colorStyle);
+            DrawHLine(startPos.X, startPos.Y, length, pigment);
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
-        public void DrawVLine(int x, int y, int length, ColorStyle colorStyle = null)
+        public void DrawVLine(int x, int y, int length, Pigment pigment = null)
         {
             if (x < 0 || x >= this.Size.Width)
             {
@@ -482,12 +482,12 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("y", "The specified y coordinate is invalid.");
             }
 
-            if (colorStyle != null)
-                SetColors(colorStyle);
+            if (pigment != null)
+                SetColors(pigment);
 
             Console.vline(x, y, length);
 
-            if (colorStyle != null)
+            if (pigment != null)
                 SetColors(defaultColors);
         }
 
@@ -496,7 +496,7 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
-        public void DrawVLine(Point startPos, int length, ColorStyle colorStyle = null)
+        public void DrawVLine(Point startPos, int length, Pigment pigment = null)
         {
             if (startPos.X < 0 || startPos.X >= this.Size.Width)
             {
@@ -508,7 +508,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("startPos", "The specified y coordinate is invalid.");
             }
 
-            DrawVLine(startPos.X, startPos.Y, length, colorStyle);
+            DrawVLine(startPos.X, startPos.Y, length, pigment);
         }
 
         // /////////////////////////////////////////////////////////////////////////////////
@@ -683,10 +683,10 @@ namespace OchreGui
         /// <summary>
         /// Prints a frame border around the canvas, with an optional centered title.
         /// </summary>
-        public void PrintFrame(string title, ColorStyle colorStyle = null)
+        public void PrintFrame(string title, Pigment pigment = null)
         {
-            if (colorStyle != null)
-                SetColors(colorStyle);
+            if (pigment != null)
+                SetColors(pigment);
 
             if (string.IsNullOrEmpty(title))
             {
@@ -703,7 +703,7 @@ namespace OchreGui
                     title);
             }
 
-            if (colorStyle != null)
+            if (pigment != null)
                 SetColors(defaultColors);
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -719,14 +719,14 @@ namespace OchreGui
         #endregion
         #region Private
         // /////////////////////////////////////////////////////////////////////////////////
-        private void SetColors(ColorStyle colorStyle)
+        private void SetColors(Pigment pigment)
         {
-            Console.setBackgroundColor(colorStyle.Background.GetTCODColor());
-            Console.setBackgroundFlag(colorStyle.BackgroundFlag);
-            Console.setForegroundColor(colorStyle.Foreground.GetTCODColor());
+            Console.setBackgroundColor(pigment.Background.GetTCODColor());
+            Console.setBackgroundFlag(pigment.BackgroundFlag);
+            Console.setForegroundColor(pigment.Foreground.GetTCODColor());
         }
         // /////////////////////////////////////////////////////////////////////////////////
-        private ColorStyle defaultColors;
+        private Pigment defaultColors;
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////

@@ -44,6 +44,8 @@ namespace OchreGui.Extended
 
         public int Width { get; set; }
 
+        public Pigment BarPigment { get; set; }
+
         public override Size CalculateSize()
         {
             return new Size(Width+2, 1);
@@ -62,12 +64,16 @@ namespace OchreGui.Extended
             CurrentValue = template.StartingValue;
 
             rangeWidth = this.Size.Width - 2;
+
+            BarPigment = template.BarPigment;
         }
 
 
         public int MinimumValue { get; private set; }
 
         public int MaximumValue { get; private set; }
+
+        public Pigment BarPigment { get; set; }
 
         int _currValue;
         public int CurrentValue
@@ -85,13 +91,22 @@ namespace OchreGui.Extended
             }
         }
 
+        protected override Pigment GetMainPigment()
+        {
+            if (BarPigment != null)
+                return BarPigment;
+
+            return base.GetMainPigment();
+        }
+
         protected override void Redraw()
         {
             base.Redraw();
 
-            float currFinePos = (float)CurrentValue - (float)MinimumValue;
-            currFinePos = currFinePos / (float)(MaximumValue - MinimumValue);
-            currFinePos = currFinePos * (float)rangeWidth;
+            float currBarFine = (float)CurrentValue - (float)MinimumValue;
+            currBarFine = currBarFine / (float)(MaximumValue - MinimumValue);
+            currBarFine = currBarFine * (float)rangeWidth;
+
             Color bg, fg;
             float intensity;
 
@@ -100,22 +115,22 @@ namespace OchreGui.Extended
 
             for (int x = 0; x < rangeWidth; x++)
             {
-                float fx = (float)x;
-                float delta = Math.Abs(fx + 0.5f - currFinePos);
+                float fx = (float)(x);
+                float delta = Math.Abs(fx + 0.5f - currBarFine);
                 if (delta <= 3f)
                 {
-                    intensity = (3f - delta) / 3f;
+                    intensity = (float)Math.Pow((3f - delta) / 3f,0.5d);
                 }
                 else
                 {
                     intensity = 0f;
                 }
 
-                bg = GetMainStyle().Background.ReplaceValue(intensity);
-                fg = GetMainStyle().Foreground.ReplaceValue(intensity);
+                bg = GetMainPigment().Background.ReplaceValue(intensity);
+                fg = GetMainPigment().Foreground.ReplaceValue(intensity);
                 Canvas.PrintChar(x+1, 0,
                     (int)libtcod.TCODSpecialCharacter.HorzLine,
-                    new ColorStyle(fg,bg));
+                    new Pigment(fg,bg));
             }
         }
 

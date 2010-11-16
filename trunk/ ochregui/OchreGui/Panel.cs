@@ -79,13 +79,13 @@ namespace OchreGui
 
 
         /// <summary>
-        /// base method returns the Styles.Window style.  Override to add
+        /// base method returns the DefaultPigments.Window pigment.  Override to add
         /// custom handling.
         /// </summary>
         /// <returns></returns>
-        protected override ColorStyle GetMainStyle()
+        protected override Pigment GetMainPigment()
         {
-            return DefaultStyles.Window;
+            return DefaultPigments.Window;
         }
     }
     #endregion

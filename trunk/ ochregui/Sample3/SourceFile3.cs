@@ -35,7 +35,7 @@ namespace OchreGui.Sample3
             Color fg = player.BaseColor.ScaleValue(player.Intensity);
             Color bg = new Color(0, 0, 0);
 
-            Canvas.PrintChar(player.CurrentPosition, '@',new ColorStyle(fg,bg));
+            Canvas.PrintChar(player.CurrentPosition, '@',new Pigment(fg,bg));
         }
 
 

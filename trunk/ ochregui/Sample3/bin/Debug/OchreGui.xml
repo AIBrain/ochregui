@@ -40,11 +40,11 @@
             Information about the specified font as per TCODFontFlags.
             </summary>
         </member>
-        <member name="P:OchreGui.ApplicationInfo.DefaultStyles">
+        <member name="P:OchreGui.ApplicationInfo.DefaultPigments">
             <summary>
-            The Styles that are passed to child Windows by default.  Windows and controls can
-            override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
-            or Redraw methods.  Defaults to a pre-generated set of ColorStyles.
+            The DefaultPigments that are passed to child Windows by default.  Windows and controls can
+            override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
+            or Redraw methods.  Defaults to a pre-generated set of Pigments.
             </summary>
         </member>
         <member name="T:OchreGui.Application">
@@ -109,10 +109,10 @@
             True if the application wants to quit.  Set to true to quit.
             </summary>
         </member>
-        <member name="P:OchreGui.Application.DefaultStyles">
+        <member name="P:OchreGui.Application.DefaultPigments">
             <summary>
-            The Styles that are passed to child Windows by default.  Windows and controls can
-            override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
+            The DefaultPigments that are passed to child Windows by default.  Windows and controls can
+            override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
             or Redraw methods.
             </summary>
         </member>
@@ -138,64 +138,6 @@
             Get the current InputManager for the current Window.
             </summary>
         </member>
-        <member name="T:OchreGui.Styles">
-            <summary>
-            Stores all of the default styles used by the framework.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Styles.#ctor">
-            <summary>
-            Defaults to the predefined styles.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Window">
-            <summary>
-            The main widget drawing area style, mainly used for owner-drawn controls,
-            Windows, and Panels.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Frame">
-            <summary>
-            The style of the frame.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Active">
-            <summary>
-            A control's style when active.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Inactive">
-            <summary>
-            A control's style when inactive.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Hilight">
-            <summary>
-            A control's style when hilighted, for example when the mouse
-            pointer is over it.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Depressed">
-            <summary>
-            A button's style when depressed.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Selected">
-            <summary>
-            A control's style when selected.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Tooltip">
-            <summary>
-            The style of a tooltip.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.DragItem">
-            <summary>
-            The style of the visual component of a drag and drop operation.
-            <Note>Drag and drop is not currently implemented.</Note>
-            </summary>
-        </member>
         <member name="T:OchreGui.ListItemData">
             <summary>
             Contains the label and tooltip text for each Listitem that will be added
@@ -216,17 +158,14 @@
             size.
             </summary>
         </member>
-        <member name="T:OchreGui.ITemplate">
-            <summary>
-            Implemented by widget templates and their derivatives. Defines the CalculateSize
-            method, which should return the exact and final size of the widget.  This size is
+        <member name="M:OchreGui.WidgetTemplate.CalculateSize">
+            An override of this method should return the exact and final size of the widget.  This size is
             used during the contruction of an object from a template.
-            </summary>
         </member>
-        <member name="P:OchreGui.WidgetTemplate.DefaultStyles">
+        <member name="P:OchreGui.WidgetTemplate.DefaultPigments">
             <summary>
-            The default styles that this widget will have.  Defaults to null, which tells
-            the child classes to inherit or create new styles.
+            The default pigments that this widget will have.  Defaults to null, which tells
+            the child classes to inherit or create a new DefaultPigments object.
             </summary>
         </member>
         <member name="P:OchreGui.WidgetTemplate.OwnerDraw">
@@ -606,21 +545,21 @@
         </member>
         <member name="M:OchreGui.Widget.Redraw">
             <summary>
-            If OwnerDraw is false, this base method clears the Canvas with the ColorStyle
-            returned from GetMainStyle.
+            If OwnerDraw is false, this base method clears the Canvas with the Pigment
+            returned from GetMainPigment.
             </summary>
         </member>
-        <member name="M:OchreGui.Widget.GetMainStyle">
+        <member name="M:OchreGui.Widget.GetMainPigment">
             <summary>
-            Get the ColorStyle of the main drawing area for the widget.  Override to change
-            which style is used.  Base method returns this.DefaultStyles.Window.
+            Get the Pigment of the main drawing area for the widget.  Override to change
+            which pigment is used.  Base method returns this.DefaultPigments.Window.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.Widget.GetFrameStyle">
+        <member name="M:OchreGui.Widget.GetFramePigment">
             <summary>
-            Get the ColorStyle of the frame area for this widget.  Override to change which
-            style is used.  Base method returns this.DefaultStyles.Frame
+            Get the Pigment of the frame area for this widget.  Override to change which
+            pigment is used.  Base method returns this.DefaultPigments.Frame
             </summary>
             <returns></returns>
         </member>
@@ -629,7 +568,7 @@
             Called during the drawing phase of the application loop.  Base method calls Redraw(), 
             triggers the Draw event, and blits the canvas to the screen if OwnerDraw is false.
             This method should rarely need to be overriden - instead, to provide custom drawing code
-            (whether OwnerDraw is true or false), override Redraw(), GetMainStyle(), and GetFrameStyle().
+            (whether OwnerDraw is true or false), override Redraw(), GetMainPigment(), and GetFramePigment().
             </summary>
         </member>
         <member name="E:OchreGui.Widget.Draw">
@@ -654,9 +593,9 @@
             Get the Canvas object associated with this widget.
             </summary>
         </member>
-        <member name="P:OchreGui.Widget.DefaultStyles">
+        <member name="P:OchreGui.Widget.DefaultPigments">
             <summary>
-            Get the default Styles associated with this widget.
+            Get the default DefaultPigments associated with this widget.
             </summary>
         </member>
         <member name="P:OchreGui.Widget.Size">
@@ -693,10 +632,10 @@
             <param name="localPos"></param>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.Control.DrawFrame(OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Control.DrawFrame(OchreGui.Pigment)">
             <summary>
-            Draw a frame around the control border.  If the <paramref name="style"/> is null,
-            the frame will drawn with the Canvas' current default style.
+            Draw a frame around the control border.  If the <paramref name="pigment"/> is null,
+            the frame will drawn with the Canvas' current default pigment.
             </summary>
         </member>
         <member name="M:OchreGui.Control.Redraw">
@@ -706,23 +645,23 @@
             code after calling base class.
             </summary>
         </member>
-        <member name="M:OchreGui.Control.GetMainStyle">
+        <member name="M:OchreGui.Control.GetMainPigment">
             <summary>
             Sets the colors for the control according to its state.
             Override to return a custom color for the main drawing area of the button, or to add
             additional colors for the button based on custom states.
             </summary>
             <remarks>
-            The possible ColorStyles returned by this base method (based on current state) are as follows:
+            The possible Pigments returned by this base method (based on current state) are as follows:
                 <list type="bullet">
                     <item>
-                        <description>Styles.Active</description>
+                        <description>DefaultPigments.Active</description>
                     </item>
                     <item>
-                        <description>Styles.Inactive</description>
+                        <description>DefaultPigments.Inactive</description>
                     </item>
                     <item>
-                        <description>Styles.Hilight</description>
+                        <description>DefaultPigments.Hilight</description>
                     </item>
                 </list>
             </remarks>
@@ -1012,26 +951,26 @@
             drawing code here.
             </summary>
         </member>
-        <member name="M:OchreGui.Button.GetMainStyle">
+        <member name="M:OchreGui.Button.GetMainPigment">
             <summary>
             Returns the color of the main control area based on its current state.
             Override to return a custom color for the main drawing area of the button, or to add
             additional colors for the button based on custom states.
             </summary>
             <remarks>
-            The possible ColorStyles returned by this base method (based on current state) are as follows:
+            The possible Pigments returned by this base method (based on current state) are as follows:
                 <list type="bullet">
                     <item>
-                        <description>Styles.Depressed</description>
+                        <description>DefaultPigments.Depressed</description>
                     </item>
                     <item>
-                        <description>Styles.Active</description>
+                        <description>DefaultPigments.Active</description>
                     </item>
                     <item>
-                        <description>Styles.Inactive</description>
+                        <description>DefaultPigments.Inactive</description>
                     </item>
                     <item>
-                        <description>Styles.Hilight</description>
+                        <description>DefaultPigments.Hilight</description>
                     </item>
                 </list>
             </remarks>
@@ -1143,9 +1082,9 @@
             <param name="entry"></param>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.Entry.GetMainStyle">
+        <member name="M:OchreGui.Entry.GetMainPigment">
             <summary>
-            Returns the color style based on whether the entry has the keyboard focus or not.
+            Returns the color pigment based on whether the entry has the keyboard focus or not.
             </summary>
         </member>
         <member name="M:OchreGui.Entry.OnSettingUp">
@@ -1346,77 +1285,77 @@
             Get the blue value of the color, 0-255
             </summary>
         </member>
-        <member name="T:OchreGui.ColorStyle">
+        <member name="T:OchreGui.Pigment">
             <summary>
             Stores forground color, background color, and background flag in a convenient
             single immutable data type
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(OchreGui.Color,OchreGui.Color,libtcod.TCODBackgroundFlag)">
+        <member name="M:OchreGui.Pigment.#ctor(OchreGui.Color,OchreGui.Color,libtcod.TCODBackgroundFlag)">
             <summary>
-            Construct a ColorStyle given foreground and background colors and background flag
+            Construct a Pigment given foreground and background colors and background flag
             </summary>
             <param name="foreground"></param>
             <param name="background"></param>
             <param name="bgFlag"></param>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(OchreGui.Color,OchreGui.Color)">
+        <member name="M:OchreGui.Pigment.#ctor(OchreGui.Color,OchreGui.Color)">
             <summary>
             BGFlag defaults to TCODBackgroundFlag.Set
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(System.Int64,System.Int64,libtcod.TCODBackgroundFlag)">
+        <member name="M:OchreGui.Pigment.#ctor(System.Int64,System.Int64,libtcod.TCODBackgroundFlag)">
             <summary>
-            Construct a ColorStyle given foreground and background colors and background flag.
+            Construct a Pigment given foreground and background colors and background flag.
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(System.Int64,System.Int64)">
+        <member name="M:OchreGui.Pigment.#ctor(System.Int64,System.Int64)">
             <summary>
             BGFlag defaults to TCODBackgroundFlag.Set
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.Invert">
+        <member name="M:OchreGui.Pigment.Invert">
             <summary>
-            Swaps a ColorStyles's foreground and background.  Returns a new ColorStyle instance,
+            Swaps a Pigments's foreground and background.  Returns a new Pigment instance,
             this instance is unchanged.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.ColorStyle.ReplaceForeground(OchreGui.Color)">
+        <member name="M:OchreGui.Pigment.ReplaceForeground(OchreGui.Color)">
             <summary>
-            Returns a new ColorStyle by replacing the foreground color.  This isntance remains
+            Returns a new Pigment by replacing the foreground color.  This isntance remains
             unchanged.
             </summary>
             <param name="newFGColor"></param>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.ColorStyle.ReplaceBackground(OchreGui.Color)">
+        <member name="M:OchreGui.Pigment.ReplaceBackground(OchreGui.Color)">
             <summary>
-            Returns a new ColorStyle by replacing the background color.  This isntance remains
+            Returns a new Pigment by replacing the background color.  This isntance remains
             unchanged.
             </summary>
             <param name="newBGColor"></param>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.ColorStyle.ReplaceBGFlag(libtcod.TCODBackgroundFlag)">
+        <member name="M:OchreGui.Pigment.ReplaceBGFlag(libtcod.TCODBackgroundFlag)">
             <summary>
-            Returns a new ColorStyle by replacing the background flag.  This isntance remains
+            Returns a new Pigment by replacing the background flag.  This isntance remains
             unchanged.
             </summary>
             <param name="newBGFlag"></param>
             <returns></returns>
         </member>
-        <member name="P:OchreGui.ColorStyle.Foreground">
+        <member name="P:OchreGui.Pigment.Foreground">
             <summary>
             Get the foreground color
             </summary>
         </member>
-        <member name="P:OchreGui.ColorStyle.Background">
+        <member name="P:OchreGui.Pigment.Background">
             <summary>
             Get the background color
             </summary>
         </member>
-        <member name="P:OchreGui.ColorStyle.BackgroundFlag">
+        <member name="P:OchreGui.Pigment.BackgroundFlag">
             <summary>
             Get the background flag;
             </summary>
@@ -1657,49 +1596,49 @@
             Construct a Canvas object with the given dimensions.
             </summary>
         </member>
-        <member name="M:OchreGui.Canvas.SetDefaultColors(OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetDefaultColors(OchreGui.Pigment)">
             <summary>
-            Sets the default color style for this Canvas.  If no other color style is specified
-            for drawing operations, this style is used.
+            Sets the default pigment for this Canvas.  If no other pigment is specified
+            for drawing operations, this pigment is used.
             </summary>
-            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="colorStyle"/> 
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="pigment"/> 
             is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetCharColors(System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Sets the colors of a single character at the given coordinates.
             </summary>
-            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="colorStyle"/>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="pigment"/>
             is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(OchreGui.Utility.Point,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetCharColors(OchreGui.Utility.Point,OchreGui.Pigment)">
             <summary>
             Sets the colors of a single character at the given coordinates.
             </summary>
-            <exception cref="T:System.ArgumentNullException">Thrown when colorStyle is null</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when pigment is null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="position"/> is outside of this Canvas region</exception>
         </member>
         <member name="M:OchreGui.Canvas.Clear">
             <summary>
-            Clear the Canvas using the default color style
+            Clear the Canvas using the default pigment
             </summary>
         </member>
-        <member name="M:OchreGui.Canvas.PrintChar(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintChar(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints a single character at the specified coordinates.
             </summary>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintChar(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintChar(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints a single character at the specified coordinates.
             </summary>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintString(System.Int32,System.Int32,System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintString(System.Int32,System.Int32,System.String,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.
             </summary>
@@ -1708,7 +1647,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintString(OchreGui.Utility.Point,System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintString(OchreGui.Utility.Point,System.String,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.
             </summary>
@@ -1717,7 +1656,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
@@ -1727,7 +1666,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
@@ -1737,7 +1676,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
@@ -1748,7 +1687,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
@@ -1759,28 +1698,28 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a horizontal line of the given length and starting coordinates
             </summary>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawHLine(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawHLine(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a horizontal line of the given length and starting coordinates
             </summary>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawVLine(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawVLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a vertical line of the given length and starting coordinates
             </summary>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawVLine(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawVLine(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a vertical line of the given length and starting coordinates
             </summary>
@@ -1836,7 +1775,7 @@
             <param name="y"></param>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="source"/> is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintFrame(System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintFrame(System.String,OchreGui.Pigment)">
             <summary>
             Prints a frame border around the canvas, with an optional centered title.
             </summary>
@@ -2456,9 +2395,9 @@
             Defaults to false.
             </summary>
         </member>
-        <member name="M:OchreGui.Panel.GetMainStyle">
+        <member name="M:OchreGui.Panel.GetMainPigment">
             <summary>
-            base method returns the Styles.Window style.  Override to add
+            base method returns the DefaultPigments.Window pigment.  Override to add
             custom handling.
             </summary>
             <returns></returns>
@@ -2467,6 +2406,64 @@
             <summary>
             A Manager is basically a Coomponent that can be instatiated and added to a Window.
             The proposed purpose of this class is to make division of gui logic more convenient.
+            </summary>
+        </member>
+        <member name="T:OchreGui.DefaultPigments">
+            <summary>
+            Stores all of the default pigments used by the framework.
+            </summary>
+        </member>
+        <member name="M:OchreGui.DefaultPigments.#ctor">
+            <summary>
+            Defaults to the predefined pigments.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Window">
+            <summary>
+            The main widget drawing area pigment, mainly used for owner-drawn controls,
+            Windows, and Panels.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Frame">
+            <summary>
+            The pigment of the frame.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Active">
+            <summary>
+            A control's pigment when active.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Inactive">
+            <summary>
+            A control's pigment when inactive.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Hilight">
+            <summary>
+            A control's pigment when hilighted, for example when the mouse
+            pointer is over it.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Depressed">
+            <summary>
+            A button's pigment when depressed.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Selected">
+            <summary>
+            A control's pigment when selected.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.Tooltip">
+            <summary>
+            The pigment of a tooltip.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefaultPigments.DragItem">
+            <summary>
+            The pigment of the visual component of a drag and drop operation.
+            <Note>Drag and drop is not currently implemented.</Note>
             </summary>
         </member>
     </members>

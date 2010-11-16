@@ -55,6 +55,8 @@ namespace OchreGui.Extended
 
         public int MinimumWidth { get; set; }
 
+        public Pigment BarPigment { get; set; }
+
         public override Size CalculateSize()
         {
             int width = 2; // for frame
@@ -98,6 +100,8 @@ namespace OchreGui.Extended
             CanHaveKeyboardFocus = false;
             HilightWhenMouseOver = false;
 
+            BarPigment = template.BarPigment;
+
         }
 
 
@@ -117,10 +121,29 @@ namespace OchreGui.Extended
         public string Label { get; private set; }
 
         /// <summary>
+        /// Get or set the slider bar color pigment.
+        /// </summary>
+        public Pigment BarPigment { get; set; }
+
+        /// <summary>
         /// Get the current value of the slider.
         /// </summary>
-        public int CurrentValue { get; protected set; }
+        public int CurrentValue 
+        {
+            get { return _currentValue; }
 
+            protected set
+            {
+                _currentValue = value;
+
+                if (_currentValue < MinimumValue)
+                    _currentValue = MinimumValue;
+
+                if (_currentValue > MaximumValue)
+                    _currentValue = MaximumValue;
+            }
+        }
+        private int _currentValue;
 
         protected override void OnSettingUp()
         {
@@ -141,13 +164,16 @@ namespace OchreGui.Extended
             Size fieldSize = new Size(fieldWidth, 1);
             fieldRect = new Rect(fieldPos, fieldSize);
 
+            if (BarPigment == null)
+                BarPigment = GetMainPigment();
+
             numEntry = new NumberEntry(new NumberEntryTemplate()
             {
                 HasFrameBorder = false,
                 MinimumValue = this.MinimumValue,
                 MaximumValue = this.MaximumValue,
                 StartingValue = CurrentValue,
-                DefaultStyles = this.DefaultStyles,
+                DefaultPigments = this.DefaultPigments,
                 CommitOnLostFocus = true,
                 ReplaceOnFirstKey = true,
                 UpperLeftPos = this.LocalToScreen(fieldRect.UpperLeft)
@@ -160,7 +186,7 @@ namespace OchreGui.Extended
                 MaximumValue = this.MaximumValue,
                 MinimumValue = this.MinimumValue,
                 StartingValue = this.CurrentValue,
-
+                BarPigment = this.BarPigment
             });
 
             ParentWindow.AddControls(valueBar, numEntry);
@@ -168,7 +194,10 @@ namespace OchreGui.Extended
             numEntry.EntryChanged += new EventHandler(numEntry_EntryChanged);
 
             valueBar.MouseMoved += new EventHandler<MouseEventArgs>(valueBar_MouseMoved);
+
+            valueBar.MouseButtonDown += new EventHandler<MouseEventArgs>(valueBar_MouseButtonDown);
         }
+
 
         void valueBar_MouseMoved(object sender, MouseEventArgs e)
         {
@@ -187,9 +216,9 @@ namespace OchreGui.Extended
             int charWidth = Canvas.GetCharSize().Width;
             int currPx = pixelPosX;
 
-            currPx = currPx - charWidth * valueBar.ScreenRect.Left;
+            currPx = currPx - charWidth * valueBar.ScreenRect.Left - charWidth;
 
-            int widthInPx = (valueBar.Size.Width) * charWidth - charWidth / 2;
+            int widthInPx = (valueBar.Size.Width - 2) * charWidth;
 
             float pixposPercent = (float)currPx / (float)widthInPx;
 
@@ -211,6 +240,17 @@ namespace OchreGui.Extended
             valueBar.CurrentValue = value;
         }
 
+
+        void valueBar_MouseButtonDown(object sender, MouseEventArgs e)
+        {
+            if (e.MouseData.MouseButton == MouseButton.LeftButton)
+            {
+                CurrentValue = CalculateValue(e.MouseData.PixelPosition.X);
+
+                numEntry.CurrentValue = CurrentValue;
+                valueBar.CurrentValue = CurrentValue;
+            }            
+        }
 
         NumberEntry numEntry;
         ValueBar valueBar;

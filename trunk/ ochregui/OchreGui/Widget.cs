@@ -25,15 +25,10 @@ using libtcod;
 
 namespace OchreGui
 {
-    /// <summary>
-    /// Implemented by widget templates and their derivatives. Defines the CalculateSize
-    /// method, which should return the exact and final size of the widget.  This size is
-    /// used during the contruction of an object from a template.
-    /// </summary>
-    public interface ITemplate
-    {
-        Size CalculateSize();
-    }
+    //public interface ITemplate
+    //{
+    //    Size CalculateSize();
+    //}
 
     /// <summary>
     /// The abstract base class for widget templates.  When subclassing a type of Widget, consider
@@ -41,20 +36,20 @@ namespace OchreGui
     /// options, and override CalculateSize to ensure that the widget is created with the correct
     /// size.
     /// </summary>
-    public abstract class WidgetTemplate : ITemplate
+    public abstract class WidgetTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
         protected WidgetTemplate()
         {
-            DefaultStyles = null;
+            DefaultPigments = null;
             OwnerDraw = false;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// The default styles that this widget will have.  Defaults to null, which tells
-        /// the child classes to inherit or create new styles.
+        /// The default pigments that this widget will have.  Defaults to null, which tells
+        /// the child classes to inherit or create a new DefaultPigments object.
         /// </summary>
-        public Styles DefaultStyles { get; set; }
+        public DefaultPigments DefaultPigments { get; set; }
 
         /// <summary>
         /// If true, then base classes will not do any drawing to the canvas, including clearing
@@ -64,6 +59,8 @@ namespace OchreGui
         /// </summary>
         public bool OwnerDraw { get; set; }
 
+        /// An override of this method should return the exact and final size of the widget.  This size is
+        /// used during the contruction of an object from a template.
         public abstract Size CalculateSize();
         // /////////////////////////////////////////////////////////////////////////////////
     }
@@ -87,7 +84,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         protected Widget(WidgetTemplate template)
 		{
-            this.DefaultStyles = template.DefaultStyles;
+            this.DefaultPigments = template.DefaultPigments;
 
             this.ScreenPosition = new Point(0, 0);
             this.Size = template.CalculateSize();
@@ -122,9 +119,9 @@ namespace OchreGui
         public Canvas Canvas { get; private set; }
 
         /// <summary>
-        /// Get the default Styles associated with this widget.
+        /// Get the default DefaultPigments associated with this widget.
         /// </summary>
-        public Styles DefaultStyles { get; set; }
+        public DefaultPigments DefaultPigments { get; set; }
 
         /// <summary>
         /// Get the the size of the widget.
@@ -151,14 +148,14 @@ namespace OchreGui
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// If OwnerDraw is false, this base method clears the Canvas with the ColorStyle
-        /// returned from GetMainStyle.
+        /// If OwnerDraw is false, this base method clears the Canvas with the Pigment
+        /// returned from GetMainPigment.
         /// </summary>
         protected virtual void Redraw()
         {
             if (!OwnerDraw)
             {
-                Canvas.SetDefaultColors(GetMainStyle());
+                Canvas.SetDefaultColors(GetMainPigment());
                 Canvas.Clear();
             }
         }
@@ -166,25 +163,25 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the ColorStyle of the main drawing area for the widget.  Override to change
-        /// which style is used.  Base method returns this.DefaultStyles.Window.
+        /// Get the Pigment of the main drawing area for the widget.  Override to change
+        /// which pigment is used.  Base method returns this.DefaultPigments.Window.
         /// </summary>
         /// <returns></returns>
-        protected virtual ColorStyle GetMainStyle()
+        protected virtual Pigment GetMainPigment()
         {
-            return DefaultStyles.Window;
+            return DefaultPigments.Window;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the ColorStyle of the frame area for this widget.  Override to change which
-        /// style is used.  Base method returns this.DefaultStyles.Frame
+        /// Get the Pigment of the frame area for this widget.  Override to change which
+        /// pigment is used.  Base method returns this.DefaultPigments.Frame
         /// </summary>
         /// <returns></returns>
-        protected virtual ColorStyle GetFrameStyle()
+        protected virtual Pigment GetFramePigment()
         {
-            return DefaultStyles.Frame;
+            return DefaultPigments.Frame;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -194,7 +191,7 @@ namespace OchreGui
         /// Called during the drawing phase of the application loop.  Base method calls Redraw(), 
         /// triggers the Draw event, and blits the canvas to the screen if OwnerDraw is false.
         /// This method should rarely need to be overriden - instead, to provide custom drawing code
-        /// (whether OwnerDraw is true or false), override Redraw(), GetMainStyle(), and GetFrameStyle().
+        /// (whether OwnerDraw is true or false), override Redraw(), GetMainPigment(), and GetFramePigment().
         /// </summary>
         internal protected virtual void OnDraw()
         {
@@ -235,8 +232,8 @@ namespace OchreGui
                 if(Canvas != null)
                     Canvas.Dispose();
 
-                if(DefaultStyles != null)
-                    DefaultStyles.Dispose();
+                if(DefaultPigments != null)
+                    DefaultPigments.Dispose();
             }
             _alreadyDisposed = true;
         }
