@@ -84,7 +84,8 @@ namespace Test
                 MaximumValue = 255,
                 UpperLeftPos = new Point(10,5),
                 MinimumWidth = 12,
-                Label = "Slide"
+                Label = "Slide",
+                BarPigment = new Pigment(0x0044ef,0x221144)
             }));
 
             AddControl(new TextEntry(new TextEntryTemplate()

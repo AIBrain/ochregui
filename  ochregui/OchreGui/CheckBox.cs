@@ -249,11 +249,11 @@ namespace OchreGui
             {
                 if (IsChecked)
                 {
-                    Canvas.PrintChar(checkPosX, labelPosY, 225, DefaultStyles.Hilight);
+                    Canvas.PrintChar(checkPosX, labelPosY, 225, DefaultPigments.Hilight);
                 }
                 else
                 {
-                    Canvas.PrintChar(checkPosX, labelPosY, 224, DefaultStyles.Active);
+                    Canvas.PrintChar(checkPosX, labelPosY, 224, DefaultPigments.Active);
                 }
             }
         }

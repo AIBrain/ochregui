@@ -409,12 +409,12 @@ namespace OchreGui
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Draw a frame around the control border.  If the <paramref name="style"/> is null,
-        /// the frame will drawn with the Canvas' current default style.
+        /// Draw a frame around the control border.  If the <paramref name="pigment"/> is null,
+        /// the frame will drawn with the Canvas' current default pigment.
         /// </summary>
-        protected void DrawFrame(ColorStyle style = null)
+        protected void DrawFrame(Pigment pigment = null)
         {
-            Canvas.PrintFrame(null,style);
+            Canvas.PrintFrame(null,pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -430,7 +430,7 @@ namespace OchreGui
 
             if (HasFrame && OwnerDraw == false)
             {
-                DrawFrame(GetFrameStyle());
+                DrawFrame(GetFramePigment());
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -442,35 +442,35 @@ namespace OchreGui
         /// additional colors for the button based on custom states.
         /// </summary>
         /// <remarks>
-        /// The possible ColorStyles returned by this base method (based on current state) are as follows:
+        /// The possible Pigments returned by this base method (based on current state) are as follows:
         ///     <list type="bullet">
         ///         <item>
-        ///             <description>Styles.Active</description>
+        ///             <description>DefaultPigments.Active</description>
         ///         </item>
         ///         <item>
-        ///             <description>Styles.Inactive</description>
+        ///             <description>DefaultPigments.Inactive</description>
         ///         </item>
         ///         <item>
-        ///             <description>Styles.Hilight</description>
+        ///             <description>DefaultPigments.Hilight</description>
         ///         </item>
         ///     </list>
         /// </remarks>
-        protected override ColorStyle GetMainStyle()
+        protected override Pigment GetMainPigment()
         {
             if (IsActive)
             {
                 if (IsMouseOver && HilightWhenMouseOver)
                 {
-                    return (DefaultStyles.Hilight);
+                    return (DefaultPigments.Hilight);
                 }
                 else
                 {
-                    return (DefaultStyles.Active);
+                    return (DefaultPigments.Active);
                 }
             }
             else
             {
-                return (DefaultStyles.Inactive);
+                return (DefaultPigments.Inactive);
             }
         }
 
@@ -527,8 +527,8 @@ namespace OchreGui
         {
             base.OnSettingUp();
 
-            if (DefaultStyles == null)
-                DefaultStyles = ParentWindow.DefaultStyles.Copy();
+            if (DefaultPigments == null)
+                DefaultPigments = ParentWindow.DefaultPigments.Copy();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>

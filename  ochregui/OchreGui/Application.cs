@@ -45,7 +45,7 @@ namespace OchreGui
             Title = "";
             Font = null;
             FontFlags = TCODFontFlags.LayoutAsciiInColumn;
-            DefaultStyles = new Styles();
+            DefaultPigments = new DefaultPigments();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -75,11 +75,11 @@ namespace OchreGui
         public TCODFontFlags FontFlags { get; set; }
 
         /// <summary>
-        /// The Styles that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
-        /// or Redraw methods.  Defaults to a pre-generated set of ColorStyles.
+        /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
+        /// override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
+        /// or Redraw methods.  Defaults to a pre-generated set of Pigments.
         /// </summary>
-        public Styles DefaultStyles { get; set; }
+        public DefaultPigments DefaultPigments { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
     }
     #endregion
@@ -132,11 +132,11 @@ namespace OchreGui
         public bool IsQuitting { get; set; }
 
         /// <summary>
-        /// The Styles that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding GetFrameStyle, GetMainStyle,
+        /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
+        /// override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
         /// or Redraw methods.
         /// </summary>
-        public Styles DefaultStyles { get; protected set; }
+        public DefaultPigments DefaultPigments { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -251,7 +251,7 @@ namespace OchreGui
                 SetupEventHandler(this, EventArgs.Empty);
             }
 
-            DefaultStyles = info.DefaultStyles;
+            DefaultPigments = info.DefaultPigments;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 

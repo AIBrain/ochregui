@@ -72,7 +72,7 @@
     <Compile Include="Control.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Color.cs" />
-    <Compile Include="Styles.cs" />
+    <Compile Include="DefaultPigments.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="libtcod-net, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">

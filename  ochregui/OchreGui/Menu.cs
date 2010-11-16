@@ -195,12 +195,12 @@ namespace OchreGui
             if (index == mouseOverIndex)
             {
                 Canvas.PrintStringAligned(1, index + 1, item.Label, LabelAlignment,
-                    Size.Width - 2, DefaultStyles.Hilight);
+                    Size.Width - 2, DefaultPigments.Hilight);
             }
             else
             {
                 Canvas.PrintStringAligned(1, index + 1, item.Label, LabelAlignment,
-                    Size.Width - 2, DefaultStyles.Active);
+                    Size.Width - 2, DefaultPigments.Active);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

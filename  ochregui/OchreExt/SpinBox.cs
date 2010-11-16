@@ -176,7 +176,7 @@ namespace OchreGui.Extended
                 MinimumValue = this.MinimumValue,
                 MaximumValue = this.MaximumValue,
                 StartingValue = CurrentValue,
-                DefaultStyles = this.DefaultStyles,
+                DefaultPigments = this.DefaultPigments,
                 CommitOnLostFocus = true,
                 ReplaceOnFirstKey = true,
                 UpperLeftPos = fieldRect.UpperLeft
@@ -244,15 +244,15 @@ namespace OchreGui.Extended
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, -1),
                     (int)libtcod.TCODSpecialCharacter.TeeSouth,
-                    GetFrameStyle());
+                    GetFramePigment());
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, 0),
                     (int)libtcod.TCODSpecialCharacter.VertLine,
-                    GetFrameStyle());
+                    GetFramePigment());
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, 1),
                     (int)libtcod.TCODSpecialCharacter.TeeNorth,
-                    GetFrameStyle());
+                    GetFramePigment());
 
             }
         }

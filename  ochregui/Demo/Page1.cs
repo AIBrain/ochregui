@@ -227,9 +227,9 @@ namespace OchreGui.Demo
             }
         }
 
-        ColorStyle CalcColor(int x,int y)
+        Pigment CalcColor(int x,int y)
         {
-            ColorStyle bstyle = DefaultStyles.Active;
+            Pigment btnPigment = DefaultPigments.Active;
 
             float fx = (float)x;
             float fy = (float)y;
@@ -238,8 +238,8 @@ namespace OchreGui.Demo
             float scale = (float)Math.Sin((fx - fy + val)/5f);
             scale = (scale/1.5f + 1.5f) / 3f;
 
-            Color bg = bstyle.Background.ScaleValue(scale);
-            Color fg = bstyle.Foreground.ScaleValue(scale);
+            Color bg = btnPigment.Background.ScaleValue(scale);
+            Color fg = btnPigment.Foreground.ScaleValue(scale);
 
             if (this.IsBeingPushed)
             {
@@ -247,7 +247,7 @@ namespace OchreGui.Demo
                 bg = bg.ReplaceHue(val);
             }
 
-            return new ColorStyle(fg,bg);
+            return new Pigment(fg,bg);
         }
 
         uint animStep;
@@ -304,7 +304,7 @@ namespace OchreGui.Demo
             {
                 string lbl = new string(ownerChars.ToArray());
 
-                Canvas.SetDefaultColors(new ColorStyle(0x11ee33, 0x003344));
+                Canvas.SetDefaultColors(new Pigment(0x11ee33, 0x003344));
                 Canvas.Clear();
 
                 Canvas.PrintString(0, 0, lbl);
@@ -344,14 +344,14 @@ namespace OchreGui.Demo
             bg = bg.ReplaceHue(val);
         }
 
-        protected override ColorStyle GetMainStyle()
+        protected override Pigment GetMainPigment()
         {
             if (!IsMouseOver)
             {
-                return new ColorStyle(new Color(0x000000), bg);
+                return new Pigment(new Color(0x000000), bg);
             }
 
-            return DefaultStyles.Active;
+            return DefaultPigments.Active;
         }
 
         Color bg;

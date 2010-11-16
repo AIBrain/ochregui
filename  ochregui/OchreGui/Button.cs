@@ -211,30 +211,30 @@ namespace OchreGui
         /// additional colors for the button based on custom states.
         /// </summary>
         /// <remarks>
-        /// The possible ColorStyles returned by this base method (based on current state) are as follows:
+        /// The possible Pigments returned by this base method (based on current state) are as follows:
         ///     <list type="bullet">
         ///         <item>
-        ///             <description>Styles.Depressed</description>
+        ///             <description>DefaultPigments.Depressed</description>
         ///         </item>
         ///         <item>
-        ///             <description>Styles.Active</description>
+        ///             <description>DefaultPigments.Active</description>
         ///         </item>
         ///         <item>
-        ///             <description>Styles.Inactive</description>
+        ///             <description>DefaultPigments.Inactive</description>
         ///         </item>
         ///         <item>
-        ///             <description>Styles.Hilight</description>
+        ///             <description>DefaultPigments.Hilight</description>
         ///         </item>
         ///     </list>
         /// </remarks>
         /// <returns></returns>
-        protected override ColorStyle GetMainStyle()
+        protected override Pigment GetMainPigment()
         {
             if (IsActive && IsBeingPushed)
             {
-                return DefaultStyles.Depressed;
+                return DefaultPigments.Depressed;
             }
-            return base.GetMainStyle();
+            return base.GetMainPigment();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

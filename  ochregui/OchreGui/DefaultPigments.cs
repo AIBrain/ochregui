@@ -25,84 +25,84 @@ using OchreGui.Utility;
 namespace OchreGui
 {
     /// <summary>
-    /// Stores all of the default styles used by the framework.
+    /// Stores all of the default pigments used by the framework.
     /// </summary>
-    public class Styles : IDisposable
+    public class DefaultPigments : IDisposable
     {
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Defaults to the predefined styles.
+        /// Defaults to the predefined pigments.
         /// </summary>
-        public Styles()
+        public DefaultPigments()
         {
-            Window = new ColorStyle(0xDDDDDD, 0x000000);
-            Frame = new ColorStyle(0x6D3D00, 0x3E1D00);
-            Active = new ColorStyle(0xDDDDDD, 0x622E00);
-            Inactive = new ColorStyle(0x7C7C7C, 0x2E2E2E);
-            Hilight = new ColorStyle(0xFFFFAA, 0x723E00);
-            Depressed = new ColorStyle(0x6B6B6B, 0x431E00);
-            Selected = new ColorStyle(0x0098F4, 0x622E00);
-            Tooltip = new ColorStyle(0x2B2B8F, 0xCCEEFF);
-            DragItem = new ColorStyle(0xD6AC8B, 0xF45B00);
+            Window = new Pigment(0xDDDDDD, 0x000000);
+            Frame = new Pigment(0x6D3D00, 0x3E1D00);
+            Active = new Pigment(0xDDDDDD, 0x622E00);
+            Inactive = new Pigment(0x7C7C7C, 0x2E2E2E);
+            Hilight = new Pigment(0xFFFFAA, 0x723E00);
+            Depressed = new Pigment(0x6B6B6B, 0x431E00);
+            Selected = new Pigment(0x0098F4, 0x622E00);
+            Tooltip = new Pigment(0x2B2B8F, 0xCCEEFF);
+            DragItem = new Pigment(0xD6AC8B, 0xF45B00);
         }
         // /////////////////////////////////////////////////////////////////////////////////
-        public Styles Copy()
+        public DefaultPigments Copy()
         {
-            return (Styles)this.MemberwiseClone();
+            return (DefaultPigments)this.MemberwiseClone();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// The main widget drawing area style, mainly used for owner-drawn controls,
+        /// The main widget drawing area pigment, mainly used for owner-drawn controls,
         /// Windows, and Panels.
         /// </summary>
-        public ColorStyle Window { get; set; }
+        public Pigment Window { get; set; }
 
         /// <summary>
-        /// The style of the frame.
+        /// The pigment of the frame.
         /// </summary>
-        public ColorStyle Frame { get; set; }
+        public Pigment Frame { get; set; }
 
         /// <summary>
-        /// A control's style when active.
+        /// A control's pigment when active.
         /// </summary>
-        public ColorStyle Active { get; set; }
+        public Pigment Active { get; set; }
 
         /// <summary>
-        /// A control's style when inactive.
+        /// A control's pigment when inactive.
         /// </summary>
-        public ColorStyle Inactive { get; set; }
+        public Pigment Inactive { get; set; }
 
         /// <summary>
-        /// A control's style when hilighted, for example when the mouse
+        /// A control's pigment when hilighted, for example when the mouse
         /// pointer is over it.
         /// </summary>
-        public ColorStyle Hilight { get; set; }
+        public Pigment Hilight { get; set; }
 
         /// <summary>
-        /// A button's style when depressed.
+        /// A button's pigment when depressed.
         /// </summary>
-        public ColorStyle Depressed { get; set; }
+        public Pigment Depressed { get; set; }
 
         /// <summary>
-        /// A control's style when selected.
+        /// A control's pigment when selected.
         /// </summary>
-        public ColorStyle Selected { get; set; }
+        public Pigment Selected { get; set; }
 
         /// <summary>
-        /// The style of a tooltip.
+        /// The pigment of a tooltip.
         /// </summary>
-        public ColorStyle Tooltip { get; set; }
+        public Pigment Tooltip { get; set; }
 
         /// <summary>
-        /// The style of the visual component of a drag and drop operation.
+        /// The pigment of the visual component of a drag and drop operation.
         /// <Note>Drag and drop is not currently implemented.</Note>
         /// </summary>
-        public ColorStyle DragItem { get; set; }
+        public Pigment DragItem { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #region Dispose
         private bool _alreadyDisposed;
 
-        ~Styles()
+        ~DefaultPigments()
         {
             Dispose(false);
         }
