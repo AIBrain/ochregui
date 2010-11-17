@@ -26,8 +26,14 @@ using OchreGui.Utility;
 namespace OchreGui
 {
     #region PanelInfo Class
+    /// <summary>
+    /// This class builds on the Control Template, and adds options specific to a Panel.
+    /// </summary>
     public class PanelTemplate : ControlTemplate
     {
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public PanelTemplate()
         {
             HasFrame = true;
@@ -57,6 +63,11 @@ namespace OchreGui
         /// </summary>
         public bool HilightedWhenMouseOver { get; set; }
 
+        /// <summary>
+        /// Calculates the size of the panel.  For a panel, the size is specified by the 
+        /// Size property; this method simply returns that property.
+        /// </summary>
+        /// <returns></returns>
         public override OchreGui.Utility.Size CalculateSize()
         {
             return Size;
@@ -66,8 +77,16 @@ namespace OchreGui
 
 
     #region Panel Class
+    /// <summary>
+    /// A panel is a simple control whose size is manually set.  Other than drawin a frame,
+    /// a panel provides little default drawing or message handling code.
+    /// </summary>
     public class Panel : Control
     {
+        /// <summary>
+        /// Construct a Panel instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public Panel(PanelTemplate template)
             : base(template)
         {
@@ -83,7 +102,7 @@ namespace OchreGui
         /// custom handling.
         /// </summary>
         /// <returns></returns>
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             return DefaultPigments.Window;
         }

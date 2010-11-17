@@ -69,6 +69,9 @@ namespace OchreGui
     public class TextEntryTemplate : EntryTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public TextEntryTemplate()
         {
             MaximumCharacters = 1;
@@ -96,6 +99,11 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Calculates the size of a TextEntry created with this template based on the other
+        /// properties.
+        /// </summary>
+        /// <returns></returns>
         public override Size CalculateSize()
         {
             if (Label == null)
@@ -130,6 +138,10 @@ namespace OchreGui
     {
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a TextEntry instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public TextEntry(TextEntryTemplate template)
             :base(template)
         {
@@ -145,9 +157,11 @@ namespace OchreGui
         #region Public Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the validation type (allowed characters) for this control
+        /// Get or set the character validation type for this control.  If a typed character is
+        /// not valid according to this property, then it will be ignored (not added to the 
+        /// entry field).
         /// </summary>
-        public TextEntryValidations Validation { get; protected set; }
+        public TextEntryValidations Validation { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
@@ -163,6 +177,7 @@ namespace OchreGui
         }
 
         /// <summary>
+        /// Returns the default field of this entry if there is no valid previous or current field
         /// Base method returns the empty string "".
         /// </summary>
         protected override string DefaultField
@@ -177,6 +192,13 @@ namespace OchreGui
         #endregion
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Returns true if the entry field is valid when a commit is about to occur.  For a
+        /// TextEntry, all text is validated by character, so this method always returns true.
+        /// Override to add custom field validation.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         protected override bool ValidateField(string entry)
         {
             return true;

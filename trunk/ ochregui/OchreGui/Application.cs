@@ -76,7 +76,7 @@ namespace OchreGui
 
         /// <summary>
         /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
+        /// override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
         /// or Redraw methods.  Defaults to a pre-generated set of Pigments.
         /// </summary>
         public DefaultPigments DefaultPigments { get; set; }
@@ -118,6 +118,9 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public Application()
         {
             IsQuitting = false;
@@ -133,7 +136,7 @@ namespace OchreGui
 
         /// <summary>
         /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding GetFramePigment, GetMainPigment,
+        /// override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
         /// or Redraw methods.
         /// </summary>
         public DefaultPigments DefaultPigments { get; protected set; }
@@ -306,17 +309,27 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~Application()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and all of its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)

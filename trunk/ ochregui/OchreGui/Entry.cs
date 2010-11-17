@@ -32,7 +32,11 @@ namespace OchreGui
     /// </summary>
     public abstract class EntryTemplate : ControlTemplate
     {
+
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public EntryTemplate()
         {
             Label = "";
@@ -81,6 +85,11 @@ namespace OchreGui
 
     }
 
+    /// <summary>
+    /// This is the base class for an Entry control.  Entry controls allow keyboard input
+    /// from the user, and the input can be validated on a character by character basis and/or
+    /// validate the entire entry field when it is being committed.
+    /// </summary>
     public abstract class Entry : Control
     {
         #region Events
@@ -93,6 +102,10 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct an Entry instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public Entry(EntryTemplate template)
             :base(template)
         {
@@ -211,7 +224,8 @@ namespace OchreGui
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Return true if character is a valid entry.  Override to implement custom
+        /// Return true if character is a valid entry.  An invalid character will be ignored
+        /// by the entry and not added to the entry field.  Override to implement custom character
         /// validation.
         /// </summary>
         /// <param name="character"></param>
@@ -219,8 +233,9 @@ namespace OchreGui
         protected abstract bool ValidateCharacter(char character);
 
         /// <summary>
-        /// Returns true if the provided entry is valid.  Override to implement
-        /// custom validation.
+        /// Returns true if the provided entry is valid.  This is checked when the field is about
+        /// to be committed; if invalid, the field will revert to the last valid field.  Override to implement
+        /// custom field validation.
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -230,13 +245,13 @@ namespace OchreGui
         /// <summary>
         /// Returns the color pigment based on whether the entry has the keyboard focus or not.
         /// </summary>
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             if (this.HasKeyboardFocus)
             {
                 return(DefaultPigments.Hilight);
             }
-            return base.GetMainPigment();
+            return base.DetermineMainPigment();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

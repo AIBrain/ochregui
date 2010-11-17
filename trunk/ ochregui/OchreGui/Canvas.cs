@@ -708,6 +708,10 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Get the size, in pixels, of a single character, as per TCODSystem.getCharSize().
+        /// </summary>
+        /// <returns></returns>
         static public Size GetCharSize()
         {
             int w, h;
@@ -788,17 +792,27 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~Canvas()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and all of its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)

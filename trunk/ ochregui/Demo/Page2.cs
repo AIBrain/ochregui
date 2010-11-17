@@ -188,14 +188,14 @@ namespace OchreGui.Demo
             {
             }
 
-            protected override Pigment GetFramePigment()
+            protected override Pigment DetermineFramePigment()
             {
                 if (IsChecked)
                 {
                     return DefaultPigments.Hilight;
                 }
 
-                return base.GetFramePigment();
+                return base.DetermineFramePigment();
             }
         }
 

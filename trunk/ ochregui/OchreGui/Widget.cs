@@ -39,6 +39,9 @@ namespace OchreGui
     public abstract class WidgetTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         protected WidgetTemplate()
         {
             DefaultPigments = null;
@@ -59,8 +62,10 @@ namespace OchreGui
         /// </summary>
         public bool OwnerDraw { get; set; }
 
+        /// <summary>
         /// An override of this method should return the exact and final size of the widget.  This size is
         /// used during the contruction of an object from a template.
+        /// </summary>
         public abstract Size CalculateSize();
         // /////////////////////////////////////////////////////////////////////////////////
     }
@@ -82,6 +87,10 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a Widget instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         protected Widget(WidgetTemplate template)
 		{
             this.DefaultPigments = template.DefaultPigments;
@@ -149,13 +158,13 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// If OwnerDraw is false, this base method clears the Canvas with the Pigment
-        /// returned from GetMainPigment.
+        /// returned from DetermineMainPigment.
         /// </summary>
         protected virtual void Redraw()
         {
             if (!OwnerDraw)
             {
-                Canvas.SetDefaultColors(GetMainPigment());
+                Canvas.SetDefaultColors(DetermineMainPigment());
                 Canvas.Clear();
             }
         }
@@ -163,11 +172,11 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the Pigment of the main drawing area for the widget.  Override to change
+        /// Calculates the current Pigment of the main drawing area for the widget.  Override to change
         /// which pigment is used.  Base method returns this.DefaultPigments.Window.
         /// </summary>
         /// <returns></returns>
-        protected virtual Pigment GetMainPigment()
+        protected virtual Pigment DetermineMainPigment()
         {
             return DefaultPigments.Window;
         }
@@ -175,11 +184,11 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Get the Pigment of the frame area for this widget.  Override to change which
-        /// pigment is used.  Base method returns this.DefaultPigments.Frame
+        /// Calculate and return the current Pigment of the frame area for this widget.
+        /// Override to change which pigment is used.  Base method returns this.DefaultPigments.Frame
         /// </summary>
         /// <returns></returns>
-        protected virtual Pigment GetFramePigment()
+        protected virtual Pigment DetermineFramePigment()
         {
             return DefaultPigments.Frame;
         }
@@ -191,7 +200,7 @@ namespace OchreGui
         /// Called during the drawing phase of the application loop.  Base method calls Redraw(), 
         /// triggers the Draw event, and blits the canvas to the screen if OwnerDraw is false.
         /// This method should rarely need to be overriden - instead, to provide custom drawing code
-        /// (whether OwnerDraw is true or false), override Redraw(), GetMainPigment(), and GetFramePigment().
+        /// (whether OwnerDraw is true or false), override Redraw(), DetermineMainPigment(), and DetermineFramePigment().
         /// </summary>
         internal protected virtual void OnDraw()
         {
@@ -212,17 +221,27 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~Widget()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and all of its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)

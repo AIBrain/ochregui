@@ -91,12 +91,12 @@ namespace OchreGui.Extended
             }
         }
 
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             if (BarPigment != null)
                 return BarPigment;
 
-            return base.GetMainPigment();
+            return base.DetermineMainPigment();
         }
 
         protected override void Redraw()
@@ -126,8 +126,8 @@ namespace OchreGui.Extended
                     intensity = 0f;
                 }
 
-                bg = GetMainPigment().Background.ReplaceValue(intensity);
-                fg = GetMainPigment().Foreground.ReplaceValue(intensity);
+                bg = DetermineMainPigment().Background.ReplaceValue(intensity);
+                fg = DetermineMainPigment().Foreground.ReplaceValue(intensity);
                 Canvas.PrintChar(x+1, 0,
                     (int)libtcod.TCODSpecialCharacter.HorzLine,
                     new Pigment(fg,bg));

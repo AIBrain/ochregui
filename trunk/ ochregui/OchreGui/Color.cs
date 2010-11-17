@@ -306,17 +306,27 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~Color()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and all of its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)
@@ -473,17 +483,27 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~Pigment()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)

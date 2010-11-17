@@ -37,6 +37,9 @@ namespace OchreGui
     public class ButtonTemplate : ControlTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public ButtonTemplate()
         {
             this.LabelAlignment = HorizontalAlignment.Left;
@@ -146,6 +149,9 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Constructs a Button instance given the template.
+        /// </summary>
         public Button(ButtonTemplate template)
             :base(template)
         {
@@ -228,13 +234,13 @@ namespace OchreGui
         ///     </list>
         /// </remarks>
         /// <returns></returns>
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             if (IsActive && IsBeingPushed)
             {
                 return DefaultPigments.Depressed;
             }
-            return base.GetMainPigment();
+            return base.DetermineMainPigment();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

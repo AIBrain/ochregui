@@ -26,13 +26,24 @@ using OchreGui.Utility;
 namespace OchreGui
 {
     #region Menu Helper Classes
+    /// <summary>
+    /// Argument for a Menu.ItemSelected event.
+    /// </summary>
     public class MenuItemSelectedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a MenuItemSelectedEventArgs instance given the index number of the
+        /// menu item that has been selected.
+        /// </summary>
+        /// <param name="index"></param>
         public MenuItemSelectedEventArgs(int index)
         {
             Index = index;
         }
 
+        /// <summary>
+        /// The index of the menu item that has been selected.
+        /// </summary>
         public int Index { get; private set; }
     }
 
@@ -41,13 +52,26 @@ namespace OchreGui
     /// </summary>
     public class MenuItemData
     {
+        /// <summary>
+        /// Construct a MenuItemData instance given the label for this menu item
+        /// and an optional tooltip text.
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="toolTip"></param>
         public MenuItemData(string label, string toolTip = null)
         {
             this.Label = label;
             this.TooltipText = toolTip;
         }
 
+        /// <summary>
+        /// The label of this menu item.
+        /// </summary>
         public string Label { get; set; }
+
+        /// <summary>
+        /// Optional tooltip text for this menu item.
+        /// </summary>
         public string TooltipText { get; set; }
     }
 
@@ -55,10 +79,15 @@ namespace OchreGui
 
 
     #region MenuInfo Class
-
+    /// <summary>
+    /// This class builds on the Control Template, and adds options specific to a Menu.
+    /// </summary>
     public class MenuTemplate : ControlTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public MenuTemplate()
         {
             Items = new List<MenuItemData>();
@@ -93,6 +122,11 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Calculate the size that a menu will be if created with this template.  The size is
+        /// calculated based on the other properties.
+        /// </summary>
+        /// <returns></returns>
         public override Size CalculateSize()
         {
             int width = 0;
@@ -126,11 +160,18 @@ namespace OchreGui
     {
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Raised when a menu item has been selected with a left mouse button click.
+        /// </summary>
         public event EventHandler<MenuItemSelectedEventArgs> ItemSelected;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a Menu instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public Menu(MenuTemplate template)
             : base(template)
         {

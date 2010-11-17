@@ -31,7 +31,9 @@ namespace OchreGui
     /// </summary>
     public class Manager : Component
     {
-
+        /// <summary>
+        /// The parent window of this manager instance.
+        /// </summary>
         protected internal Window ParentWindow { get; internal set; }
 
     }

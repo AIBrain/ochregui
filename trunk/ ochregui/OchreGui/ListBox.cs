@@ -28,13 +28,23 @@ using libtcod;
 namespace OchreGui
 {
     #region ListBox Helper Classes
+    /// <summary>
+    /// This is the argument sent as part of a ListBox.ItemSelected event.
+    /// </summary>
     public class ListItemSelectedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a ListItemSelectedEventArgs object with the specified item index number.
+        /// </summary>
+        /// <param name="index"></param>
         public ListItemSelectedEventArgs(int index)
         {
             Index = index;
         }
 
+        /// <summary>
+        /// The index of the selected item.
+        /// </summary>
         public int Index { get; private set; }
 
     }
@@ -45,22 +55,40 @@ namespace OchreGui
     /// </summary>
     public class ListItemData
     {
+        /// <summary>
+        /// Construct a ListItemData instance given the label and an optional tooltip.
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="toolTip"></param>
         public ListItemData(string label, string toolTip = null)
         {
             this.Label = label;
             this.TooltipText = toolTip;
         }
 
+        /// <summary>
+        /// The label of this list item.
+        /// </summary>
         public string Label { get; set; }
+
+        /// <summary>
+        /// The optional tooltip text for this list item.
+        /// </summary>
         public string TooltipText { get; set; }
     }
     #endregion
 
 
     #region ListBoxInfo
+    /// <summary>
+    /// This class builds on the Control Template, and adds options specific to a ListBox.
+    /// </summary>
     public class ListBoxTemplate : ControlTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public ListBoxTemplate()
         {
             Items = new List<ListItemData>();
@@ -117,6 +145,10 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Calculates the ListBox size based on the properties of this template.
+        /// </summary>
+        /// <returns></returns>
         public override Size CalculateSize()
         {
             int width = Title.Length;
@@ -153,11 +185,18 @@ namespace OchreGui
     {
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Raised when an item has been selected by the left mouse button.
+        /// </summary>
         public event EventHandler<ListItemSelectedEventArgs> ItemSelected;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a ListBox instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public ListBox(ListBoxTemplate template)
             : base(template)
         {
