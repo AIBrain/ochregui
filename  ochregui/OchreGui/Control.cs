@@ -50,6 +50,9 @@ namespace OchreGui
     /// </summary>
     public abstract class ControlTemplate : WidgetTemplate
     {
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         protected ControlTemplate()
         {
             this.Tooltip = null;
@@ -305,6 +308,10 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a Control instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         protected Control(ControlTemplate template)
             :base(template)
 		{
@@ -430,7 +437,7 @@ namespace OchreGui
 
             if (HasFrame && OwnerDraw == false)
             {
-                DrawFrame(GetFramePigment());
+                DrawFrame(DetermineFramePigment());
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -455,7 +462,7 @@ namespace OchreGui
         ///         </item>
         ///     </list>
         /// </remarks>
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             if (IsActive)
             {
@@ -480,7 +487,7 @@ namespace OchreGui
         /// when the tooltip depends on where the mouse is positioned.
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetTooltipText()
+        protected virtual string DetermineTooltipText()
         {
             return TooltipText;
         }
@@ -599,7 +606,7 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Base method requests that a tooltip be displayed, calling this.GetTooltipText()
+        /// Base method requests that a tooltip be displayed, calling this.DetermineTooltipText()
         /// to get the displayed text.  Override to add custom handling code after calling 
         /// this base method.
         /// </summary>
@@ -607,7 +614,7 @@ namespace OchreGui
         protected internal override void OnMouseHoverBegin(MouseData mouseData)
         {
             base.OnMouseHoverBegin(mouseData);
-            ParentWindow.RequestTooltip(GetTooltipText(), mouseData.Position);
+            ParentWindow.ShowTooltip(DetermineTooltipText(), mouseData.Position);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 		#endregion

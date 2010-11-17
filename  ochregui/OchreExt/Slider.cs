@@ -165,7 +165,7 @@ namespace OchreGui.Extended
             fieldRect = new Rect(fieldPos, fieldSize);
 
             if (BarPigment == null)
-                BarPigment = GetMainPigment();
+                BarPigment = DetermineMainPigment();
 
             numEntry = new NumberEntry(new NumberEntryTemplate()
             {

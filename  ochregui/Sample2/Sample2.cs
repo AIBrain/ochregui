@@ -235,7 +235,7 @@ namespace OchreGui.Sample2
         /// Usually, to add a tooltip, we would set a Control's TooltTipText property to the desired text.  However,
         /// here we are adding a tooltip to the entire window, so this won't work.  Window's do not provide automatic
         /// tooltip support (probably because it is usually a bad idea).  Fortunately, adding tooltips
-        /// to a window is fairly easy.  We just override OnMouseHoverBegin, and call RequestTooltip().  The framework
+        /// to a window is fairly easy.  We just override OnMouseHoverBegin, and call ShowTooltip().  The framework
         /// handles closing the tooltip automatically when the mouse moves.
         protected override void OnMouseHoverBegin(MouseData mouseData)
         {
@@ -243,7 +243,7 @@ namespace OchreGui.Sample2
 
             /// We only show the tooltip when the mouse pointer is at the same position as the player position.
             if(mouseData.Position == currentPos)
-                RequestTooltip("It's you!", mouseData.Position);
+                ShowTooltip("It's you!", mouseData.Position);
         }
     }
 

@@ -345,13 +345,26 @@ namespace OchreGui
         readonly KeyboardData keyboardData;
 	}
 
+    /// <summary>
+    /// Argument for a MouseDrag event.
+    /// </summary>
     public class MouseDragEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a MouseDragEventArgs instance given the screen position related to the
+        /// drag action.
+        /// </summary>
+        /// <param name="sPos"></param>
         public MouseDragEventArgs(Point sPos)
         {
             this.SPos = sPos;
         }
 
+        /// <summary>
+        /// The position in screen space coordinates related to the drag action.  For DragBegin,
+        /// this position is the origin of the drag (not the current mouse position).  For DragEnd,
+        /// this position is the mouse position when the left mouse button was released.
+        /// </summary>
         public Point SPos { get; private set; }
     }
 	#endregion

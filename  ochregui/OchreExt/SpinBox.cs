@@ -244,15 +244,15 @@ namespace OchreGui.Extended
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, -1),
                     (int)libtcod.TCODSpecialCharacter.TeeSouth,
-                    GetFramePigment());
+                    DetermineFramePigment());
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, 0),
                     (int)libtcod.TCODSpecialCharacter.VertLine,
-                    GetFramePigment());
+                    DetermineFramePigment());
 
                 Canvas.PrintChar(labelRect.UpperRight.Shift(0, 1),
                     (int)libtcod.TCODSpecialCharacter.TeeNorth,
-                    GetFramePigment());
+                    DetermineFramePigment());
 
             }
         }

@@ -29,8 +29,16 @@ using System.Collections.ObjectModel;
 namespace OchreGui
 {
     #region Window Template Class
+    /// <summary>
+    /// When subclassing a type of Window, consider
+    /// also subclassing WindowTemplate to provide an interface for the client to specify
+    /// options.
+    /// </summary>
     public class WindowTemplate : WidgetTemplate
     {
+        /// <summary>
+        /// Default constructor initializes properties to their defaults.
+        /// </summary>
         public WindowTemplate()
         {
             HasFrame = false;
@@ -64,6 +72,10 @@ namespace OchreGui
     {
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a Window instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public Window(WindowTemplate template)
             :base(template)
 		{
@@ -80,6 +92,11 @@ namespace OchreGui
         /// The parent Application instance.
         /// </summary>
         public Application ParentApplication { get; internal set; }
+
+        /// <summary>
+        /// If true, a frame will be drawn around the border of the window.
+        /// </summary>
+        public bool HasFrame { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -88,14 +105,16 @@ namespace OchreGui
         /// must be reference-unique, or this method will throw an ArgumentException.
         /// </summary>
         /// <param name="manager"></param>
+        /// <exception cref="System.ArgumentException">Thrown when the specified
+        /// <paramref name="manager"/> instance is already contained by this window.</exception>
         public void AddManager(Manager manager)
         {
-            if (managerList.Contains(manager))
+            if (managerList.Contains(manager) || managerAddList.Contains(manager))
             {
                 throw new ArgumentException("Added manager instances must be unique.");
             }
 
-            managerList.Add(manager);
+            managerAddList.Add(manager);
             manager.ParentWindow = this;
 
             if (!manager.isSetup)
@@ -119,30 +138,39 @@ namespace OchreGui
 
         /// <summary>
         /// Removes the specified manager from the Window.  The Window will wait until next tick
-        /// to actually remove the managers.
+        /// to actually remove the manager.
         /// </summary>
         /// <param name="manager"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="manager"/> is
+        /// null.</exception>
         public void RemoveManager(Manager manager)
         {
-            managerList.Remove(manager);
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+
+            managerRemoveList.Add(manager);
         }
 
         /// <summary>
         /// Adds a control instance to this window.  All controls must be reference-unique, or this
         /// method will throw an ArgumentException.  This method will also throw an ArgumentExeption
         /// if the control is too large to fit on the screen.  A newly added control may receive
-        /// a MouseEnter message if appropriate, and will always receive a SettingUp message if it
-        /// hasn't received one previously.
+        /// a MouseEnter message if the mouse is within it's region, and will always receive a 
+        /// SettingUp message if it hasn't received one previously.
         /// </summary>
         /// <param name="control"></param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">Thrown when the specified <paramref name="control"/>
+        /// is already contained by this window.</exception>
         public bool AddControl(Control control)
         {
-            if (ContainsControl(control))
+            if (ContainsControl(control) || controlAddList.Contains(control))
             {
                 throw new ArgumentException("CurrentWindow already contians an instance of this control");
             }
-            this.controlList.Add(control);
+            this.controlAddList.Add(control);
 
             bool atRequestedPos = CheckNewlyAddedControlPosition(control);
 
@@ -166,6 +194,58 @@ namespace OchreGui
 
             return atRequestedPos;
         }
+
+        private void AddControlsFromList()
+        {
+            if (controlAddList.Count == 0)
+                return;
+
+            foreach (Control control in controlAddList)
+            {
+                controlList.Add(control);
+            }
+
+            controlAddList.Clear();
+        }
+
+        private void RemoveControlsFromList()
+        {
+            if (controlRemoveList.Count == 0)
+                return;
+
+            foreach (Control control in controlRemoveList)
+            {
+                controlList.Remove(control);
+            }
+            controlRemoveList.Clear();
+        }
+
+        private void AddManagersFromList()
+        {
+            if (managerAddList.Count == 0)
+                return;
+
+            foreach (Manager manager in managerAddList)
+            {
+                managerList.Add(manager);
+            }
+
+            managerAddList.Clear();
+        }
+
+        private void RemoveManagersFromList()
+        {
+            if (managerRemoveList.Count == 0)
+                return;
+
+            foreach (Manager manager in managerRemoveList)
+            {
+                managerList.Remove(manager);
+            }
+
+            managerRemoveList.Clear();
+        }
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Adds several controls to the window.  See AddControl() method.
@@ -183,9 +263,16 @@ namespace OchreGui
         /// Remove the provided control from the window.
         /// </summary>
         /// <param name="control"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="control"/>
+        /// is null.</exception>
 		public void RemoveControl(Control control)
 		{
-			controlList.Remove(control);
+            if (control == null)
+            {
+                throw new ArgumentNullException("control");
+            }
+
+			controlRemoveList.Add(control);
 		}
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -197,11 +284,6 @@ namespace OchreGui
         /// <returns></returns>
         public bool ContainsControl(Control control)
         {
-            if (control == null)
-            {
-                throw new ArgumentNullException("control");
-            }
-
             return ControlList.Contains(control);
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -212,6 +294,8 @@ namespace OchreGui
         /// are drawn over lower controls.
         /// </summary>
         /// <param name="control"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="control"/>
+        /// is null.</exception>
         public void MoveToTop(Control control)
         {
             if (control == null)
@@ -233,6 +317,8 @@ namespace OchreGui
         /// are drawn first (covered up by higher controls).
         /// </summary>
         /// <param name="control"></param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="control"/>
+        /// is null.</exception>
         public void MoveToBottom(Control control)
         {
             if (control == null)
@@ -253,6 +339,8 @@ namespace OchreGui
         /// Release the keyboard focus from the provided control.  The control will receive
         /// a ReleaseKB message (and raise the related RelaseKeyboardEvent)
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="control"/>
+        /// is null.</exception>
         public void ReleaseKeyboard(Control control)
         {
             if (control == null)
@@ -270,7 +358,9 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Forces the keyboard focus to the given control.
+        /// Forces the keyboard focus to the given control, sending a TakeKeyboardFocus
+        /// message to the specified control.  If a control currently has the
+        /// keyboard focus, that control will receive a ReleaseKeyboardFocus message.
         /// </summary>
         public void TakeKeyboard(Control control)
         {
@@ -282,6 +372,11 @@ namespace OchreGui
             if (control != CurrentKeyboardFocus)
             {
                 control.OnTakeKeyboardFocus();
+                if (CurrentKeyboardFocus != null)
+                {
+                    CurrentKeyboardFocus.OnReleaseKeyboardFocus();
+                }
+
                 CurrentKeyboardFocus = control;
             }
         }
@@ -303,29 +398,27 @@ namespace OchreGui
 
 
         /// <summary>
-        /// Control that has currently has keyboard focus, null if none
+        /// Control that has currently has keyboard focus, null if none.
         /// </summary>
-        protected Control CurrentKeyboardFocus { get; set; }
+        protected Control CurrentKeyboardFocus { get; private set; }
 
         /// <summary>
-        /// Control that is current located under the mouse, null if none
+        /// The topmost Control that is currently located under the mouse, null if none
         /// </summary>
-        protected Control CurrentUnderMouse { get; set; }
-
-        protected Point LastMousePosition { get; private set; }
+        protected Control CurrentUnderMouse { get; private set; }
 
         /// <summary>
         /// Control that is the origin of a left button down, and is now
         /// a candidate for a click (or a drag) message. null for none
         /// </summary>
-        protected Control LastLBDown { get; set; }
+        protected Control LastLBDown { get; private set; }
 
         /// <summary>
         /// Control that is is the current origin of a drag action, null for none
         /// </summary>
-        protected Control CurrentDragging { get; set; }
+        protected Control CurrentDragging { get; private set; }
 
-        protected bool HasFrame { get; set; }
+
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
@@ -358,11 +451,17 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Request that this Window display a tooltip with the specified text near the
-        /// specified position in screen space.
+        /// specified position in screen space.  If the specified <paramref name="text"/>
+        /// is null or empty, then this method does nothing.
+        /// 
+        /// The Control base class calls this method automatically when it receives a
+        /// MouseHoverBegin message.
+        /// See <see cref="OchreGui.Control.DetermineTooltipText"/> and 
+        /// <see cref="OchreGui.Control.TooltipText"/>
         /// </summary>
         /// <param name="text"></param>
         /// <param name="sPos"></param>
-        protected internal void RequestTooltip(string text,Point sPos)
+        protected internal void ShowTooltip(string text,Point sPos)
         {
             if (!string.IsNullOrEmpty(text))
             {
@@ -379,7 +478,7 @@ namespace OchreGui
 
             if (HasFrame && OwnerDraw == false)
             {
-                Canvas.PrintFrame(null, GetFramePigment());
+                Canvas.PrintFrame(null, DetermineFramePigment());
             }
         }
         #endregion
@@ -414,6 +513,12 @@ namespace OchreGui
         internal protected override void OnTick()
 		{
 			base.OnTick();
+
+            AddManagersFromList();
+            RemoveManagersFromList();
+
+            AddControlsFromList();
+            RemoveControlsFromList();
 
             foreach (Manager m in managerList)
             {
@@ -455,11 +560,6 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnKeyPressed(KeyboardData keyData)
 		{
-            if (keyData == null)
-            {
-                throw new ArgumentNullException("keyData");
-            }
-
             base.OnKeyPressed(keyData);
             
             foreach (Manager m in managerList)
@@ -477,11 +577,6 @@ namespace OchreGui
         /// add custom handling.
         protected internal override void OnKeyReleased(KeyboardData keyData)
         {
-            if (keyData == null)
-            {
-                throw new ArgumentNullException("keyData");
-            }
-
             base.OnKeyReleased(keyData);
 
             foreach (Manager m in managerList)
@@ -502,11 +597,6 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnMouseButtonDown(MouseData mouseData)
 		{
-            if (mouseData == null)
-            {
-                throw new ArgumentNullException("mouseData");
-            }
-
             base.OnMouseButtonDown(mouseData);
 
             foreach (Manager m in managerList)
@@ -553,11 +643,6 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnMouseButtonUp(MouseData mouseData)
 		{
-            if (mouseData == null)
-            {
-                throw new ArgumentNullException("mouseData");
-            }
-
             base.OnMouseButtonUp(mouseData);
 
             foreach (Manager m in managerList)
@@ -581,19 +666,12 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnMouseMoved(MouseData mouseData)
 		{
-            if (mouseData == null)
-            {
-                throw new ArgumentNullException("mouseData");
-            }
-
             base.OnMouseMoved(mouseData);
 
             foreach (Manager m in managerList)
             {
                 m.OnMouseMoved(mouseData);
             }
-
-            LastMousePosition = mouseData.Position;
 
             Control checkUnderMouse = GetTopControlAt(mouseData.Position);
 			
@@ -629,11 +707,6 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnMouseHoverBegin(MouseData mouseData)
 		{
-            if (mouseData == null)
-            {
-                throw new ArgumentNullException("mouseData");
-            }
-
             base.OnMouseHoverBegin(mouseData);
 
             foreach (Manager m in managerList)
@@ -656,10 +729,6 @@ namespace OchreGui
         /// </summary>
         internal protected override void OnMouseHoverEnd(MouseData mouseData)
 		{
-            if (mouseData == null)
-            {
-                throw new ArgumentNullException("mouseData");
-            }
             if (CurrentTooltip != null)
             {
                 CurrentTooltip.Dispose();
@@ -725,6 +794,13 @@ namespace OchreGui
 			}
 		}
 
+        /// <summary>
+        /// Called during a Window's setup, and is called only once after the Window is
+        /// set to the Application's Window with the Application.SetWindow method.
+        /// This base method checks to see if DefaultPigments if null, and if so inherits
+        /// it's pigments from the parent application.
+        /// Override to add specific setup code.
+        /// </summary>
         protected internal override void OnSettingUp()
         {
             base.OnSettingUp();
@@ -737,6 +813,12 @@ namespace OchreGui
         #region Internal
         // /////////////////////////////////////////////////////////////////////////////////
         internal Tooltip CurrentTooltip { get; set; }
+
+        private List<Manager> managerAddList = new List<Manager>();
+        private List<Manager> managerRemoveList = new List<Manager>();
+
+        private List<Control> controlAddList = new List<Control>();
+        private List<Control> controlRemoveList = new List<Control>();
 
         private List<Control> controlList;
         private List<Manager> managerList;
@@ -770,7 +852,7 @@ namespace OchreGui
 
         private void CheckNewlyAddedControlMessages(Control control)
         {
-            if (control.ScreenRect.Contains(LastMousePosition))
+            if (control.ScreenRect.Contains(CurrentMousePos))
             {
                 control.OnMouseEnter();
                 CurrentUnderMouse = control;
@@ -791,6 +873,10 @@ namespace OchreGui
         }
         #endregion
         #region Dispose
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected override void Dispose(bool isDisposing)
         {
             base.Dispose(isDisposing);

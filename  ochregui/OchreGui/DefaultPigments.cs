@@ -46,6 +46,10 @@ namespace OchreGui
             DragItem = new Pigment(0xD6AC8B, 0xF45B00);
         }
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Performs a shallow copy of this DefaultPigments instance.
+        /// </summary>
+        /// <returns></returns>
         public DefaultPigments Copy()
         {
             return (DefaultPigments)this.MemberwiseClone();
@@ -102,17 +106,27 @@ namespace OchreGui
         #region Dispose
         private bool _alreadyDisposed;
 
+        /// <summary>
+        /// Default finalizer calls Dispose.
+        /// </summary>
         ~DefaultPigments()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        /// Safely dispose this object and all of its contents.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Override to add custom disposing code.
+        /// </summary>
+        /// <param name="isDisposing"></param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (_alreadyDisposed)

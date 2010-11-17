@@ -344,7 +344,7 @@ namespace OchreGui.Demo
             bg = bg.ReplaceHue(val);
         }
 
-        protected override Pigment GetMainPigment()
+        protected override Pigment DetermineMainPigment()
         {
             if (!IsMouseOver)
             {

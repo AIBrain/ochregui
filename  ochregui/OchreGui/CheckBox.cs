@@ -128,6 +128,10 @@ namespace OchreGui
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a CheckBox instance from the given template.
+        /// </summary>
+        /// <param name="template"></param>
         public CheckBox(CheckBoxTemplate template)
             : base(template)
         {

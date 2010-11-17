@@ -86,13 +86,13 @@ namespace OchreGui.Sample3
 
 
 
-        /// Finally, we show a tooltip when the mouse is over the player.  GetTooltipText() is called by
+        /// Finally, we show a tooltip when the mouse is over the player.  DetermineTooltipText() is called by
         /// the base class Control when the mouse enters a hover state.  The base implementation of
-        /// GetTooltipText simply returns the TooltipText property.  Here we override it to handle
+        /// DetermineTooltipText simply returns the TooltipText property.  Here we override it to handle
         /// more complex behavior.
         /// 
         /// Note that we have to translate the mouse position to local coordinates.
-        protected override string GetTooltipText()
+        protected override string DetermineTooltipText()
         {
             if (this.ScreenToLocal(CurrentMousePos) == player.CurrentPosition)
                 return "It's you!";

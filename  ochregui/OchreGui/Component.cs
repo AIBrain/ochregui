@@ -228,7 +228,7 @@ namespace OchreGui
                 throw new ArgumentNullException("schedule");
             }
 
-            if (HasSchedule(schedule))
+            if (ContainsSchedule(schedule) || scheduleAddList.Contains(schedule))
             {
                 throw new ArgumentException("Schedule instances must be unique to this component");
             }
@@ -253,7 +253,7 @@ namespace OchreGui
                 throw new ArgumentNullException("schedule");
             }
 
-            if (HasSchedule(schedule))
+            if (ContainsSchedule(schedule))
             {
                 scheduleRemoveList.Add(schedule);
             }
@@ -266,7 +266,7 @@ namespace OchreGui
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        public bool HasSchedule(Schedule schedule)
+        public bool ContainsSchedule(Schedule schedule)
         {
             return scheduleList.Contains(schedule);
         }
