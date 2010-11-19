@@ -86,6 +86,9 @@ namespace OchreGui.Extended
 
     public class SpinBox : Control
     {
+
+        public event EventHandler ValueChanged;
+
         public SpinBox(SpinBoxTemplate template)
             : base(template)
         {
@@ -117,7 +120,17 @@ namespace OchreGui.Extended
         /// <summary>
         /// The current value of the spin box.
         /// </summary>
-        public int CurrentValue { get; protected set; }
+        public int CurrentValue
+        {
+            get { return _currentValue; }
+            set
+            {
+                _currentValue = value;
+                OnValueChanged();
+            }
+        }
+
+        private int _currentValue;
 
         /// <summary>
         /// The minimum value that this spin control can have.  Defaults to 0.
@@ -148,6 +161,14 @@ namespace OchreGui.Extended
         /// </summary>
         protected string Label { get; private set; }
 
+
+        protected virtual void OnValueChanged()
+        {
+            if (ValueChanged != null)
+            {
+                ValueChanged(this, EventArgs.Empty);
+            }
+        }
 
 
         protected override void OnSettingUp()

@@ -708,6 +708,16 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        public void Scroll(int deltaX,int deltaY)
+        {
+            using (Canvas tmpCanvas = new Canvas(this.Size))
+            {
+
+            }
+        }
+
+
+
         /// <summary>
         /// Get the size, in pixels, of a single character, as per TCODSystem.getCharSize().
         /// </summary>

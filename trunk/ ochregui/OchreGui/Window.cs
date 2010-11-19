@@ -475,11 +475,6 @@ namespace OchreGui
         protected override void Redraw()
         {
             base.Redraw();
-
-            if (HasFrame && OwnerDraw == false)
-            {
-                Canvas.PrintFrame(null, DetermineFramePigment());
-            }
         }
         #endregion
         #region Message Handlers
