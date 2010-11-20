@@ -1798,7 +1798,7 @@
             Construct a Canvas object with the given dimensions.
             </summary>
         </member>
-        <member name="M:OchreGui.Canvas.SetDefaultColors(OchreGui.Pigment)">
+        <member name="M:OchreGui.Canvas.SetDefaultPigment(OchreGui.Pigment)">
             <summary>
             Sets the default pigment for this Canvas.  If no other pigment is specified
             for drawing operations, this pigment is used.
@@ -1806,16 +1806,16 @@
             <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="pigment"/> 
             is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(System.Int32,System.Int32,OchreGui.Pigment)">
+        <member name="M:OchreGui.Canvas.SetCharPigment(System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
-            Sets the colors of a single character at the given coordinates.
+            Sets the pigment of a single character at the given coordinates.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="pigment"/>
             is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(OchreGui.Utility.Point,OchreGui.Pigment)">
+        <member name="M:OchreGui.Canvas.SetCharPigment(OchreGui.Utility.Point,OchreGui.Pigment)">
             <summary>
-            Sets the colors of a single character at the given coordinates.
+            Sets the pigment of a single character at the given coordinates.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when pigment is null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
@@ -1981,6 +1981,13 @@
             <summary>
             Prints a frame border around the canvas, with an optional centered title.
             </summary>
+        </member>
+        <member name="M:OchreGui.Canvas.Scroll(System.Int32,System.Int32)">
+            <summary>
+            Scrolls this Canvas by the given delta x and y amounts.  
+            </summary>
+            <param name="deltaX"></param>
+            <param name="deltaY"></param>
         </member>
         <member name="M:OchreGui.Canvas.GetCharSize">
             <summary>

@@ -54,22 +54,29 @@ namespace OchreGui.Extended
 
             foreach (string word in words)
             {
-                if (currVirtualPos + word.Length >= LineLength)
+                if (!string.IsNullOrEmpty(word))
                 {
-                    buffer.Enqueue('\n');
-                    currVirtualPos = 0;
-                }
+                    if ((currVirtualPos + word.Length >= LineLength) &&
+                        (word[0] != '\n'))
+                    {
+                        buffer.Enqueue('\n');
+                        currVirtualPos = 0;
+                    }
 
-                foreach (char c in word)
-                {
-                    buffer.Enqueue(c);
-                    currVirtualPos++;
-                }
+                    foreach (char c in word)
+                    {
+                        buffer.Enqueue(c);
+                        currVirtualPos++;
 
-                if (currVirtualPos != 0)
-                {
-                    buffer.Enqueue(' ');
-                    currVirtualPos++;
+                        if (c == '\n')
+                            currVirtualPos = 0;
+                    }
+
+                    if (currVirtualPos != 0)
+                    {
+                        buffer.Enqueue(' ');
+                        currVirtualPos++;
+                    }
                 }
             }
         }
@@ -144,8 +151,9 @@ namespace OchreGui.Extended
 
                 if (currLine >= NumberOfLines)
                 {
-                    // scroll
-
+                    this.textCanvas.Scroll(0, -1);
+                    currLine--;
+                    currPos = 0;
                 }
             }
             else
