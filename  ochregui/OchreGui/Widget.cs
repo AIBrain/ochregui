@@ -164,7 +164,7 @@ namespace OchreGui
         {
             if (!OwnerDraw)
             {
-                Canvas.SetDefaultColors(DetermineMainPigment());
+                Canvas.SetDefaultPigment(DetermineMainPigment());
                 Canvas.Clear();
             }
         }

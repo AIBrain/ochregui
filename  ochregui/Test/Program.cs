@@ -92,9 +92,9 @@ namespace Test
 
             tBox = new TextBox(new TextBoxTemplate()
             {
-                Size = new Size(20,10),
+                Size = new Size(25,10),
                 UpperLeftPos = new Point(1,10),
-                HasFrame = true,
+                HasFrame = false,
                 TextSpeed = 20
             });
 
@@ -114,12 +114,13 @@ namespace Test
 
             AddSchedule(new Schedule(TestAnimBar,100));
 
-            tBox.AddText("I love it when Nancy comes to visit me on Fridays,, but only Fridays, not Sundays!");
+            tBox.AddText("This is a bunch of text that will get printed to the console.");
         }
 
         void addTextBtn_ButtonPushed(object sender, EventArgs e)
         {
-            tBox.AddText("\nPeter piper picked a pickled pair of pickled peppers.");
+            tBox.AddText("Some more text to get printed, with some commas and stuff.");
+            tBox.AddText("a b c d e f g h i j k l m n o p q r s t u v w x y z aa bb cc dd ee ff gg hhh iii jjj kkk");
         }
 
         void spin_ValueChanged(object sender, EventArgs e)

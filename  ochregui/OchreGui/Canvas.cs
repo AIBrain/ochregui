@@ -126,23 +126,23 @@ namespace OchreGui
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="pigment"/> 
         /// is null</exception>
-        public void SetDefaultColors(Pigment pigment)
+        public void SetDefaultPigment(Pigment pigment)
         {
             if (pigment == null)
                 throw new ArgumentNullException("pigment");
 
-            defaultColors = pigment;
-            SetColors(pigment);
+            defaultPigment = pigment;
+            SetPigment(pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Sets the colors of a single character at the given coordinates.
+        /// Sets the pigment of a single character at the given coordinates.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="pigment"/>
         /// is null</exception>
-        public void SetCharColors(int x, int y, Pigment pigment)
+        public void SetCharPigment(int x, int y, Pigment pigment)
         {
             if (pigment == null)
                 throw new ArgumentNullException("pigment");
@@ -152,12 +152,12 @@ namespace OchreGui
         }
 
         /// <summary>
-        /// Sets the colors of a single character at the given coordinates.
+        /// Sets the pigment of a single character at the given coordinates.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when pigment is null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="position"/> is outside of this Canvas region</exception>
-        public void SetCharColors(Point position, Pigment pigment)
+        public void SetCharPigment(Point position, Pigment pigment)
         {
             if (pigment == null)
                 throw new ArgumentNullException("pigment");
@@ -172,7 +172,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("position", "The specified y coordinate is invalid.");
             }
 
-            SetCharColors(position.X, position.Y, pigment);
+            SetCharPigment(position.X, position.Y, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -205,12 +205,12 @@ namespace OchreGui
             }
 
             if (pigment != null)
-                SetColors(pigment);
+                SetPigment(pigment);
 
             Console.putChar(x, y, character);
 
             if (pigment != null)
-                SetColors(defaultColors);
+                SetPigment(defaultPigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -260,12 +260,12 @@ namespace OchreGui
             }
 
             if (pigment != null)
-                SetColors(pigment);
+                SetPigment(pigment);
 
             Console.print(x, y, text);
 
             if (pigment != null)
-                SetColors(defaultColors);
+                SetPigment(defaultPigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -437,12 +437,12 @@ namespace OchreGui
             }
 
             if (pigment != null)
-                SetColors(pigment);
+                SetPigment(pigment);
 
             Console.hline(startX, startY, length);
 
             if (pigment != null)
-                SetColors(defaultColors);
+                SetPigment(defaultPigment);
         }
 
         /// <summary>
@@ -483,12 +483,12 @@ namespace OchreGui
             }
 
             if (pigment != null)
-                SetColors(pigment);
+                SetPigment(pigment);
 
             Console.vline(x, y, length);
 
             if (pigment != null)
-                SetColors(defaultColors);
+                SetPigment(defaultPigment);
         }
 
         /// <summary>
@@ -686,7 +686,7 @@ namespace OchreGui
         public void PrintFrame(string title, Pigment pigment = null)
         {
             if (pigment != null)
-                SetColors(pigment);
+                SetPigment(pigment);
 
             if (string.IsNullOrEmpty(title))
             {
@@ -704,15 +704,55 @@ namespace OchreGui
             }
 
             if (pigment != null)
-                SetColors(defaultColors);
+                SetPigment(defaultPigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Scrolls this Canvas by the given delta x and y amounts.  
+        /// </summary>
+        /// <param name="deltaX"></param>
+        /// <param name="deltaY"></param>
         public void Scroll(int deltaX,int deltaY)
         {
-            using (Canvas tmpCanvas = new Canvas(this.Size))
-            {
+            Size srcSize = new Size(this.Size.Width - Math.Abs(deltaX), 
+                this.Size.Height - Math.Abs(deltaY));
 
+            using (Canvas tmpCanvas = new Canvas(srcSize))
+            {
+                int srcX = 0;
+                int srcY = 0;
+                int destX = 0;
+                int destY = 0;
+
+                if (deltaX < 0)
+                {
+                    srcX = -deltaX;
+                }
+
+                if (deltaX > 0)
+                {
+                    destX = deltaX;
+                }
+
+                if (deltaY < 0)
+                {
+                    srcY = -deltaY;
+                }
+
+                if (deltaY > 0)
+                {
+                    destY = deltaY;
+                }
+
+                TCODConsole.blit(this.Console,
+                    srcX, srcY,
+                    srcSize.Width, srcSize.Height,
+                    tmpCanvas.Console,
+                    destX, destY);
+
+                this.Clear();
+                this.Blit(tmpCanvas, 0, 0);
             }
         }
 
@@ -733,14 +773,14 @@ namespace OchreGui
         #endregion
         #region Private
         // /////////////////////////////////////////////////////////////////////////////////
-        private void SetColors(Pigment pigment)
+        private void SetPigment(Pigment pigment)
         {
             Console.setBackgroundColor(pigment.Background.GetTCODColor());
             Console.setBackgroundFlag(pigment.BackgroundFlag);
             Console.setForegroundColor(pigment.Foreground.GetTCODColor());
         }
         // /////////////////////////////////////////////////////////////////////////////////
-        private Pigment defaultColors;
+        private Pigment defaultPigment;
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////

@@ -270,7 +270,7 @@ namespace OchreGui
                     Size.Width - 2);
             }
 
-            Canvas.SetDefaultColors(DefaultPigments.Frame);
+            Canvas.SetDefaultPigment(DefaultPigments.Frame);
             Canvas.DrawHLine(1, 2, Size.Width - 2);
             Canvas.PrintChar(0, 2, (int)TCODSpecialCharacter.TeeEast);
             Canvas.PrintChar(Size.Width - 1, 2, (int)TCODSpecialCharacter.TeeWest);

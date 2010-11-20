@@ -222,7 +222,7 @@ namespace OchreGui.Demo
             {
                 for (int x = 0; x < this.Size.Width; x++)
                 {
-                    Canvas.SetCharColors(x, y, CalcColor(x,y));
+                    Canvas.SetCharPigment(x, y, CalcColor(x,y));
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace OchreGui.Demo
             {
                 string lbl = new string(ownerChars.ToArray());
 
-                Canvas.SetDefaultColors(new Pigment(0x11ee33, 0x003344));
+                Canvas.SetDefaultPigment(new Pigment(0x11ee33, 0x003344));
                 Canvas.Clear();
 
                 Canvas.PrintString(0, 0, lbl);
