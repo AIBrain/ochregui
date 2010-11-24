@@ -45,9 +45,6 @@ namespace OchreGui.Extended
             }
         }
 
-
-
-
         public void AddText(string text)
         {
             string[] words = Explode(text);

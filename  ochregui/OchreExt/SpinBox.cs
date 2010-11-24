@@ -232,26 +232,34 @@ namespace OchreGui.Extended
         {
             NumberEntry entry = sender as NumberEntry;
 
-            this.CurrentValue = entry.CurrentValue;
+            if(this.CurrentValue != entry.CurrentValue)
+            {
+                this.CurrentValue = entry.CurrentValue;
+            }
         }
 
         void downButton_Emit(object sender, EventArgs e)
         {
+            numEntry.TryCommit();
             if (CurrentValue > MinimumValue)
             {
-                numEntry.TryCommit();
-                CurrentValue--;
-                numEntry.CurrentValue = CurrentValue;
+                //numEntry.CurrentValue = CurrentValue;
+                if (numEntry.TrySetValue(CurrentValue - 1))
+                {
+                }
+                
             }
         }
 
         void upButton_Emit(object sender, EventArgs e)
         {
+            numEntry.TryCommit();
             if (CurrentValue < MaximumValue)
             {
-                numEntry.TryCommit();
-                CurrentValue++;
-                numEntry.CurrentValue = CurrentValue;
+                //numEntry.CurrentValue = CurrentValue;
+                if (numEntry.TrySetValue(CurrentValue + 1))
+                {
+                }
             }
         }
 

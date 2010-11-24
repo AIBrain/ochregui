@@ -118,9 +118,9 @@ namespace OchreGui
             this.CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
             this.HilightWhenMouseOver = template.HilightWhenMouseOver;
 
-            this.CommmittedField = "";
+            this.CommittedField = "";
             this.waitingToCommitText = false;
-            this.CurrentText = CommmittedField;
+            this.CurrentText = CommittedField;
 
             if (template.HasFrameBorder)
             {
@@ -142,7 +142,7 @@ namespace OchreGui
         /// the same as what is being currently displayed by the entry (as a user types input,
         /// for example).
         /// </summary>
-        public string CommmittedField { get; protected set; }
+        public string CommittedField { get; protected set; }
 
         /// <summary>
         /// The current text state of the control as it is typed.  This text has not yet been
@@ -173,15 +173,18 @@ namespace OchreGui
         /// <returns></returns>
         public bool TryCommit()
         {
+            if (this.CommittedField == this.CurrentText)
+                return false;
+
             if (ValidateField(CurrentText) &&
                 CurrentText.Length <= MaximumCharacters)
             {
-                CommmittedField = CurrentText;
+                CommittedField = CurrentText;
 
                 OnFieldChanged();
                 return true;
             }
-            CurrentText = CommmittedField;
+            CurrentText = CommittedField;
             return false;
         }
         #endregion
@@ -346,7 +349,7 @@ namespace OchreGui
             }
             else if (keyData.KeyCode == TCODKeyCode.Escape)
             {
-                CurrentText = CommmittedField;
+                CurrentText = CommittedField;
                 waitingToCommitText = true;
                 ParentWindow.ReleaseKeyboard(this);
             }
@@ -363,14 +366,14 @@ namespace OchreGui
             base.OnTakeKeyboardFocus();
 
             waitingToCommitText = false;
-            CurrentText = CommmittedField;
+            CurrentText = CommittedField;
 
             if (ReplaceOnFirstKey)
             {
                 waitingToOverwrite = true;
             }
 
-            this.CursorPos = CommmittedField.Length;
+            this.CursorPos = CommittedField.Length;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -389,7 +392,7 @@ namespace OchreGui
             }
             else
             {
-                CurrentText = CommmittedField;
+                CurrentText = CommittedField;
             }
             waitingToOverwrite = false;
         }

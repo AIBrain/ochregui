@@ -228,6 +228,7 @@ namespace OchreGui
                 throw new ArgumentNullException("schedule");
             }
 
+            // Since adding schedules can happen at any time, make sure it has not been added previously
             if (ContainsSchedule(schedule) || scheduleAddList.Contains(schedule))
             {
                 throw new ArgumentException("Schedule instances must be unique to this component");
@@ -253,9 +254,15 @@ namespace OchreGui
                 throw new ArgumentNullException("schedule");
             }
 
-            if (ContainsSchedule(schedule))
+            // Remove the schedule from either the current list of schedules...
+            if (scheduleList.Contains(schedule))
             {
                 scheduleRemoveList.Add(schedule);
+            }
+            // ...or the list of schedules waiting to be added
+            if (scheduleAddList.Contains(schedule))
+            {
+                scheduleAddList.Remove(schedule);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -268,7 +275,11 @@ namespace OchreGui
         /// <returns></returns>
         public bool ContainsSchedule(Schedule schedule)
         {
-            return scheduleList.Contains(schedule);
+            if (scheduleList.Contains(schedule) || scheduleAddList.Contains(schedule))
+            {
+                return true;
+            }
+            return false;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion

@@ -42,6 +42,47 @@ namespace OchreGui
         NorthWest
     };
     #endregion
+    #region ElementPigments
+
+    public class PigmentList
+    {
+        public PigmentList()
+        {
+
+        }
+
+        public PigmentList(PigmentList defaults)
+        {
+            if (Inactive == null)
+                Inactive = defaults.Inactive;
+
+            if (Normal == null)
+                Normal = defaults.Normal;
+
+            if (MouseOver == null)
+                MouseOver = defaults.MouseOver;
+
+            if (Pushing == null)
+                Pushing = defaults.Pushing;
+
+            if (HasFocus == null)
+                HasFocus = defaults.HasFocus;
+
+            if (Selected == null)
+                Selected = defaults.Selected;
+        }
+
+        public Pigment Inactive { get; set; }
+        public Pigment Normal { get; set; }
+        public Pigment MouseOver { get; set; }
+        public Pigment Pushing { get; set; }
+        public Pigment HasFocus { get; set; }
+        public Pigment Selected { get; set; }
+    }
+
+
+
+    #endregion
     #region ControlInfo
 
     /// <summary>
@@ -50,6 +91,8 @@ namespace OchreGui
     /// </summary>
     public abstract class ControlTemplate : WidgetTemplate
     {
+        #region Constructors
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Default constructor initializes properties to their defaults.
         /// </summary>
@@ -58,6 +101,9 @@ namespace OchreGui
             this.Tooltip = null;
             IsActiveInitially = true;
         }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// The upper left position of this control.  Defaults to the origin (0,0)
@@ -68,13 +114,25 @@ namespace OchreGui
         /// If not null (the default), the text that is displayed as a tooltip.
         /// </summary>
         public string Tooltip { get; set; }
-        // /////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// If true (the default), this control will be Active when created.
         /// </summary>
         public bool IsActiveInitially { get; set; }
 
+        /// <summary>
+        /// The default pigments for the frame element.
+        /// </summary>
+        public PigmentList FramePigments { get; set; }
+
+        /// <summary>
+        /// The default pigments for the main view element.
+        /// </summary>
+        public PigmentList MainPigments { get; set; }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Public Methods
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Calculates the Rect (in screen coordinates) of this control.
         /// </summary>
@@ -83,7 +141,10 @@ namespace OchreGui
         {
             return new Rect(UpperLeftPos, CalculateSize());
         }
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Layout Helpers
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the upper right coordinates.
         /// </summary>
@@ -92,7 +153,9 @@ namespace OchreGui
         {
             UpperLeftPos = upperRight.Shift(1 - CalculateSize().Width, 0);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the lower right coordinates.
         /// </summary>
@@ -102,7 +165,9 @@ namespace OchreGui
             UpperLeftPos = lowerRight.Shift(1 - CalculateSize().Width,
                 1 - CalculateSize().Height);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the lower left coordinates.
         /// </summary>
@@ -111,7 +176,9 @@ namespace OchreGui
         {
             UpperLeftPos = lowerLeft.Shift(0, 1 - CalculateSize().Height);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the top center coordinates.
         /// </summary>
@@ -122,7 +189,9 @@ namespace OchreGui
 
             UpperLeftPos = new Point(topCenter.X - ctr.X, topCenter.Y);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the center right coordinates.
         /// </summary>
@@ -133,7 +202,9 @@ namespace OchreGui
 
             SetUpperRight(new Point(rightCenter.X, rightCenter.Y - ctr.Y));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the bottom center coordinates.
         /// </summary>
@@ -144,7 +215,9 @@ namespace OchreGui
 
             SetLowerLeft(new Point(bottomCenter.X - ctr.X, bottomCenter.Y));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - positions the control by setting the center left coordinates.
         /// </summary>
@@ -155,7 +228,9 @@ namespace OchreGui
 
             UpperLeftPos = new Point(leftCenter.X, leftCenter.Y - ctr.Y);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Layout helper - Aligns this control to the specified direction of the spcecified
         /// control template.  This provides a means to specify control positions relative to
@@ -202,7 +277,9 @@ namespace OchreGui
                     break;
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         // UNDONE: Implement
         /// <summary>
         /// Not implemented.
@@ -213,8 +290,10 @@ namespace OchreGui
         {
 
         }
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
         #region Private
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignSouth(Rect ofRect, int padding)
         {
             Point ourCtr = CalculateRect().Center;
@@ -222,7 +301,9 @@ namespace OchreGui
 
             UpperLeftPos = new Point(ofCtr.X - ourCtr.X, ofRect.Bottom + 1 + padding);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignEast(Rect ofRect, int padding)
         {
             Point ourCtr = CalculateRect().Center;
@@ -230,7 +311,9 @@ namespace OchreGui
 
             UpperLeftPos = new Point(ofRect.Right + 1 + padding, ofCtr.Y - ourCtr.Y);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignNorth(Rect ofRect, int padding)
         {
             Point ourCtr = CalculateRect().Center;
@@ -238,7 +321,9 @@ namespace OchreGui
 
             SetLowerLeft(new Point(ofCtr.X - ourCtr.X, ofRect.Top -(1 + padding)));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignWest(Rect ofRect, int padding)
         {
             Point ourCtr = CalculateRect().Center;
@@ -246,26 +331,35 @@ namespace OchreGui
 
             SetUpperRight(new Point(ofRect.Left - (1 + padding), ofCtr.Y - ourCtr.Y));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignNorthEast(Rect ofRect, int padding)
         {
             SetLowerLeft(ofRect.UpperRight.Shift(1 + padding, -(1 + padding)));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignSouthEast(Rect ofRect, int padding)
         {
             UpperLeftPos = ofRect.LowerRight.Shift(1 + padding, 1 + padding);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignSouthWest(Rect ofRect, int padding)
         {
             SetUpperRight(ofRect.LowerLeft.Shift(-(1 + padding), 1 + padding));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         private void AlignNorthWest(Rect ofRect, int padding)
         {
             SetLowerRight(ofRect.UpperLeft.Shift(-(1 + padding), -(1 + padding)));
         }
+        // /////////////////////////////////////////////////////////////////////////////////
         #endregion
     }
     #endregion

@@ -150,7 +150,16 @@ namespace OchreGui
                 throw new ArgumentNullException("manager");
             }
 
-            managerRemoveList.Add(manager);
+            if(managerList.Contains(manager))
+            {
+                managerRemoveList.Add(manager);
+            }
+
+            // make sure to remove any managers waiting to be added
+            if(managerAddList.Contains(manager))
+            {
+                managerAddList.Remove(manager);
+            }
         }
 
         /// <summary>
@@ -170,6 +179,7 @@ namespace OchreGui
             {
                 throw new ArgumentException("CurrentWindow already contians an instance of this control");
             }
+
             this.controlAddList.Add(control);
 
             bool atRequestedPos = CheckNewlyAddedControlPosition(control);
@@ -194,57 +204,7 @@ namespace OchreGui
 
             return atRequestedPos;
         }
-
-        private void AddControlsFromList()
-        {
-            if (controlAddList.Count == 0)
-                return;
-
-            foreach (Control control in controlAddList)
-            {
-                controlList.Add(control);
-            }
-
-            controlAddList.Clear();
-        }
-
-        private void RemoveControlsFromList()
-        {
-            if (controlRemoveList.Count == 0)
-                return;
-
-            foreach (Control control in controlRemoveList)
-            {
-                controlList.Remove(control);
-            }
-            controlRemoveList.Clear();
-        }
-
-        private void AddManagersFromList()
-        {
-            if (managerAddList.Count == 0)
-                return;
-
-            foreach (Manager manager in managerAddList)
-            {
-                managerList.Add(manager);
-            }
-
-            managerAddList.Clear();
-        }
-
-        private void RemoveManagersFromList()
-        {
-            if (managerRemoveList.Count == 0)
-                return;
-
-            foreach (Manager manager in managerRemoveList)
-            {
-                managerList.Remove(manager);
-            }
-
-            managerRemoveList.Clear();
-        }
+        // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -259,6 +219,8 @@ namespace OchreGui
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Remove the provided control from the window.
         /// </summary>
@@ -272,7 +234,15 @@ namespace OchreGui
                 throw new ArgumentNullException("control");
             }
 
-			controlRemoveList.Add(control);
+            if (controlList.Contains(control))
+            {
+                controlRemoveList.Add(control);
+            }
+
+            if (controlAddList.Contains(control))
+            {
+                controlAddList.Remove(control);
+            }
 		}
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -865,6 +835,57 @@ namespace OchreGui
             }
             control.ScreenPosition = newPos;
             return false;
+        }
+
+        private void AddControlsFromList()
+        {
+            if (controlAddList.Count == 0)
+                return;
+
+            foreach (Control control in controlAddList)
+            {
+                controlList.Add(control);
+            }
+
+            controlAddList.Clear();
+        }
+
+        private void RemoveControlsFromList()
+        {
+            if (controlRemoveList.Count == 0)
+                return;
+
+            foreach (Control control in controlRemoveList)
+            {
+                controlList.Remove(control);
+            }
+            controlRemoveList.Clear();
+        }
+
+        private void AddManagersFromList()
+        {
+            if (managerAddList.Count == 0)
+                return;
+
+            foreach (Manager manager in managerAddList)
+            {
+                managerList.Add(manager);
+            }
+
+            managerAddList.Clear();
+        }
+
+        private void RemoveManagersFromList()
+        {
+            if (managerRemoveList.Count == 0)
+                return;
+
+            foreach (Manager manager in managerRemoveList)
+            {
+                managerList.Remove(manager);
+            }
+
+            managerRemoveList.Clear();
         }
         #endregion
         #region Dispose
