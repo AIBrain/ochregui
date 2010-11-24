@@ -147,5 +147,47 @@ namespace OchreGui
         }
         #endregion
     }
+
+    public class DefPigments
+    {
+
+        public DefPigments()
+        {
+            WindowView = new Pigment(0xDDDDDD, 0x000000);
+
+            FramePigments = new PigmentList(new PigmentList()
+            {
+                HasFocus = new Pigment(0x6D3D00, 0x3E1D00),
+                Normal = new Pigment(0x6D3D00, 0x3E1D00),
+                
+            });
+
+            //FramePigments.Normal = new Pigment(0x6D3D00, 0x3E1D00);
+            //Active = new Pigment(0xDDDDDD, 0x622E00);
+            //Inactive = new Pigment(0x7C7C7C, 0x2E2E2E);
+            //Hilight = new Pigment(0xFFFFAA, 0x723E00);
+            //Depressed = new Pigment(0x6B6B6B, 0x431E00);
+            //Selected = new Pigment(0x0098F4, 0x622E00);
+            //Tooltip = new Pigment(0x2B2B8F, 0xCCEEFF);
+            //DragItem = new Pigment(0xD6AC8B, 0xF45B00);
+        }
+
+
+        /// <summary>
+        /// The default pigments for the frame element.
+        /// </summary>
+        public PigmentList FramePigments { get; set; }
+
+        /// <summary>
+        /// The default pigments for the main view element.
+        /// </summary>
+        public PigmentList MainPigments { get; set; }
+
+        public Pigment WindowView { get; set; }
+
+        public Pigment DragItem { get; set; }
+
+        public Pigment Tooltip { get; set; }
+    }
 }
 

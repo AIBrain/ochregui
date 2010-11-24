@@ -77,6 +77,7 @@ namespace OchreGui.Extended
 
     public class Slider : Control
     {
+        public event EventHandler ValueChanged;
 
         public Slider(SliderTemplate template)
             : base(template)
@@ -134,16 +135,32 @@ namespace OchreGui.Extended
 
             protected set
             {
-                _currentValue = value;
+                int newVal = value;
 
-                if (_currentValue < MinimumValue)
-                    _currentValue = MinimumValue;
+                if (newVal < MinimumValue)
+                    newVal = MinimumValue;
 
-                if (_currentValue > MaximumValue)
-                    _currentValue = MaximumValue;
+                if (newVal > MaximumValue)
+                    newVal = MaximumValue;
+
+                if (newVal != _currentValue)
+                {
+                    _currentValue = newVal;
+                    OnValueChanged();
+                }
             }
         }
         private int _currentValue;
+
+
+        protected virtual void OnValueChanged()
+        {
+            if (ValueChanged != null)
+            {
+                ValueChanged(this, EventArgs.Empty);
+            }
+        }
+
 
         protected override void OnSettingUp()
         {
@@ -206,7 +223,8 @@ namespace OchreGui.Extended
                 CurrentValue = CalculateValue(e.MouseData.PixelPosition.X);
                 
 
-                numEntry.CurrentValue = CurrentValue;
+                //numEntry.CurrentValue = CurrentValue;
+                numEntry.TrySetValue(CurrentValue);
                 valueBar.CurrentValue = CurrentValue;
             }
         }
@@ -247,7 +265,8 @@ namespace OchreGui.Extended
             {
                 CurrentValue = CalculateValue(e.MouseData.PixelPosition.X);
 
-                numEntry.CurrentValue = CurrentValue;
+                //numEntry.CurrentValue = CurrentValue;
+                numEntry.TrySetValue(CurrentValue);
                 valueBar.CurrentValue = CurrentValue;
             }            
         }

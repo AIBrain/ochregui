@@ -327,6 +327,16 @@
             If true (the default), this control will be Active when created.
             </summary>
         </member>
+        <member name="P:OchreGui.ControlTemplate.FramePigments">
+            <summary>
+            The default pigments for the frame element.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ControlTemplate.MainPigments">
+            <summary>
+            The default pigments for the main view element.
+            </summary>
+        </member>
         <member name="M:OchreGui.ListBoxTemplate.#ctor">
             <summary>
             Default constructor initializes properties to their defaults.
@@ -1277,7 +1287,7 @@
             Triggered when the entered text has been committed, usually by pressing the ENTER key.
             </summary>
         </member>
-        <member name="P:OchreGui.Entry.CommmittedField">
+        <member name="P:OchreGui.Entry.CommittedField">
             <summary>
             Gets the last valid, committed text that has been entered.  This may or may not be
             the same as what is being currently displayed by the entry (as a user types input,
@@ -2099,6 +2109,16 @@
             <summary>
             The pigment of the visual component of a drag and drop operation.
             <Note>Drag and drop is not currently implemented.</Note>
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefPigments.FramePigments">
+            <summary>
+            The default pigments for the frame element.
+            </summary>
+        </member>
+        <member name="P:OchreGui.DefPigments.MainPigments">
+            <summary>
+            The default pigments for the main view element.
             </summary>
         </member>
         <member name="T:OchreGui.TooltipEventArgs">

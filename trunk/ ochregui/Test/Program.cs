@@ -80,7 +80,7 @@ namespace Test
 
 
 
-            AddControl(new Slider(new SliderTemplate()
+            Slider sld = new Slider(new SliderTemplate()
             {
                 MinimumValue = -30,
                 MaximumValue = 30,
@@ -88,7 +88,9 @@ namespace Test
                 MinimumWidth = 12,
                 Label = "Slide",
                 BarPigment = new Pigment(0x0044ef,0x221144)
-            }));
+            });
+
+            AddControl(sld);
 
             tBox = new TextBox(new TextBoxTemplate()
             {
@@ -112,9 +114,22 @@ namespace Test
 
             spin.ValueChanged += new EventHandler(spin_ValueChanged);
 
+            sld.ValueChanged += new EventHandler(sld_ValueChanged);
+
             AddSchedule(new Schedule(TestAnimBar,100));
 
             tBox.AddText("This is a bunch of text that will get printed to the console.");
+        }
+
+        void sld_ValueChanged(object sender, EventArgs e)
+        {
+            int spd = (sender as Slider).CurrentValue;
+
+            if (spd >= 0)
+            {
+                tBox.TextSpeed = (uint)spd;
+                tBox.AddText("\nChanged: " + tBox.TextSpeed.ToString() + "\n");
+            }
         }
 
         void addTextBtn_ButtonPushed(object sender, EventArgs e)
@@ -126,6 +141,7 @@ namespace Test
         void spin_ValueChanged(object sender, EventArgs e)
         {
             tBox.TextSpeed = (uint)(sender as SpinBox).CurrentValue;
+            tBox.AddText("\nchanged: " + tBox.TextSpeed.ToString() + "\n");
         }
 
         protected override void Redraw()

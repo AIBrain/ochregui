@@ -99,8 +99,8 @@ namespace OchreGui.Extended
 
             _maximumCharacters = template.CalculateMaxCharacters();
 
-            CommmittedField = CurrentValue.ToString();
-            CurrentText = CommmittedField;
+            CommittedField = CurrentValue.ToString();
+            CurrentText = CommittedField;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -115,18 +115,24 @@ namespace OchreGui.Extended
         public int CurrentValue
         {
             get { return _currentValue; }
-            set
+            protected set
             {
                 if(ValidateValue(value))
                 {
                     _currentValue = value;
-                    CommmittedField = _currentValue.ToString();
-                    CurrentText = CommmittedField;
+                    CommittedField = _currentValue.ToString();
+                    CurrentText = CommittedField;
                 }
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
+        public bool TrySetValue(int changeTo)
+        {
+            CurrentText = changeTo.ToString();
+            return TryCommit();
+
+        }
         #region Protected Methods
         protected bool ValidateValue(int value)
         {
@@ -194,7 +200,7 @@ namespace OchreGui.Extended
 
         protected override void OnFieldChanged()
         {
-            CurrentValue = int.Parse(CommmittedField);
+            CurrentValue = int.Parse(CommittedField);
 
             base.OnFieldChanged();
         }
