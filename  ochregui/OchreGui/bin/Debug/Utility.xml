@@ -4,6 +4,120 @@
         <name>Utility</name>
     </assembly>
     <members>
+        <member name="T:OchreGui.Utility.IStaticDictionary`2">
+            <summary>
+            Represents a type of Dictionary that, after construction, has a static number of
+            items.  Items cannot be added or removed, but they can be modified as normal.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:OchreGui.Utility.IStaticDictionary`2.ContainsKey(`0)">
+            <summary>
+            Returns true if the specified key is contained in this collection.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.IStaticDictionary`2.ContainsValue(`1)">
+            <summary>
+            Returns true if the specified value is contained in this collection.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.Utility.IStaticDictionary`2.Item(`0)">
+            <summary>
+            Get or set the value of the specified key.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.Utility.IStaticDictionary`2.Count">
+            <summary>
+            Gets the number of items in this collection.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.IStaticDictionary`2.Keys">
+            <summary>
+            Gets a list of keys contained in this collection.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Utility.StaticDictionary`2">
+            <summary>
+            Represents an IStaticMap object that is constructed using an array
+            of key-value pairs.  Once constructed, items cannot be added or removed.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.#ctor(System.Collections.Generic.KeyValuePair{`0,`1}[])">
+            <summary>
+            Construct a StaticDictionary instance given an array of key value pairs.
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsKey(`0)">
+            <summary>
+            Returns true if this StaticDictionary contains the specified key.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsValue(`1)">
+            <summary>
+            Returns true if this StaticDictionary contains the specified value.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ToString">
+            <summary>
+            Returns a string representation of this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Item(`0)">
+            <summary>
+            Gets or sets the value with the specified key.  The key must be non-null, and must
+            exist in this StaticDictionary or an exception will be thrown.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/>
+            does not exist in the default items.</exception>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Count">
+            <summary>
+            Gets the number of items contained in this StaticDictionary
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Keys">
+            <summary>
+            Gets a collection containing the keys.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Values">
+            <summary>
+            Gets a collection containing the values.
+            </summary>
+        </member>
         <member name="T:OchreGui.Utility.Rand">
             <summary>
             Utility (static) class with random number helper functions
@@ -144,107 +258,35 @@
             <param name="flag"></param>
             <returns></returns>
         </member>
-        <member name="T:OchreGui.Utility.StaticDictionary`2">
-            <summary>
-            Represents a type of Dictionary that, after construction, has a static number of
-            items.  Items cannot be added or removed, but they can be modified as normal.
-            To maintain the static nature, this class does not support a collection initializer; instead,
-            it is constructed using an array of key value pairs.
-            </summary>
-            <typeparam name="TKey"></typeparam>
-            <typeparam name="TValue"></typeparam>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.#ctor(System.Collections.Generic.KeyValuePair{`0,`1}[])">
-            <summary>
-            Construct a StaticDictionary instance given an array of key value pairs.
-            </summary>
-            <param name="items"></param>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsKey(`0)">
-            <summary>
-            Returns true if this StaticDictionary contains the specified key.
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
-            is null.</exception>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsValue(`1)">
-            <summary>
-            Returns true if this StaticDictionary contains the specified value.
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.ToString">
-            <summary>
-            Returns a string representation of this object.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.GetEnumerator">
-            <summary>
-            Returns an enumerator that iterates through this collection.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Utility.StaticDictionary`2.System#Collections#IEnumerable#GetEnumerator">
-            <summary>
-            Returns an enumerator that iterates through this collection.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:OchreGui.Utility.StaticDictionary`2.Item(`0)">
-            <summary>
-            Gets or sets the value with the specified key.  The key must be non-null, and must
-            exist in this StaticDictionary or an exception will be thrown.
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
-            is null.</exception>
-            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/>
-            does not exist in the default items.</exception>
-        </member>
-        <member name="P:OchreGui.Utility.StaticDictionary`2.Count">
-            <summary>
-            Gets the number of items contained in this StaticDictionary
-            </summary>
-        </member>
-        <member name="P:OchreGui.Utility.StaticDictionary`2.Keys">
-            <summary>
-            Gets a collection containing the keys.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Utility.StaticDictionary`2.Values">
-            <summary>
-            Gets a collection containing the values.
-            </summary>
-        </member>
         <member name="T:OchreGui.Utility.AlternativeMap`2">
             <summary>
             Represents a collection of default items that can be selectively overriden with
             alternatives.  When retrieving a value, the alternative is returned if one exists; otherwise
-            the default is returned.
+            the default is returned.<para/>
+            </summary>
+            <remarks>
             Conceptually, an AlternativeMap is similar to a Dictionary, albeit with a much simpler interface.
-            A collection initializer can be used during construction, which adds alternatives.
-            All AlternativeMap objects must have a valid collection of defaults, defined as a StaticDictionary object.
-            The AlternateMap object stores a reference to this StaticDictionary, so that changes to the default items
-            elsewhere will affect the retrieval of items in this class.  It is for this reason that the defaults
-            must be defined as a StaticDictionary, so that additions/removals to the default collection 
-            outside of this object do not introduce instability.
+            An AlternativeMap is also a type of IStaticMap, so it can be used as the defaults for another
+            AlternativeMap.
+            <para/>
             All alternative items that are added must share a common key with one of the defaults, or an exception will
             be thrown.
-            </summary>
+            All AlternativeMap objects must have a valid collection of defaults, defined as an 
+            IStaticDictionary object.
+            The AlternateMap object stores a reference to the IStaticDictionary defaults, 
+            so that changes to the default items elsewhere will affect the retrieval of items in this object.  
+            It is for this reason that the defaults must be defined as an IStaticDictionary, so that 
+            additions/removals to the default collection outside of this object do not introduce instability.
+            </remarks>
             <typeparam name="TKey"></typeparam>
             <typeparam name="TValue"></typeparam>
         </member>
-        <member name="M:OchreGui.Utility.AlternativeMap`2.#ctor(OchreGui.Utility.StaticDictionary{`0,`1})">
+        <member name="M:OchreGui.Utility.AlternativeMap`2.#ctor(OchreGui.Utility.IStaticDictionary{`0,`1})">
             <summary>
             Construct an AlternativeMap instance with the specified default items.  This class
             supports a collection initializer to add alternative items during construction.
             </summary>
-            <param name="def">A valid, non-null StaticMap collection holding the default items</param>
+            <param name="defaults">A valid, non-null StaticMap collection holding the default items</param>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="defaults"/>
             is null</exception>
         </member>

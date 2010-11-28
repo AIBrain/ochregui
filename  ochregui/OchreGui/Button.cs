@@ -220,7 +220,7 @@ namespace OchreGui
         {
             if (IsActive && IsBeingPushed)
             {
-                return Pigments[PigmentType.ViewPushing];
+                return Pigments[PigmentType.ViewDepressed];
             }
             return base.DetermineMainPigment();
         }
@@ -235,7 +235,7 @@ namespace OchreGui
         {
             if (IsActive && IsBeingPushed)
             {
-                return Pigments[PigmentType.FramePushing];
+                return Pigments[PigmentType.FrameDepressed];
             }
             return base.DetermineFramePigment();
         }

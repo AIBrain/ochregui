@@ -40,6 +40,12 @@
             Information about the specified font as per TCODFontFlags.
             </summary>
         </member>
+        <member name="P:OchreGui.ApplicationInfo.Pigments">
+            <summary>
+            Any pigments added to this dictionary will override the defaults for this application
+            and all child widgets.  Use this to set application-wide pigments.
+            </summary>
+        </member>
         <member name="T:OchreGui.Application">
             <summary>
             Represents the entire application, and controls top-level logic and state.  The Application
@@ -121,6 +127,12 @@
         <member name="P:OchreGui.Application.IsQuitting">
             <summary>
             True if the application wants to quit.  Set to true to quit.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.Pigments">
+            <summary>
+            Holds the map of pigments for this application.  Use this to make application-wide
+            changes to pigments.
             </summary>
         </member>
         <member name="P:OchreGui.Application.ScreenSize">
@@ -220,6 +232,13 @@
             or blitting to the screen.  This property is present so that subclasses can implement
             specialized drawing code for optimization or that would otherwise be difficult to 
             implement using overrides/events.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.WidgetTemplate.Pigments">
+            <summary>
+            Any pigments added to this dictionary will override the default pigments for the widget.
+            Use this to define custom pigments for a widget and any of its children.
+            Defaults to an empty collection.
             </summary>
         </member>
         <member name="M:OchreGui.ControlTemplate.#ctor">
@@ -675,6 +694,12 @@
         <member name="P:OchreGui.Widget.Size">
             <summary>
             Get the the size of the widget.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.Pigments">
+            <summary>
+            Get the pigment map for this widget.  Alternatives can be set or removed
+            to change the pigments for this widget and its children during runtime.
             </summary>
         </member>
         <member name="P:OchreGui.Widget.ScreenPosition">
@@ -2803,6 +2828,13 @@
             </summary>
             <param name="template"></param>
         </member>
+        <member name="M:OchreGui.Panel.DetermineMainPigment">
+            <summary>
+            Returns the pigment for the main area of the panel.  Base method returns
+            Pigments[PigmentType.Window]
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:OchreGui.Manager">
             <summary>
             A Manager is basically a Coomponent that can be instatiated and added to a Window.
@@ -2813,6 +2845,127 @@
             <summary>
             The parent window of this manager instance.
             </summary>
+        </member>
+        <member name="T:OchreGui.PigmentType">
+            <summary>
+            The various UI Pigment types used by the framework.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Window">
+            <summary>
+            The pigment used for the window drawing area
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Tooltip">
+            <summary>
+            The pigment used for a tooltip
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.DragItem">
+            <summary>
+            The pigment used for an item that is being dragged
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameFocus">
+            <summary>
+            The pigment for the frame of a control that has the keyboard focus
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameInactive">
+            <summary>
+            The pigment used for the frame of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameHilight">
+            <summary>
+            The pigment used for the frame of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameNormal">
+            <summary>
+            The pigment used for the frame of a control when no other states are applicable.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameDepressed">
+            <summary>
+            The pigment used for the frame of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameSelected">
+            <summary>
+            The pigment used for the frame of a control when it is selected.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewFocus">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewInactive">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewHilight">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewNormal">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewDepressed">
+            <summary>
+            The pigment used for the main area of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewSelected">
+            <summary>
+            The pigment used for the main area of a control when it is selected.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PigmentAlternatives">
+            <summary>
+            This class is simply a wrapper around a Dictionary using PigmentType as keys
+            and Pigment as values.  Also provides a Copy() method to make a copy
+            of this instance.
+            This class is used to pass a collection of alternative pigments to a widget in the
+            template.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentAlternatives.Copy">
+            <summary>
+            Performs a copy of this instance.  Since the Pigment class is
+            immutable, this is conceptually a deep copy.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.PigmentMap">
+            <summary>
+            Simply wraps an AlternativeMap object for code cleanliness.
+            This class is used to store the pigments for a UI object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults.
+            </summary>
+            <param name="defaults"></param>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment},System.Collections.Generic.Dictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults and a
+            Dictionary of alternatives.
+            </summary>
+            <param name="defaults"></param>
+            <param name="alternatives"></param>
         </member>
     </members>
 </doc>

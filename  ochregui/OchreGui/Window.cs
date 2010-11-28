@@ -197,9 +197,9 @@ namespace OchreGui
             CheckNewlyAddedControlMessages(control);
 
             control.ParentWindow = this;
-            control.Pigments = new PigmentAlternatives(ParentApplication.DefaultPigments, 
+            control.Pigments = new PigmentMap(Pigments, 
                 control.PigmentOverrides);
-
+            
             if (!control.isSetup)
             {
                 control.OnSettingUp();

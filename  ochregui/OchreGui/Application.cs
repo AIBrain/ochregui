@@ -45,7 +45,7 @@ namespace OchreGui
             Title = "";
             Font = null;
             FontFlags = TCODFontFlags.LayoutAsciiInColumn;
-            DefaultPigments = null;
+            Pigments = new PigmentAlternatives();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -74,7 +74,11 @@ namespace OchreGui
         /// </summary>
         public TCODFontFlags FontFlags { get; set; }
 
-        public DefaultPigments DefaultPigments { get; set; }
+        /// <summary>
+        /// Any pigments added to this dictionary will override the defaults for this application
+        /// and all child widgets.  Use this to set application-wide pigments.
+        /// </summary>
+        public PigmentAlternatives Pigments { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
     }
     #endregion
@@ -129,8 +133,11 @@ namespace OchreGui
         /// </summary>
         public bool IsQuitting { get; set; }
 
-
-        public DefaultPigments DefaultPigments { get; protected set; }
+        /// <summary>
+        /// Holds the map of pigments for this application.  Use this to make application-wide
+        /// changes to pigments.
+        /// </summary>
+        public PigmentMap Pigments { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -169,7 +176,8 @@ namespace OchreGui
             Input = new InputManager(win);
             CurrentWindow = win;
             win.ParentApplication = this;
-            win.Pigments = new PigmentAlternatives(this.DefaultPigments, win.PigmentOverrides);
+            win.Pigments = new PigmentMap(this.Pigments, 
+                win.PigmentOverrides);
 
             if (!win.isSetup)
             {
@@ -246,12 +254,8 @@ namespace OchreGui
                 SetupEventHandler(this, EventArgs.Empty);
             }
 
-            DefaultPigments = info.DefaultPigments;
-
-            if (DefaultPigments == null)
-            {
-                DefaultPigments = DefaultPigments.FrameworkDefaults;
-            }
+            Pigments = new PigmentMap(DefaultPigments.FrameworkDefaults,
+                info.Pigments);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 

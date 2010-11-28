@@ -46,6 +46,7 @@ namespace OchreGui
         protected WidgetTemplate()
         {
             OwnerDraw = false;
+            Pigments = new PigmentAlternatives();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -56,7 +57,12 @@ namespace OchreGui
         /// </summary>
         public bool OwnerDraw { get; set; }
 
-        public Dictionary<PigmentType,Pigment> Pigments { get; set; }
+        /// <summary>
+        /// Any pigments added to this dictionary will override the default pigments for the widget.
+        /// Use this to define custom pigments for a widget and any of its children.
+        /// Defaults to an empty collection.
+        /// </summary>
+        public PigmentAlternatives Pigments { get; set; }
 
         /// <summary>
         /// An override of this method should return the exact and final size of the widget.  This size is
@@ -95,12 +101,8 @@ namespace OchreGui
 
             this.OwnerDraw = template.OwnerDraw;
 
-            this.PigmentOverrides = template.Pigments;
+            this.PigmentOverrides = template.Pigments.Copy();
 
-            if (this.PigmentOverrides == null)
-            {
-                PigmentOverrides = new Dictionary<PigmentType, Pigment>();
-            }
 		}
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -132,7 +134,11 @@ namespace OchreGui
         /// </summary>
         public Size Size { get; private set; }
 
-        public PigmentAlternatives Pigments { get; internal set; }
+        /// <summary>
+        /// Get the pigment map for this widget.  Alternatives can be set or removed
+        /// to change the pigments for this widget and its children during runtime.
+        /// </summary>
+        public PigmentMap Pigments { get; internal set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
@@ -210,7 +216,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 		#endregion
         #region Internal
-        internal Dictionary<PigmentType,Pigment> PigmentOverrides { get; set; }
+        internal PigmentAlternatives PigmentOverrides { get; set; }
         #endregion
         #region Dispose
         private bool _alreadyDisposed;

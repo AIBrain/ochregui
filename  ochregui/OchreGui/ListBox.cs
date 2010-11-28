@@ -310,7 +310,7 @@ namespace OchreGui
             else if (index == mouseOverIndex)
             {
                 Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewMouseOver]);
+                    Size.Width - 2, Pigments[PigmentType.ViewHilight]);
             }
             else
             {

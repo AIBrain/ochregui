@@ -506,14 +506,14 @@ namespace OchreGui
         {
             if (HasKeyboardFocus)
             {
-                return Pigments[PigmentType.ViewHasFocus];
+                return Pigments[PigmentType.ViewFocus];
             }
 
             if (IsActive)
             {
                 if (IsMouseOver && HilightWhenMouseOver)
                 {
-                    return Pigments[PigmentType.ViewMouseOver];
+                    return Pigments[PigmentType.ViewHilight];
                 }
                 else
                 {
@@ -537,14 +537,14 @@ namespace OchreGui
         {
             if (HasKeyboardFocus)
             {
-                return Pigments[PigmentType.FrameHasFocus];
+                return Pigments[PigmentType.FrameFocus];
             }
 
             if (IsActive)
             {
                 if (IsMouseOver && HilightWhenMouseOver)
                 {
-                    return Pigments[PigmentType.FrameMouseOver];
+                    return Pigments[PigmentType.FrameHilight];
                 }
                 else
                 {

@@ -97,7 +97,11 @@ namespace OchreGui
         }
 
 
-
+        /// <summary>
+        /// Returns the pigment for the main area of the panel.  Base method returns
+        /// Pigments[PigmentType.Window]
+        /// </summary>
+        /// <returns></returns>
         protected override Pigment DetermineMainPigment()
         {
             return Pigments[PigmentType.Window];

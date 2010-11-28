@@ -50,8 +50,6 @@ namespace OchreGui.Demo
         int currPage;
     }
 
- 
-
     class Program
     {
         static void Main(string[] args)
@@ -61,7 +59,7 @@ namespace OchreGui.Demo
                 Title = "OchreGui Demo",
                 ScreenSize = new Size(80, 50),
                 Font = "courier12x12_aa_tc.png",
-                FontFlags = libtcod.TCODFontFlags.LayoutTCOD
+                FontFlags = libtcod.TCODFontFlags.LayoutTCOD,
             };
 
             using (DemoApplication app = new DemoApplication())
