@@ -51,6 +51,12 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
+        /// Overrides the automatically calculated size.  The label element is trimmed if
+        /// it will not fit in the checkbox.
+        /// </summary>
+        public Size AutoSizeOverride { get; set; }
+
+        /// <summary>
         /// The text displayed by the checkbox.  Defaults to empty string ""
         /// </summary>
         public string Label { get; set; }
@@ -97,6 +103,11 @@ namespace OchreGui
         /// <returns></returns>
         public override Size CalculateSize()
         {
+            if (!AutoSizeOverride.IsEmpty)
+            {
+                return AutoSizeOverride;
+            }
+
             int width = Label.Length + 2;
             int height = 1;
 
@@ -135,8 +146,13 @@ namespace OchreGui
         public CheckBox(CheckBoxTemplate template)
             : base(template)
         {
-            HasFrame = template.HasFrameBorder
-                ;
+            HasFrame = template.HasFrameBorder;
+
+            if (template.CalculateSize().Height < 3)
+            {
+                HasFrame = false;
+            }
+
             HilightWhenMouseOver = template.HilightWhenMouseOver;
             CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
 
@@ -147,36 +163,26 @@ namespace OchreGui
             this.CheckOnLeft = template.CheckOnLeft;
             this.LabelAlignment = template.LabelAlignment;
 
-            if (template.HasFrameBorder)
+            Rect inner = this.LocalRect;
+
+            if (template.HasFrameBorder && template.CalculateSize().Height >= 3)
             {
-                if (CheckOnLeft)
-                {
-                    labelPosX = 3;
-                    checkPosX = 1;
-                }
-                else
-                {
-                    labelPosX = 1;
-                    checkPosX = Size.Width - 2;
-                }
-                labelPosY = 1;
-                labelFieldLength = Size.Width - 4;
+                inner = Rect.Inflate(inner,-1,-1);
+            }
+
+            if (CheckOnLeft)
+            {
+                checkPos = inner.LeftCenter;
+                labelRect = new Rect(inner.UpperLeft.Shift(2, 0),
+                    inner.LowerRight);
             }
             else
             {
-                if (CheckOnLeft)
-                {
-                    labelPosX = 2;
-                    checkPosX = 0;
-                }
-                else
-                {
-                    labelPosX = 0;
-                    checkPosX = Size.Width - 1;
-                }
-                labelPosY = 0;
-                labelFieldLength = Size.Width - 2;
+                checkPos = inner.RightCenter;
+                labelRect = new Rect(inner.UpperLeft,
+                    inner.LowerRight.Shift(-2, 0));
             }
+
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -245,19 +251,19 @@ namespace OchreGui
 
             if (!string.IsNullOrEmpty(Label))
             {
-                Canvas.PrintStringAligned(labelPosX, labelPosY, Label,
-                    LabelAlignment, labelFieldLength);
+                Canvas.PrintStringAligned(labelRect.UpperLeft, Label,
+                    LabelAlignment, VerticalAlignment.Center, labelRect.Size);
             }
 
             if (IsActive)
             {
                 if (IsChecked)
                 {
-                    Canvas.PrintChar(checkPosX, labelPosY, 225, DefaultPigments.Hilight);
+                    Canvas.PrintChar(checkPos, 225, Pigments[PigmentType.ViewNormal]);
                 }
                 else
                 {
-                    Canvas.PrintChar(checkPosX, labelPosY, 224, DefaultPigments.Active);
+                    Canvas.PrintChar(checkPos, 224, Pigments[PigmentType.ViewNormal]);
                 }
             }
         }
@@ -265,10 +271,11 @@ namespace OchreGui
         #endregion
         #region Private 
         // /////////////////////////////////////////////////////////////////////////////////
-        private int labelPosX;
-        private int labelFieldLength;
-        private int labelPosY;
-        private int checkPosX;
+        //private int labelPosX;
+        //private int labelFieldLength;
+        //private int labelPosY;
+        private Rect labelRect;
+        private Point checkPos;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
     }

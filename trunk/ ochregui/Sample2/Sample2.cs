@@ -186,13 +186,13 @@ namespace OchreGui.Sample2
         }
 
         /// Draw the player symbol at the current position.  This time we specify
-        /// the optional Pigment for the drawing operation.  DefaultPigments holds some Pigments
+        /// the optional Pigment for the drawing operation.  WindowPigments holds some Pigments
         /// that are used automatically by the framework when drawing Gui elements.
         protected override void Redraw()
         {
             base.Redraw();
 
-            Canvas.PrintChar(currentPos, '@', DefaultPigments.Hilight);
+            Canvas.PrintChar(currentPos, '@', Pigments[PigmentType.ViewNormal]);
         }
 
         /// Here we handle the keyboard to check for the arrow keys.  KeyboardData contains basically the same

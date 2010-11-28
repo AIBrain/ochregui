@@ -40,13 +40,6 @@
             Information about the specified font as per TCODFontFlags.
             </summary>
         </member>
-        <member name="P:OchreGui.ApplicationInfo.DefaultPigments">
-            <summary>
-            The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-            override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
-            or Redraw methods.  Defaults to a pre-generated set of Pigments.
-            </summary>
-        </member>
         <member name="T:OchreGui.Application">
             <summary>
             Represents the entire application, and controls top-level logic and state.  The Application
@@ -128,13 +121,6 @@
         <member name="P:OchreGui.Application.IsQuitting">
             <summary>
             True if the application wants to quit.  Set to true to quit.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.DefaultPigments">
-            <summary>
-            The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-            override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
-            or Redraw methods.
             </summary>
         </member>
         <member name="P:OchreGui.Application.ScreenSize">
@@ -228,12 +214,6 @@
             used during the contruction of an object from a template.
             </summary>
         </member>
-        <member name="P:OchreGui.WidgetTemplate.DefaultPigments">
-            <summary>
-            The default pigments that this widget will have.  Defaults to null, which tells
-            the child classes to inherit or create a new DefaultPigments object.
-            </summary>
-        </member>
         <member name="P:OchreGui.WidgetTemplate.OwnerDraw">
             <summary>
             If true, then base classes will not do any drawing to the canvas, including clearing
@@ -325,16 +305,6 @@
         <member name="P:OchreGui.ControlTemplate.IsActiveInitially">
             <summary>
             If true (the default), this control will be Active when created.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ControlTemplate.FramePigments">
-            <summary>
-            The default pigments for the frame element.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ControlTemplate.MainPigments">
-            <summary>
-            The default pigments for the main view element.
             </summary>
         </member>
         <member name="M:OchreGui.ListBoxTemplate.#ctor">
@@ -619,20 +589,15 @@
             component has received.
             </summary>
         </member>
-        <member name="P:OchreGui.Component.TotalEllapsed">
+        <member name="P:OchreGui.Component.TotalElapsed">
             <summary>
-            Total ellapsed time since start of application, in milliseconds.
+            Total elapsed time since start of application, in milliseconds.
             </summary>
         </member>
-        <member name="P:OchreGui.Component.LastTickEllapsed">
+        <member name="P:OchreGui.Component.LastTickElapsed">
             <summary>
-            Ellapsed time in milliseconds since the last tick message this component
+            Elapsed time in milliseconds since the last tick message this component
             has received.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Component.ScheduleCallback">
-            <summary>
-            A callback method for the Schedule object must conform to this delegate.
             </summary>
         </member>
         <member name="M:OchreGui.Widget.#ctor(OchreGui.WidgetTemplate)">
@@ -650,14 +615,14 @@
         <member name="M:OchreGui.Widget.DetermineMainPigment">
             <summary>
             Calculates the current Pigment of the main drawing area for the widget.  Override to change
-            which pigment is used.  Base method returns this.DefaultPigments.Window.
+            which pigment is used.
             </summary>
             <returns></returns>
         </member>
         <member name="M:OchreGui.Widget.DetermineFramePigment">
             <summary>
             Calculate and return the current Pigment of the frame area for this widget.
-            Override to change which pigment is used.  Base method returns this.DefaultPigments.Frame
+            Override to change which pigment is used.
             </summary>
             <returns></returns>
         </member>
@@ -707,14 +672,14 @@
             Get the Canvas object associated with this widget.
             </summary>
         </member>
-        <member name="P:OchreGui.Widget.DefaultPigments">
-            <summary>
-            Get the default DefaultPigments associated with this widget.
-            </summary>
-        </member>
         <member name="P:OchreGui.Widget.Size">
             <summary>
             Get the the size of the widget.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.ScreenPosition">
+            <summary>
+            The upper left position of this widget in screen space coordinates.
             </summary>
         </member>
         <member name="P:OchreGui.Widget.OwnerDraw">
@@ -723,11 +688,6 @@
             or blitting to the screen.  This property is present so that subclasses can implement
             specialized drawing code for optimization or that would otherwise be difficult to 
             implement using overrides/events.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.ScreenPosition">
-            <summary>
-            The upper left position of this widget in screen space coordinates.
             </summary>
         </member>
         <member name="M:OchreGui.Control.#ctor(OchreGui.ControlTemplate)">
@@ -767,24 +727,17 @@
         </member>
         <member name="M:OchreGui.Control.DetermineMainPigment">
             <summary>
-            Sets the colors for the control according to its state.
-            Override to return a custom color for the main drawing area of the button, or to add
-            additional colors for the button based on custom states.
+            Returns the pigment for the control according to its state.
+            Override to return a custom color for the main drawing area of the control, or to add
+            additional colors for the control based on custom states.
             </summary>
-            <remarks>
-            The possible Pigments returned by this base method (based on current state) are as follows:
-                <list type="bullet">
-                    <item>
-                        <description>DefaultPigments.Active</description>
-                    </item>
-                    <item>
-                        <description>DefaultPigments.Inactive</description>
-                    </item>
-                    <item>
-                        <description>DefaultPigments.Hilight</description>
-                    </item>
-                </list>
-            </remarks>
+        </member>
+        <member name="M:OchreGui.Control.DetermineFramePigment">
+            <summary>
+            Returns the pigment for the frame according to its state.
+            Override to return a custom color for the frame area of the control, or to add
+            additional colors for the control based on custom states.
+            </summary>
         </member>
         <member name="M:OchreGui.Control.DetermineTooltipText">
             <summary>
@@ -1094,32 +1047,22 @@
         </member>
         <member name="M:OchreGui.Button.DetermineMainPigment">
             <summary>
-            Returns the color of the main control area based on its current state.
+            Returns the pigment of the main control area based on its current state.
             Override to return a custom color for the main drawing area of the button, or to add
             additional colors for the button based on custom states.
             </summary>
-            <remarks>
-            The possible Pigments returned by this base method (based on current state) are as follows:
-                <list type="bullet">
-                    <item>
-                        <description>DefaultPigments.Depressed</description>
-                    </item>
-                    <item>
-                        <description>DefaultPigments.Active</description>
-                    </item>
-                    <item>
-                        <description>DefaultPigments.Inactive</description>
-                    </item>
-                    <item>
-                        <description>DefaultPigments.Hilight</description>
-                    </item>
-                </list>
-            </remarks>
+        </member>
+        <member name="M:OchreGui.Button.DetermineFramePigment">
+            <summary>
+            Returns the pigment of the frame based on the current state.
+            Override to return a custom color for the frame, or to add additional colors
+            for the button based on custom states.
+            </summary>
             <returns></returns>
         </member>
         <member name="M:OchreGui.Button.OnMouseButtonUp(OchreGui.MouseData)">
             <summary>
-            Called when a mouse button is pressed while over this button.  Triggers proper
+            Called when a mouse button is released while over this button.  Triggers proper
             events.  Override to add custom handling.
             </summary>
             <param name="mouseData"></param>
@@ -1220,7 +1163,7 @@
         <member name="M:OchreGui.Entry.TryCommit">
             <summary>
             Trys to commmit the current text, by calling ValidateField.  If successful,
-            the CommittedField will be set to the current text, and OnFieldChanged will
+            the CurrentText will be set to the current text, and OnFieldChanged will
             be called.
             </summary>
             <returns></returns>
@@ -1242,11 +1185,6 @@
             </summary>
             <param name="entry"></param>
             <returns></returns>
-        </member>
-        <member name="M:OchreGui.Entry.DetermineMainPigment">
-            <summary>
-            Returns the color pigment based on whether the entry has the keyboard focus or not.
-            </summary>
         </member>
         <member name="M:OchreGui.Entry.OnSettingUp">
             <summary>
@@ -1287,14 +1225,14 @@
             Triggered when the entered text has been committed, usually by pressing the ENTER key.
             </summary>
         </member>
-        <member name="P:OchreGui.Entry.CommittedField">
+        <member name="P:OchreGui.Entry.CurrentText">
             <summary>
             Gets the last valid, committed text that has been entered.  This may or may not be
             the same as what is being currently displayed by the entry (as a user types input,
             for example).
             </summary>
         </member>
-        <member name="P:OchreGui.Entry.CurrentText">
+        <member name="P:OchreGui.Entry.TextInput">
             <summary>
             The current text state of the control as it is typed.  This text has not yet been
             validated.
@@ -1872,43 +1810,61 @@
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
+            If the text length is larger than the field length, then the text will be trimmed to fit.
+            The field length must be equal to or greater than 1, or an exception will be thrown.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
             null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified field length is less than 1</exception>
         </member>
         <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
+            If the text length is larger than the field length, then the text will be trimmed to fit.
+            The field length must be equal to or greater than 1, or an exception will be thrown.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
             null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified field length is less than 1</exception>
         </member>
         <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
             the specified size of the field.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
             null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified position is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the field size is less than 1</exception>
         </member>
         <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
             the specified size of the field.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
             </summary>
             <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
             null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the field size is less than 1</exception>
         </member>
         <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
@@ -2031,96 +1987,6 @@
             Get the TCODConsole associated with this Canvas
             </summary>
         </member>
-        <member name="T:OchreGui.DefaultPigments">
-            <summary>
-            Stores all of the default pigments used by the framework.
-            </summary>
-        </member>
-        <member name="M:OchreGui.DefaultPigments.#ctor">
-            <summary>
-            Defaults to the predefined pigments.
-            </summary>
-        </member>
-        <member name="M:OchreGui.DefaultPigments.Copy">
-            <summary>
-            Performs a shallow copy of this DefaultPigments instance.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.DefaultPigments.Finalize">
-            <summary>
-            Default finalizer calls Dispose.
-            </summary>
-        </member>
-        <member name="M:OchreGui.DefaultPigments.Dispose">
-            <summary>
-            Safely dispose this object and all of its contents.
-            </summary>
-        </member>
-        <member name="M:OchreGui.DefaultPigments.Dispose(System.Boolean)">
-            <summary>
-            Override to add custom disposing code.
-            </summary>
-            <param name="isDisposing"></param>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Window">
-            <summary>
-            The main widget drawing area pigment, mainly used for owner-drawn controls,
-            Windows, and Panels.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Frame">
-            <summary>
-            The pigment of the frame.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Active">
-            <summary>
-            A control's pigment when active.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Inactive">
-            <summary>
-            A control's pigment when inactive.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Hilight">
-            <summary>
-            A control's pigment when hilighted, for example when the mouse
-            pointer is over it.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Depressed">
-            <summary>
-            A button's pigment when depressed.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Selected">
-            <summary>
-            A control's pigment when selected.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.Tooltip">
-            <summary>
-            The pigment of a tooltip.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefaultPigments.DragItem">
-            <summary>
-            The pigment of the visual component of a drag and drop operation.
-            <Note>Drag and drop is not currently implemented.</Note>
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefPigments.FramePigments">
-            <summary>
-            The default pigments for the frame element.
-            </summary>
-        </member>
-        <member name="P:OchreGui.DefPigments.MainPigments">
-            <summary>
-            The default pigments for the main view element.
-            </summary>
-        </member>
         <member name="T:OchreGui.TooltipEventArgs">
             <summary>
             Used in TooltipEvent.  Test property can be set to
@@ -2164,6 +2030,12 @@
             Auto generates the size of the control based on the other options.
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.AutoSizeOverride">
+            <summary>
+            Overrides the automatically calculated size.  The label element is trimmed if
+            it will not fit in the checkbox.
+            </summary>
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.Label">
             <summary>
@@ -2276,7 +2148,7 @@
             will send the appropriate user input messages to the attached window provided
             during construction.
             </summary>
-            <param name="ellapsed"></param>
+            <param name="elapsed"></param>
         </member>
         <member name="M:OchreGui.InputManager.IsKeyDown(libtcod.TCODKeyCode)">
             <summary>
@@ -2444,6 +2316,18 @@
             Base method prints the frame if applicable.  Override to add custom drawing code.
             </summary>
         </member>
+        <member name="M:OchreGui.Window.DetermineMainPigment">
+            <summary>
+            Returns the Pigment for the main window area.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Window.DetermineFramePigment">
+            <summary>
+            Returns the Pigment for the window frame.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:OchreGui.Window.OnDraw">
             <summary>
             Base method draws each of the controls, and the tooltip if applicable.
@@ -2517,7 +2401,7 @@
             <summary>
             Called during a Window's setup, and is called only once after the Window is
             set to the Application's Window with the Application.SetWindow method.
-            This base method checks to see if DefaultPigments if null, and if so inherits
+            This base method checks to see if WindowPigments if null, and if so inherits
             it's pigments from the parent application.
             Override to add specific setup code.
             </summary>
@@ -2682,13 +2566,18 @@
             Base method returns the empty string "".
             </summary>
         </member>
+        <member name="T:OchreGui.ScheduleCallback">
+            <summary>
+            A callback method for the Schedule object must conform to this delegate.
+            </summary>
+        </member>
         <member name="T:OchreGui.Schedule">
             <summary>
             This class holds a delelgate and an associated timing value for use with the AddSchedule
             method in the Component class.
             </summary>
         </member>
-        <member name="M:OchreGui.Schedule.#ctor(OchreGui.Component.ScheduleCallback,System.UInt32)">
+        <member name="M:OchreGui.Schedule.#ctor(OchreGui.ScheduleCallback,System.UInt32)">
             <summary>
             Construct a Scheduler with the specified callback method, and number of
             milliseconds between each callback.
@@ -2698,10 +2587,10 @@
         </member>
         <member name="M:OchreGui.Schedule.Update(System.UInt32)">
             <summary>
-            Update the Schedule according to the ellapsed milliseconds since the last call to
+            Update the Schedule according to the elapsed milliseconds since the last call to
             this method.  This should be called every tick to provide accurate timing.
             </summary>
-            <param name="ellapsedMS"></param>
+            <param name="elapsedMS"></param>
         </member>
         <member name="T:OchreGui.MenuItemSelectedEventArgs">
             <summary>
@@ -2913,13 +2802,6 @@
             Construct a Panel instance from the given template.
             </summary>
             <param name="template"></param>
-        </member>
-        <member name="M:OchreGui.Panel.DetermineMainPigment">
-            <summary>
-            base method returns the DefaultPigments.Window pigment.  Override to add
-            custom handling.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:OchreGui.Manager">
             <summary>

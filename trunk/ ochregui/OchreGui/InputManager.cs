@@ -40,7 +40,7 @@ namespace OchreGui
 		{
             if (component == null)
             {
-                throw new ArgumentNullException("window");
+                throw new ArgumentNullException("component");
             }
 
             attachedComponent = component;
@@ -54,10 +54,10 @@ namespace OchreGui
         /// will send the appropriate user input messages to the attached window provided
         /// during construction.
         /// </summary>
-        /// <param name="ellapsed"></param>
-        public void Update(uint ellapsed)
+        /// <param name="elapsed"></param>
+        public void Update(uint elapsed)
 		{
-			PollMouse(ellapsed);
+			PollMouse(elapsed);
 			PollKeyboard();
 		}
 
@@ -117,7 +117,7 @@ namespace OchreGui
         #endregion
         #region Mouse Input
         // /////////////////////////////////////////////////////////////////////////////////
-        private void PollMouse(uint totalEllapsed)
+        private void PollMouse(uint totalElapsed)
 		{
 			MouseData mouse = new MouseData(TCODMouse.getStatus());
 
@@ -129,7 +129,7 @@ namespace OchreGui
             //    DoMouseMove(mouse);
 					
             //    lastMousePosition = mouse.Position;
-            //    lastMouseMoveTime = totalEllapsed;
+            //    lastMouseMoveTime = totalElapsed;
             //}
             if (mouse.PixelPosition != lastMousePixelPosition)
             {
@@ -137,11 +137,11 @@ namespace OchreGui
 
                 lastMousePosition = mouse.Position;
                 lastMousePixelPosition = mouse.PixelPosition;
-                lastMouseMoveTime = totalEllapsed;
+                lastMouseMoveTime = totalElapsed;
             }
 				
 			// check for hover
-			if ( (totalEllapsed - lastMouseMoveTime) > hoverMSTol &&
+			if ( (totalElapsed - lastMouseMoveTime) > hoverMSTol &&
 				isHovering == false)
 			{
 				StartHover(mouse);

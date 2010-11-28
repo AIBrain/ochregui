@@ -86,9 +86,13 @@ namespace OchreGui.Extended
 
     public class SpinBox : Control
     {
-
+        #region Events
+        // /////////////////////////////////////////////////////////////////////////////////
         public event EventHandler ValueChanged;
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Constructors
+        // /////////////////////////////////////////////////////////////////////////////////
         public SpinBox(SpinBoxTemplate template)
             : base(template)
         {
@@ -116,7 +120,10 @@ namespace OchreGui.Extended
             HilightWhenMouseOver = false;
 
         }
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Public Properties
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// The current value of the spin box.
         /// </summary>
@@ -129,9 +136,11 @@ namespace OchreGui.Extended
                 OnValueChanged();
             }
         }
-
         private int _currentValue;
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Protected Properties
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// The minimum value that this spin control can have.  Defaults to 0.
         /// </summary>
@@ -160,8 +169,10 @@ namespace OchreGui.Extended
         /// to empty string (no label).
         /// </summary>
         protected string Label { get; private set; }
-
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Protected Methods
+        // /////////////////////////////////////////////////////////////////////////////////
         protected virtual void OnValueChanged()
         {
             if (ValueChanged != null)
@@ -169,8 +180,9 @@ namespace OchreGui.Extended
                 ValueChanged(this, EventArgs.Empty);
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
-
+        // /////////////////////////////////////////////////////////////////////////////////
         protected override void OnSettingUp()
         {
             base.OnSettingUp();
@@ -197,7 +209,6 @@ namespace OchreGui.Extended
                 MinimumValue = this.MinimumValue,
                 MaximumValue = this.MaximumValue,
                 StartingValue = CurrentValue,
-                DefaultPigments = this.DefaultPigments,
                 CommitOnLostFocus = true,
                 ReplaceOnFirstKey = true,
                 UpperLeftPos = fieldRect.UpperLeft
@@ -227,43 +238,9 @@ namespace OchreGui.Extended
             downButton.Emit += new EventHandler(downButton_Emit);
             numEntry.EntryChanged += new EventHandler(numEntry_EntryChanged);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
-        void numEntry_EntryChanged(object sender, EventArgs e)
-        {
-            NumberEntry entry = sender as NumberEntry;
-
-            if(this.CurrentValue != entry.CurrentValue)
-            {
-                this.CurrentValue = entry.CurrentValue;
-            }
-        }
-
-        void downButton_Emit(object sender, EventArgs e)
-        {
-            numEntry.TryCommit();
-            if (CurrentValue > MinimumValue)
-            {
-                //numEntry.CurrentValue = CurrentValue;
-                if (numEntry.TrySetValue(CurrentValue - 1))
-                {
-                }
-                
-            }
-        }
-
-        void upButton_Emit(object sender, EventArgs e)
-        {
-            numEntry.TryCommit();
-            if (CurrentValue < MaximumValue)
-            {
-                //numEntry.CurrentValue = CurrentValue;
-                if (numEntry.TrySetValue(CurrentValue + 1))
-                {
-                }
-            }
-        }
-
-
+        // /////////////////////////////////////////////////////////////////////////////////
         protected override void Redraw()
         {
             base.Redraw();
@@ -285,7 +262,51 @@ namespace OchreGui.Extended
 
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Private
+        // /////////////////////////////////////////////////////////////////////////////////
+        void numEntry_EntryChanged(object sender, EventArgs e)
+        {
+            NumberEntry entry = sender as NumberEntry;
 
+            if(this.CurrentValue != entry.CurrentValue)
+            {
+                this.CurrentValue = entry.CurrentValue;
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
+        void downButton_Emit(object sender, EventArgs e)
+        {
+            numEntry.TryCommit();
+            if (CurrentValue > MinimumValue)
+            {
+                //numEntry.CurrentValue = CurrentValue;
+                if (numEntry.TrySetValue(CurrentValue - 1))
+                {
+                }
+                
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
+        void upButton_Emit(object sender, EventArgs e)
+        {
+            numEntry.TryCommit();
+            if (CurrentValue < MaximumValue)
+            {
+                //numEntry.CurrentValue = CurrentValue;
+                if (numEntry.TrySetValue(CurrentValue + 1))
+                {
+                }
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
         NumberEntry numEntry;
         EmitterButton downButton;
         EmitterButton upButton;
@@ -293,6 +314,27 @@ namespace OchreGui.Extended
         Rect labelRect;
         Point upButtonPos;
         Point downButtonPos;
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Dispose
+        // /////////////////////////////////////////////////////////////////////////////////
+        protected override void Dispose(bool isDisposing)
+        {
+            base.Dispose(isDisposing);
 
+            if (isDisposing)
+            {
+                if (numEntry != null)
+                    numEntry.Dispose();
+
+                if (upButton != null)
+                    upButton.Dispose();
+
+                if (downButton != null)
+                    downButton.Dispose();
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
     }
 }

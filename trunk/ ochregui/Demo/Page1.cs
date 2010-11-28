@@ -229,7 +229,7 @@ namespace OchreGui.Demo
 
         Pigment CalcColor(int x,int y)
         {
-            Pigment btnPigment = DefaultPigments.Active;
+            Pigment btnPigment = Pigments[PigmentType.ViewNormal];
 
             float fx = (float)x;
             float fy = (float)y;
@@ -351,7 +351,7 @@ namespace OchreGui.Demo
                 return new Pigment(new Color(0x000000), bg);
             }
 
-            return DefaultPigments.Active;
+            return Pigments[PigmentType.ViewNormal];
         }
 
         Color bg;

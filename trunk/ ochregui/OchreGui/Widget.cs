@@ -20,6 +20,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using OchreGui.Utility;
 using libtcod;
 
@@ -44,16 +45,9 @@ namespace OchreGui
         /// </summary>
         protected WidgetTemplate()
         {
-            DefaultPigments = null;
             OwnerDraw = false;
         }
         // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// The default pigments that this widget will have.  Defaults to null, which tells
-        /// the child classes to inherit or create a new DefaultPigments object.
-        /// </summary>
-        public DefaultPigments DefaultPigments { get; set; }
-
         /// <summary>
         /// If true, then base classes will not do any drawing to the canvas, including clearing
         /// or blitting to the screen.  This property is present so that subclasses can implement
@@ -61,6 +55,8 @@ namespace OchreGui
         /// implement using overrides/events.  Defaults to false.
         /// </summary>
         public bool OwnerDraw { get; set; }
+
+        public Dictionary<PigmentType,Pigment> Pigments { get; set; }
 
         /// <summary>
         /// An override of this method should return the exact and final size of the widget.  This size is
@@ -93,14 +89,18 @@ namespace OchreGui
         /// <param name="template"></param>
         protected Widget(WidgetTemplate template)
 		{
-            this.DefaultPigments = template.DefaultPigments;
-
             this.ScreenPosition = new Point(0, 0);
             this.Size = template.CalculateSize();
             this.Canvas = new Canvas(Size);
 
             this.OwnerDraw = template.OwnerDraw;
 
+            this.PigmentOverrides = template.Pigments;
+
+            if (this.PigmentOverrides == null)
+            {
+                PigmentOverrides = new Dictionary<PigmentType, Pigment>();
+            }
 		}
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -128,22 +128,11 @@ namespace OchreGui
         public Canvas Canvas { get; private set; }
 
         /// <summary>
-        /// Get the default DefaultPigments associated with this widget.
-        /// </summary>
-        public DefaultPigments DefaultPigments { get; set; }
-
-        /// <summary>
         /// Get the the size of the widget.
         /// </summary>
         public Size Size { get; private set; }
 
-        /// <summary>
-        /// If true, then base classes will not do any drawing to the canvas, including clearing
-        /// or blitting to the screen.  This property is present so that subclasses can implement
-        /// specialized drawing code for optimization or that would otherwise be difficult to 
-        /// implement using overrides/events.
-        /// </summary>
-        protected bool OwnerDraw { get; set; }
+        public PigmentAlternatives Pigments { get; internal set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
@@ -152,6 +141,14 @@ namespace OchreGui
         /// The upper left position of this widget in screen space coordinates.
         /// </summary>
 		protected internal Point ScreenPosition { get; set; }
+
+        /// <summary>
+        /// If true, then base classes will not do any drawing to the canvas, including clearing
+        /// or blitting to the screen.  This property is present so that subclasses can implement
+        /// specialized drawing code for optimization or that would otherwise be difficult to 
+        /// implement using overrides/events.
+        /// </summary>
+        protected bool OwnerDraw { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
@@ -173,25 +170,19 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Calculates the current Pigment of the main drawing area for the widget.  Override to change
-        /// which pigment is used.  Base method returns this.DefaultPigments.Window.
+        /// which pigment is used.
         /// </summary>
         /// <returns></returns>
-        protected virtual Pigment DetermineMainPigment()
-        {
-            return DefaultPigments.Window;
-        }
+        protected abstract Pigment DetermineMainPigment();
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Calculate and return the current Pigment of the frame area for this widget.
-        /// Override to change which pigment is used.  Base method returns this.DefaultPigments.Frame
+        /// Override to change which pigment is used.
         /// </summary>
         /// <returns></returns>
-        protected virtual Pigment DetermineFramePigment()
-        {
-            return DefaultPigments.Frame;
-        }
+        protected abstract Pigment DetermineFramePigment();
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
@@ -218,6 +209,9 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
 		#endregion
+        #region Internal
+        internal Dictionary<PigmentType,Pigment> PigmentOverrides { get; set; }
+        #endregion
         #region Dispose
         private bool _alreadyDisposed;
 
@@ -250,9 +244,6 @@ namespace OchreGui
             {
                 if(Canvas != null)
                     Canvas.Dispose();
-
-                if(DefaultPigments != null)
-                    DefaultPigments.Dispose();
             }
             _alreadyDisposed = true;
         }

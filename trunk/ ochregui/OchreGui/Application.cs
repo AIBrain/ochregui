@@ -45,7 +45,7 @@ namespace OchreGui
             Title = "";
             Font = null;
             FontFlags = TCODFontFlags.LayoutAsciiInColumn;
-            DefaultPigments = new DefaultPigments();
+            DefaultPigments = null;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -74,11 +74,6 @@ namespace OchreGui
         /// </summary>
         public TCODFontFlags FontFlags { get; set; }
 
-        /// <summary>
-        /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
-        /// or Redraw methods.  Defaults to a pre-generated set of Pigments.
-        /// </summary>
         public DefaultPigments DefaultPigments { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
     }
@@ -134,11 +129,7 @@ namespace OchreGui
         /// </summary>
         public bool IsQuitting { get; set; }
 
-        /// <summary>
-        /// The DefaultPigments that are passed to child Windows by default.  Windows and controls can
-        /// override these during OnSettingUp, or use custom colors by overriding DetermineFramePigment, DetermineMainPigment,
-        /// or Redraw methods.
-        /// </summary>
+
         public DefaultPigments DefaultPigments { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -178,6 +169,7 @@ namespace OchreGui
             Input = new InputManager(win);
             CurrentWindow = win;
             win.ParentApplication = this;
+            win.Pigments = new PigmentAlternatives(this.DefaultPigments, win.PigmentOverrides);
 
             if (!win.isSetup)
             {
@@ -255,6 +247,11 @@ namespace OchreGui
             }
 
             DefaultPigments = info.DefaultPigments;
+
+            if (DefaultPigments == null)
+            {
+                DefaultPigments = DefaultPigments.FrameworkDefaults;
+            }
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -270,10 +267,10 @@ namespace OchreGui
                 UpdateEventHandler(this, EventArgs.Empty);
             }
 
-            uint ellapsed = TCODSystem.getElapsedMilli();
+            uint elapsed = TCODSystem.getElapsedMilli();
 
             CurrentWindow.OnTick();
-            Input.Update(ellapsed);
+            Input.Update(elapsed);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -338,6 +335,7 @@ namespace OchreGui
             {
                 if(CurrentWindow != null)
                     CurrentWindow.Dispose();
+
             }
             _alreadyDisposed = true;
         }
