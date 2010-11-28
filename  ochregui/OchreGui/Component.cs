@@ -28,6 +28,13 @@ using libtcod;
 namespace OchreGui
 {
     /// <summary>
+    /// A callback method for the Schedule object must conform to this delegate.
+    /// </summary>
+    public delegate void ScheduleCallback();
+
+
+
+    /// <summary>
     /// This class holds a delelgate and an associated timing value for use with the AddSchedule
     /// method in the Component class.
     /// </summary>
@@ -40,7 +47,7 @@ namespace OchreGui
         /// </summary>
         /// <param name="callback"></param>
         /// <param name="delayMS"></param>
-        public Schedule(Component.ScheduleCallback callback, uint delayMS)
+        public Schedule(ScheduleCallback callback, uint delayMS)
         {
             if (callback == null)
             {
@@ -54,13 +61,13 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Update the Schedule according to the ellapsed milliseconds since the last call to
+        /// Update the Schedule according to the elapsed milliseconds since the last call to
         /// this method.  This should be called every tick to provide accurate timing.
         /// </summary>
-        /// <param name="ellapsedMS"></param>
-        public void Update(uint ellapsedMS)
+        /// <param name="elapsedMS"></param>
+        public void Update(uint elapsedMS)
         {
-            count += ellapsedMS;
+            count += elapsedMS;
             if (count >= DelayMS)
             {
                 count = 0;
@@ -73,7 +80,7 @@ namespace OchreGui
             count = 0;
         }
 
-        private Component.ScheduleCallback Callback;
+        private ScheduleCallback Callback;
         private uint DelayMS;
         private uint count;
         // /////////////////////////////////////////////////////////////////////////////////
@@ -191,10 +198,7 @@ namespace OchreGui
         #endregion
         #region Public
         // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// A callback method for the Schedule object must conform to this delegate.
-        /// </summary>
-        public delegate void ScheduleCallback();
+
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
@@ -292,15 +296,15 @@ namespace OchreGui
         protected Point CurrentMousePos { get; set; }
 
         /// <summary>
-        /// Total ellapsed time since start of application, in milliseconds.
+        /// Total elapsed time since start of application, in milliseconds.
         /// </summary>
-        protected uint TotalEllapsed { get; private set; }
+        protected uint TotalElapsed { get; private set; }
 
         /// <summary>
-        /// Ellapsed time in milliseconds since the last tick message this component
+        /// Elapsed time in milliseconds since the last tick message this component
         /// has received.
         /// </summary>
-        protected uint LastTickEllapsed { get; private set; }
+        protected uint LastTickElapsed { get; private set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
@@ -330,8 +334,8 @@ namespace OchreGui
         {
             uint milli = TCODSystem.getElapsedMilli();
 
-            LastTickEllapsed = milli - TotalEllapsed;
-            TotalEllapsed = milli;
+            LastTickElapsed = milli - TotalElapsed;
+            TotalElapsed = milli;
 
             if (Tick != null)
             {
@@ -342,7 +346,7 @@ namespace OchreGui
             {
                 foreach (Schedule s in scheduleList)
                 {
-                    s.Update(LastTickEllapsed);
+                    s.Update(LastTickElapsed);
                 }
             }
 

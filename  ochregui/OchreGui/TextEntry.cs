@@ -148,8 +148,6 @@ namespace OchreGui
 
             this._maximumCharacters = template.MaximumCharacters;
             this.Validation = template.Validation;
-            //CommittedField = template.StartingField;
-            //CurrentText = CommittedField;
             TrySetField(template.StartingField);
         }
         // /////////////////////////////////////////////////////////////////////////////////

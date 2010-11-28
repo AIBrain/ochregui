@@ -300,11 +300,15 @@ namespace OchreGui
         /// <summary>
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// horizontally with the specified alignment and within the specified field length.
+        /// If the text length is larger than the field length, then the text will be trimmed to fit.
+        /// The field length must be equal to or greater than 1, or an exception will be thrown.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified field length is less than 1</exception>
         public void PrintStringAligned(int x, int y, string text,
             HorizontalAlignment alignment, int fieldLength, Pigment pigment = null)
         {
@@ -321,7 +325,20 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("y", "The specified y coordinate is invalid.");
             }
 
+            if (fieldLength < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldLength",
+                    "The field length must equal to or greater than 1");
+            }
+
             Point pos = GetHorAlign(new Point(x, y), text, alignment, fieldLength);
+
+            int trim = fieldLength - text.Length;
+
+            if (trim < 0)
+            {
+                text = text.Substring(0, text.Length + trim);
+            }
 
             PrintString(pos, text, pigment);
         }
@@ -331,11 +348,15 @@ namespace OchreGui
         /// <summary>
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// horizontally with the specified alignment and within the specified field length.
+        /// If the text length is larger than the field length, then the text will be trimmed to fit.
+        /// The field length must be equal to or greater than 1, or an exception will be thrown.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified field length is less than 1</exception>
         public void PrintStringAligned(Point lPos, string text,
             HorizontalAlignment alignment, int fieldLength, Pigment pigment = null)
         {
@@ -352,6 +373,12 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
             }
 
+            if (fieldLength < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldLength",
+                    "The field length must equal to or greater than 1");
+            }
+
             PrintStringAligned(lPos.X, lPos.Y, text, alignment, fieldLength, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -362,11 +389,16 @@ namespace OchreGui
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// both horizontally and vertically with the specified alignments, and within
         /// the specified size of the field.
+        /// If the text length is larger than the field width, then the text will be trimmed to fit.
+        /// The field width and height must be equal to or greater than 1, or an exception will
+        /// be thrown.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified position is outside of this Canvas region</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the width or height of the field size is less than 1</exception>
         public void PrintStringAligned(int x, int y, string text, HorizontalAlignment hAlign,
             VerticalAlignment vAlign, Size fieldSize, Pigment pigment = null)
         {
@@ -383,7 +415,24 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("y", "The specified y coordinate is invalid.");
             }
 
+            if (fieldSize.Width < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldSize", "The specified width of fieldSize is less than 1");
+            }
+
+            if (fieldSize.Height < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldSize", "The specified height of fieldSize is less than 1");
+            }
+
             Point pos = GetHVAlign(new Point(x, y), text, hAlign, vAlign, fieldSize);
+
+            int trim = fieldSize.Width - text.Length;
+
+            if (trim < 0)
+            {
+                text = text.Substring(0, text.Length + trim);
+            }
 
             PrintString(pos, text, pigment);
         }
@@ -394,11 +443,16 @@ namespace OchreGui
         /// Prints the specified string at the given coordinates.  The text is aligned
         /// both horizontally and vertically with the specified alignments, and within
         /// the specified size of the field.
+        /// If the text length is larger than the field width, then the text will be trimmed to fit.
+        /// The field width and height must be equal to or greater than 1, or an exception will
+        /// be thrown.
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
         /// null</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the width or height of the field size is less than 1</exception>
         public void PrintStringAligned(Point lPos, string text, HorizontalAlignment hAlign,
             VerticalAlignment vAlign, Size fieldSize, Pigment pigment = null)
         {
@@ -413,6 +467,16 @@ namespace OchreGui
             if (lPos.Y < 0 || lPos.Y >= this.Size.Height)
             {
                 throw new ArgumentOutOfRangeException("lPos", "The specified y coordinate is invalid.");
+            }
+
+            if (fieldSize.Width < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldSize", "The specified width of fieldSize is less than 1");
+            }
+
+            if (fieldSize.Height < 1)
+            {
+                throw new ArgumentOutOfRangeException("fieldSize", "The specified height of fieldSize is less than 1");
             }
 
             PrintStringAligned(lPos.X, lPos.Y, text, hAlign, vAlign, fieldSize, pigment);

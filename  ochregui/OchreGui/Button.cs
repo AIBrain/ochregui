@@ -212,42 +212,39 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Returns the color of the main control area based on its current state.
+        /// Returns the pigment of the main control area based on its current state.
         /// Override to return a custom color for the main drawing area of the button, or to add
         /// additional colors for the button based on custom states.
         /// </summary>
-        /// <remarks>
-        /// The possible Pigments returned by this base method (based on current state) are as follows:
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <description>DefaultPigments.Depressed</description>
-        ///         </item>
-        ///         <item>
-        ///             <description>DefaultPigments.Active</description>
-        ///         </item>
-        ///         <item>
-        ///             <description>DefaultPigments.Inactive</description>
-        ///         </item>
-        ///         <item>
-        ///             <description>DefaultPigments.Hilight</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
-        /// <returns></returns>
         protected override Pigment DetermineMainPigment()
         {
             if (IsActive && IsBeingPushed)
             {
-                return DefaultPigments.Depressed;
+                return Pigments[PigmentType.ViewPushing];
             }
             return base.DetermineMainPigment();
+        }
+
+        /// <summary>
+        /// Returns the pigment of the frame based on the current state.
+        /// Override to return a custom color for the frame, or to add additional colors
+        /// for the button based on custom states.
+        /// </summary>
+        /// <returns></returns>
+        protected override Pigment DetermineFramePigment()
+        {
+            if (IsActive && IsBeingPushed)
+            {
+                return Pigments[PigmentType.FramePushing];
+            }
+            return base.DetermineFramePigment();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Called when a mouse button is pressed while over this button.  Triggers proper
+        /// Called when a mouse button is released while over this button.  Triggers proper
         /// events.  Override to add custom handling.
         /// </summary>
         /// <param name="mouseData"></param>

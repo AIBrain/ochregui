@@ -77,8 +77,17 @@ namespace OchreGui.Extended
 
     public class Slider : Control
     {
+        #region Events
+        // /////////////////////////////////////////////////////////////////////////////////
         public event EventHandler ValueChanged;
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Constructors
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Construct a Slider instance using the specified template
+        /// </summary>
+        /// <param name="template"></param>
         public Slider(SliderTemplate template)
             : base(template)
         {
@@ -104,8 +113,10 @@ namespace OchreGui.Extended
             BarPigment = template.BarPigment;
 
         }
-
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Public Properties
+        // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Get the minimum value that this spin control can have.
         /// </summary>
@@ -151,8 +162,13 @@ namespace OchreGui.Extended
             }
         }
         private int _currentValue;
-
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Protected Methods
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Called when this.CurrentValue has changed to a different value.
+        /// </summary>
         protected virtual void OnValueChanged()
         {
             if (ValueChanged != null)
@@ -160,8 +176,12 @@ namespace OchreGui.Extended
                 ValueChanged(this, EventArgs.Empty);
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
-
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Creates the NumberEntry and ValueBar for this slider.
+        /// </summary>
         protected override void OnSettingUp()
         {
             base.OnSettingUp();
@@ -190,7 +210,6 @@ namespace OchreGui.Extended
                 MinimumValue = this.MinimumValue,
                 MaximumValue = this.MaximumValue,
                 StartingValue = CurrentValue,
-                DefaultPigments = this.DefaultPigments,
                 CommitOnLostFocus = true,
                 ReplaceOnFirstKey = true,
                 UpperLeftPos = this.LocalToScreen(fieldRect.UpperLeft)
@@ -214,8 +233,22 @@ namespace OchreGui.Extended
 
             valueBar.MouseButtonDown += new EventHandler<MouseEventArgs>(valueBar_MouseButtonDown);
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Draws this Slider's label.
+        /// </summary>
+        protected override void Redraw()
+        {
+            base.Redraw();
 
+            Canvas.PrintString(labelRect.UpperLeft, Label);
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Private
+        // /////////////////////////////////////////////////////////////////////////////////
         void valueBar_MouseMoved(object sender, MouseEventArgs e)
         {
             if (e.MouseData.MouseButton == MouseButton.LeftButton)
@@ -228,7 +261,9 @@ namespace OchreGui.Extended
                 valueBar.CurrentValue = CurrentValue;
             }
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         int CalculateValue(int pixelPosX)
         {
             int charWidth = Canvas.GetCharSize().Width;
@@ -242,23 +277,18 @@ namespace OchreGui.Extended
 
             return (int)((float)(MaximumValue - MinimumValue) * pixposPercent) + MinimumValue;
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
-        protected override void Redraw()
-        {
-            base.Redraw();
-
-            Canvas.PrintString(labelRect.UpperLeft, Label);
-        }
-
-
+        // /////////////////////////////////////////////////////////////////////////////////
         void numEntry_EntryChanged(object sender, EventArgs e)
         {
             int value = numEntry.CurrentValue;
 
             valueBar.CurrentValue = value;
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
-
+        // /////////////////////////////////////////////////////////////////////////////////
         void valueBar_MouseButtonDown(object sender, MouseEventArgs e)
         {
             if (e.MouseData.MouseButton == MouseButton.LeftButton)
@@ -270,10 +300,31 @@ namespace OchreGui.Extended
                 valueBar.CurrentValue = CurrentValue;
             }            
         }
+        // /////////////////////////////////////////////////////////////////////////////////
 
+        // /////////////////////////////////////////////////////////////////////////////////
         NumberEntry numEntry;
         ValueBar valueBar;
         Rect labelRect;
         Rect fieldRect;
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
+        #region Dispose
+        // /////////////////////////////////////////////////////////////////////////////////
+        protected override void Dispose(bool isDisposing)
+        {
+            base.Dispose(isDisposing);
+
+            if (isDisposing)
+            {
+                if (numEntry != null)
+                    numEntry.Dispose();
+
+                if (valueBar != null)
+                    valueBar.Dispose();
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+        #endregion
     }
 }

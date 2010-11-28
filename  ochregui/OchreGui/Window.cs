@@ -97,6 +97,7 @@ namespace OchreGui
         /// If true, a frame will be drawn around the border of the window.
         /// </summary>
         public bool HasFrame { get; set; }
+
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -196,6 +197,8 @@ namespace OchreGui
             CheckNewlyAddedControlMessages(control);
 
             control.ParentWindow = this;
+            control.Pigments = new PigmentAlternatives(ParentApplication.DefaultPigments, 
+                control.PigmentOverrides);
 
             if (!control.isSetup)
             {
@@ -388,7 +391,6 @@ namespace OchreGui
         /// </summary>
         protected Control CurrentDragging { get; private set; }
 
-
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
@@ -445,6 +447,24 @@ namespace OchreGui
         protected override void Redraw()
         {
             base.Redraw();
+        }
+
+        /// <summary>
+        /// Returns the Pigment for the main window area.
+        /// </summary>
+        /// <returns></returns>
+        protected override Pigment DetermineMainPigment()
+        {
+            return Pigments[PigmentType.Window];
+        }
+
+        /// <summary>
+        /// Returns the Pigment for the window frame.
+        /// </summary>
+        /// <returns></returns>
+        protected override Pigment DetermineFramePigment()
+        {
+            return Pigments[PigmentType.FrameNormal];
         }
         #endregion
         #region Message Handlers
@@ -762,7 +782,7 @@ namespace OchreGui
         /// <summary>
         /// Called during a Window's setup, and is called only once after the Window is
         /// set to the Application's Window with the Application.SetWindow method.
-        /// This base method checks to see if DefaultPigments if null, and if so inherits
+        /// This base method checks to see if WindowPigments if null, and if so inherits
         /// it's pigments from the parent application.
         /// Override to add specific setup code.
         /// </summary>
@@ -770,8 +790,7 @@ namespace OchreGui
         {
             base.OnSettingUp();
             
-            if (DefaultPigments == null)
-                DefaultPigments = ParentApplication.DefaultPigments.Copy();
+            
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -899,14 +918,6 @@ namespace OchreGui
 
             if (isDisposing)
             {
-                foreach (Control c in ControlList)
-                {
-                    if (c != null)
-                    {
-                        c.Dispose();
-                    }
-                }
-
                 if (CurrentTooltip != null)
                     CurrentTooltip.Dispose();
             }

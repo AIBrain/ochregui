@@ -153,7 +153,7 @@ namespace Test
                 Canvas.PrintFrame(null, DetermineFramePigment());
             }
 
-            Canvas.PrintString(0, 8, currBarVal.ToString(),DefaultPigments.Active);
+            Canvas.PrintString(0, 8, currBarVal.ToString(),DetermineMainPigment());
         }
 
         int currBarVal;

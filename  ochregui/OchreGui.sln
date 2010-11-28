@@ -14,9 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OchreExt", "OchreExt\OchreExt.csproj", "{CAAE5703-CF5F-48AC-A066-1BDAB3782DFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{14471080-7651-4E55-BA54-CB3081E00C4C}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{D877A72F-A1F2-490F-AAF6-EEE601FA2234}"
 EndProject

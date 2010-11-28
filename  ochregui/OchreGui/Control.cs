@@ -44,41 +44,7 @@ namespace OchreGui
     #endregion
     #region ElementPigments
 
-    public class PigmentList
-    {
-        public PigmentList()
-        {
 
-        }
-
-        public PigmentList(PigmentList defaults)
-        {
-            if (Inactive == null)
-                Inactive = defaults.Inactive;
-
-            if (Normal == null)
-                Normal = defaults.Normal;
-
-            if (MouseOver == null)
-                MouseOver = defaults.MouseOver;
-
-            if (Pushing == null)
-                Pushing = defaults.Pushing;
-
-            if (HasFocus == null)
-                HasFocus = defaults.HasFocus;
-
-            if (Selected == null)
-                Selected = defaults.Selected;
-        }
-
-        public Pigment Inactive { get; set; }
-        public Pigment Normal { get; set; }
-        public Pigment MouseOver { get; set; }
-        public Pigment Pushing { get; set; }
-        public Pigment HasFocus { get; set; }
-        public Pigment Selected { get; set; }
-    }
 
 
 
@@ -120,15 +86,6 @@ namespace OchreGui
         /// </summary>
         public bool IsActiveInitially { get; set; }
 
-        /// <summary>
-        /// The default pigments for the frame element.
-        /// </summary>
-        public PigmentList FramePigments { get; set; }
-
-        /// <summary>
-        /// The default pigments for the main view element.
-        /// </summary>
-        public PigmentList MainPigments { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -470,6 +427,8 @@ namespace OchreGui
         /// Set to a non-empty string to display a tooltip over this control on a hover action.
         /// </summary>
         public string TooltipText { get; set; }
+
+
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -500,6 +459,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Get the current parent window of control
@@ -538,40 +498,62 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Sets the colors for the control according to its state.
-        /// Override to return a custom color for the main drawing area of the button, or to add
-        /// additional colors for the button based on custom states.
+        /// Returns the pigment for the control according to its state.
+        /// Override to return a custom color for the main drawing area of the control, or to add
+        /// additional colors for the control based on custom states.
         /// </summary>
-        /// <remarks>
-        /// The possible Pigments returned by this base method (based on current state) are as follows:
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <description>DefaultPigments.Active</description>
-        ///         </item>
-        ///         <item>
-        ///             <description>DefaultPigments.Inactive</description>
-        ///         </item>
-        ///         <item>
-        ///             <description>DefaultPigments.Hilight</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
         protected override Pigment DetermineMainPigment()
         {
+            if (HasKeyboardFocus)
+            {
+                return Pigments[PigmentType.ViewHasFocus];
+            }
+
             if (IsActive)
             {
                 if (IsMouseOver && HilightWhenMouseOver)
                 {
-                    return (DefaultPigments.Hilight);
+                    return Pigments[PigmentType.ViewMouseOver];
                 }
                 else
                 {
-                    return (DefaultPigments.Active);
+                    return Pigments[PigmentType.ViewNormal];
                 }
             }
             else
             {
-                return (DefaultPigments.Inactive);
+                return Pigments[PigmentType.ViewInactive];
+            }
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Returns the pigment for the frame according to its state.
+        /// Override to return a custom color for the frame area of the control, or to add
+        /// additional colors for the control based on custom states.
+        /// </summary>
+        protected override Pigment DetermineFramePigment()
+        {
+            if (HasKeyboardFocus)
+            {
+                return Pigments[PigmentType.FrameHasFocus];
+            }
+
+            if (IsActive)
+            {
+                if (IsMouseOver && HilightWhenMouseOver)
+                {
+                    return Pigments[PigmentType.FrameMouseOver];
+                }
+                else
+                {
+                    return Pigments[PigmentType.FrameNormal];
+                }
+            }
+            else
+            {
+                return Pigments[PigmentType.FrameInactive];
             }
         }
 
@@ -628,8 +610,6 @@ namespace OchreGui
         {
             base.OnSettingUp();
 
-            if (DefaultPigments == null)
-                DefaultPigments = ParentWindow.DefaultPigments.Copy();
         }
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>

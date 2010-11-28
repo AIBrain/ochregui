@@ -74,7 +74,7 @@ namespace OchreGui
 
             canvas = new Canvas(size);
 
-            canvas.SetDefaultPigment(parentWindow.DefaultPigments.Tooltip);
+            canvas.SetDefaultPigment(parentWindow.Pigments[PigmentType.Tooltip]);
             canvas.PrintFrame("");
 
             canvas.PrintString(1, 1, text);

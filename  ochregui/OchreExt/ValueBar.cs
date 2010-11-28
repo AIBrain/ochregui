@@ -52,8 +52,13 @@ namespace OchreGui.Extended
         }
     }
 
+    /// <summary>
+    /// A value bar is a graphical representation of a value.  It provides one of the elements
+    /// for a Slider, but it can also be used standalone as, for example, a progress bar.
+    /// </summary>
     public class ValueBar : Control
     {
+        #region Constructors
         public ValueBar(ValueBarTemplate template)
             : base(template)
         {
@@ -67,8 +72,8 @@ namespace OchreGui.Extended
 
             BarPigment = template.BarPigment;
         }
-
-
+        #endregion
+        #region Public Properties
         public int MinimumValue { get; private set; }
 
         public int MaximumValue { get; private set; }
@@ -90,7 +95,8 @@ namespace OchreGui.Extended
                 }
             }
         }
-
+        #endregion
+        #region Protected Methods
         protected override Pigment DetermineMainPigment()
         {
             if (BarPigment != null)
@@ -133,7 +139,9 @@ namespace OchreGui.Extended
                     new Pigment(fg,bg));
             }
         }
-
+        #endregion
+        #region Private
         private int rangeWidth;
+        #endregion
     }
 }

@@ -270,7 +270,7 @@ namespace OchreGui
                     Size.Width - 2);
             }
 
-            Canvas.SetDefaultPigment(DefaultPigments.Frame);
+            Canvas.SetDefaultPigment(DetermineFramePigment());
             Canvas.DrawHLine(1, 2, Size.Width - 2);
             Canvas.PrintChar(0, 2, (int)TCODSpecialCharacter.TeeEast);
             Canvas.PrintChar(Size.Width - 1, 2, (int)TCODSpecialCharacter.TeeWest);
@@ -302,20 +302,20 @@ namespace OchreGui
             if (index == CurrentSelected)
             {
                 Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, DefaultPigments.Selected);
+                    Size.Width - 2, Pigments[PigmentType.ViewSelected]);
 
-                Canvas.PrintChar(Size.Width-2, index + 3, 
-                    (int)TCODSpecialCharacter.ArrowWest,DefaultPigments.Selected);
+                Canvas.PrintChar(Size.Width-2, index + 3,
+                    (int)TCODSpecialCharacter.ArrowWest, Pigments[PigmentType.ViewSelected]);
             }
             else if (index == mouseOverIndex)
             {
                 Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, DefaultPigments.Hilight);
+                    Size.Width - 2, Pigments[PigmentType.ViewMouseOver]);
             }
             else
             {
                 Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, DefaultPigments.Active);
+                    Size.Width - 2, Pigments[PigmentType.ViewNormal]);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

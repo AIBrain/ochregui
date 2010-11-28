@@ -144,5 +144,164 @@
             <param name="flag"></param>
             <returns></returns>
         </member>
+        <member name="T:OchreGui.Utility.StaticDictionary`2">
+            <summary>
+            Represents a type of Dictionary that, after construction, has a static number of
+            items.  Items cannot be added or removed, but they can be modified as normal.
+            To maintain the static nature, this class does not support a collection initializer; instead,
+            it is constructed using an array of key value pairs.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.#ctor(System.Collections.Generic.KeyValuePair{`0,`1}[])">
+            <summary>
+            Construct a StaticDictionary instance given an array of key value pairs.
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsKey(`0)">
+            <summary>
+            Returns true if this StaticDictionary contains the specified key.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ContainsValue(`1)">
+            <summary>
+            Returns true if this StaticDictionary contains the specified value.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.ToString">
+            <summary>
+            Returns a string representation of this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.StaticDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Item(`0)">
+            <summary>
+            Gets or sets the value with the specified key.  The key must be non-null, and must
+            exist in this StaticDictionary or an exception will be thrown.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/>
+            does not exist in the default items.</exception>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Count">
+            <summary>
+            Gets the number of items contained in this StaticDictionary
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Keys">
+            <summary>
+            Gets a collection containing the keys.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Utility.StaticDictionary`2.Values">
+            <summary>
+            Gets a collection containing the values.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Utility.AlternativeMap`2">
+            <summary>
+            Represents a collection of default items that can be selectively overriden with
+            alternatives.  When retrieving a value, the alternative is returned if one exists; otherwise
+            the default is returned.
+            Conceptually, an AlternativeMap is similar to a Dictionary, albeit with a much simpler interface.
+            A collection initializer can be used during construction, which adds alternatives.
+            All AlternativeMap objects must have a valid collection of defaults, defined as a StaticDictionary object.
+            The AlternateMap object stores a reference to this StaticDictionary, so that changes to the default items
+            elsewhere will affect the retrieval of items in this class.  It is for this reason that the defaults
+            must be defined as a StaticDictionary, so that additions/removals to the default collection 
+            outside of this object do not introduce instability.
+            All alternative items that are added must share a common key with one of the defaults, or an exception will
+            be thrown.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.#ctor(OchreGui.Utility.StaticDictionary{`0,`1})">
+            <summary>
+            Construct an AlternativeMap instance with the specified default items.  This class
+            supports a collection initializer to add alternative items during construction.
+            </summary>
+            <param name="def">A valid, non-null StaticMap collection holding the default items</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="defaults"/>
+            is null</exception>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.Add(`0,`1)">
+            <summary>
+            Adds the specified key and value to the alternatives.  The key must be defined
+            in the StaticMap defaults passed during the constructor or an exception will
+            be thrown.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/>
+            does not exist in the default items.</exception>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.RemoveAlternative(`0)">
+            <summary>
+            Removes the specified alternative so that the default will be retrieved.  If the
+            alternative with the key exists, then this method returns true.  Otherwise this
+            method returns false.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.RemoveAllAlternatives">
+            <summary>
+            Removes all of the alternatives, exposing the defaults for retrieval.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Utility.AlternativeMap`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through this collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.Utility.AlternativeMap`2.Item(`0)">
+            <summary>
+            Gets or sets the item with the specified key.  If retrieving a value, the alternative
+            item will be returned if one exists, otherwise the default will be returned.  If setting
+            a value, the alternative item is changed if the key exists; otherwise the alternative 
+            item is added.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/>
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/>
+            does not exist in the default items.</exception>
+        </member>
     </members>
 </doc>

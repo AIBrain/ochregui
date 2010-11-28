@@ -14,11 +14,14 @@ namespace OchreGui.Demo
         protected override void OnSettingUp()
         {
             base.OnSettingUp();
-
+            
             CheckBoxTemplate cb1 = new CheckBoxTemplate()
             {
                 Label = "A Checkbox",
-                UpperLeftPos = ViewRect.UpperLeft.Shift(1, 3)
+                UpperLeftPos = ViewRect.UpperLeft.Shift(1, 3),
+                CheckOnLeft = false,
+                AutoSizeOverride = new Size(15,5),
+                LabelAlignment = HorizontalAlignment.Right
             };
             AddControl(new CheckBox(cb1));
 
@@ -192,7 +195,7 @@ namespace OchreGui.Demo
             {
                 if (IsChecked)
                 {
-                    return DefaultPigments.Hilight;
+                    return Pigments[PigmentType.ViewMouseOver];
                 }
 
                 return base.DetermineFramePigment();

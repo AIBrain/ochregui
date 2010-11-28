@@ -118,9 +118,9 @@ namespace OchreGui
             this.CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
             this.HilightWhenMouseOver = template.HilightWhenMouseOver;
 
-            this.CommittedField = "";
+            this.CurrentText = "";
             this.waitingToCommitText = false;
-            this.CurrentText = CommittedField;
+            this.TextInput = CurrentText;
 
             if (template.HasFrameBorder)
             {
@@ -142,13 +142,9 @@ namespace OchreGui
         /// the same as what is being currently displayed by the entry (as a user types input,
         /// for example).
         /// </summary>
-        public string CommittedField { get; protected set; }
-
-        /// <summary>
-        /// The current text state of the control as it is typed.  This text has not yet been
-        /// validated.
-        /// </summary>
         public string CurrentText { get; protected set; }
+
+
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
@@ -160,36 +156,42 @@ namespace OchreGui
         /// <returns></returns>
         public bool TrySetField(string changeTo)
         {
-            CurrentText = changeTo;
+            TextInput = changeTo;
 
             return TryCommit();
         }
 
         /// <summary>
         /// Trys to commmit the current text, by calling ValidateField.  If successful,
-        /// the CommittedField will be set to the current text, and OnFieldChanged will
+        /// the CurrentText will be set to the current text, and OnFieldChanged will
         /// be called.
         /// </summary>
         /// <returns></returns>
         public bool TryCommit()
         {
-            if (this.CommittedField == this.CurrentText)
+            if (this.CurrentText == this.TextInput)
                 return false;
 
-            if (ValidateField(CurrentText) &&
-                CurrentText.Length <= MaximumCharacters)
+            if (ValidateField(TextInput) &&
+                TextInput.Length <= MaximumCharacters)
             {
-                CommittedField = CurrentText;
+                CurrentText = TextInput;
 
                 OnFieldChanged();
                 return true;
             }
-            CurrentText = CommittedField;
+            TextInput = CurrentText;
             return false;
         }
         #endregion
         #region Protected Properties
         // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// The current text state of the control as it is typed.  This text has not yet been
+        /// validated.
+        /// </summary>
+        protected string TextInput { get; set; }
+
         /// <summary>
         /// Get the maximum number of characters that can be typed
         /// </summary>
@@ -245,18 +247,6 @@ namespace OchreGui
         protected abstract bool ValidateField(string entry);
 
         // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Returns the color pigment based on whether the entry has the keyboard focus or not.
-        /// </summary>
-        protected override Pigment DetermineMainPigment()
-        {
-            if (this.HasKeyboardFocus)
-            {
-                return(DefaultPigments.Hilight);
-            }
-            return base.DetermineMainPigment();
-        }
-        // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
         // /////////////////////////////////////////////////////////////////////////////////
@@ -284,19 +274,19 @@ namespace OchreGui
 
             if (waitingToOverwrite)
             {
-                Canvas.PrintString(Label.Length + labelPosX, labelPosY, 
-                    CurrentText, DefaultPigments.Selected);
+                Canvas.PrintString(Label.Length + labelPosX, labelPosY,
+                    TextInput, Pigments[PigmentType.ViewSelected]);
             }
             else
             {
-                Canvas.PrintString(Label.Length + labelPosX, labelPosY, CurrentText);
+                Canvas.PrintString(Label.Length + labelPosX, labelPosY, TextInput);
             }
 
             if (cursorOn && HasKeyboardFocus)
             {
                 Canvas.PrintChar(Label.Length + labelPosX + CursorPos, labelPosY, 
-                    (int)TCODSpecialCharacter.Block1, 
-                    DefaultPigments.Selected);
+                    (int)TCODSpecialCharacter.Block1,
+                    Pigments[PigmentType.ViewSelected]);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -325,20 +315,20 @@ namespace OchreGui
             {
                 if (waitingToOverwrite)
                 {
-                    CurrentText = keyData.Character.ToString();
+                    TextInput = keyData.Character.ToString();
                     CursorPos = 1;
                     waitingToOverwrite = false;
                 }
-                else if(CurrentText.Length < MaximumCharacters)
+                else if(TextInput.Length < MaximumCharacters)
                 {
-                    CurrentText += keyData.Character;
+                    TextInput += keyData.Character;
                     CursorPos++;
                 }
             }
             else if (keyData.KeyCode == TCODKeyCode.Backspace &&
-                CurrentText.Length > 0)
+                TextInput.Length > 0)
             {
-                CurrentText = CurrentText.Substring(0, CurrentText.Length - 1);
+                TextInput = TextInput.Substring(0, TextInput.Length - 1);
                 CursorPos--;
             }
             else if (keyData.KeyCode == TCODKeyCode.Enter)
@@ -349,7 +339,7 @@ namespace OchreGui
             }
             else if (keyData.KeyCode == TCODKeyCode.Escape)
             {
-                CurrentText = CommittedField;
+                TextInput = CurrentText;
                 waitingToCommitText = true;
                 ParentWindow.ReleaseKeyboard(this);
             }
@@ -366,14 +356,14 @@ namespace OchreGui
             base.OnTakeKeyboardFocus();
 
             waitingToCommitText = false;
-            CurrentText = CommittedField;
+            TextInput = CurrentText;
 
             if (ReplaceOnFirstKey)
             {
                 waitingToOverwrite = true;
             }
 
-            this.CursorPos = CommittedField.Length;
+            this.CursorPos = CurrentText.Length;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -392,7 +382,7 @@ namespace OchreGui
             }
             else
             {
-                CurrentText = CommittedField;
+                TextInput = CurrentText;
             }
             waitingToOverwrite = false;
         }

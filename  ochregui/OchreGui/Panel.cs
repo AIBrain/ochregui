@@ -97,14 +97,10 @@ namespace OchreGui
         }
 
 
-        /// <summary>
-        /// base method returns the DefaultPigments.Window pigment.  Override to add
-        /// custom handling.
-        /// </summary>
-        /// <returns></returns>
+
         protected override Pigment DetermineMainPigment()
         {
-            return DefaultPigments.Window;
+            return Pigments[PigmentType.Window];
         }
     }
     #endregion
