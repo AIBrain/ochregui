@@ -21,7 +21,7 @@ namespace OchreGui.Demo
             ButtonTemplate bt0 = new ButtonTemplate()
             {
                 Label = "Autosize",
-                UpperLeftPos = ViewRect.UpperLeft.Shift(1,3)
+                UpperLeftPos = ViewRect.UpperLeft.Shift(1,3),
             };
             AddControl(new Button(bt0));
 
@@ -36,7 +36,8 @@ namespace OchreGui.Demo
             ButtonTemplate bt2 = new ButtonTemplate()
             {
                 Label = "No Border",
-                HasFrameBorder = false
+                HasFrameBorder = false,
+
             };
             bt2.UpperLeftPos = bt1.CalculateRect().LowerLeft.Shift(0, 2);
             AddControl(new Button(bt2));

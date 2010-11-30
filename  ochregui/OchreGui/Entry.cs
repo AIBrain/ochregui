@@ -45,6 +45,8 @@ namespace OchreGui
             CommitOnLostFocus = false;
             ReplaceOnFirstKey = false;
             HasFrameBorder = true;
+            VerticalAlign = VerticalAlignment.Center;
+            LabelAlign = HorizontalAlignment.Left;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -78,9 +80,33 @@ namespace OchreGui
         public bool ReplaceOnFirstKey { get; set; }
 
         /// <summary>
-        /// True if this control has a border for a frame.  Defaults to true.
+        /// True if this control draws a frame.  Defaults to true.
         /// </summary>
         public bool HasFrameBorder { get; set; }
+
+        /// <summary>
+        /// Set this to manually size the entry.  If empty (the default), the entry will
+        /// be autosized.
+        /// </summary>
+        public Size AutoSizeOverride { get; set; }
+
+        /// <summary>
+        /// The vertical alignment of the label and input field within the Entry control.
+        /// Defaults to VerticalAlignment.Center
+        /// </summary>
+        public VerticalAlignment VerticalAlign { get; set; }
+
+        /// <summary>
+        /// The horizontal alignment of the label withing the Entry control.
+        /// Defaults to HorizontalAlignment.Left
+        /// </summary>
+        public HorizontalAlignment LabelAlign { get; set; }
+
+        /// <summary>
+        /// Override must return the maximum number of characters allowed for input.
+        /// </summary>
+        /// <returns></returns>
+        public abstract int CalculateMaxCharacters();
         // /////////////////////////////////////////////////////////////////////////////////
 
     }
@@ -110,7 +136,14 @@ namespace OchreGui
             :base(template)
         {
             this.Label = template.Label;
+
+            if (this.Size.Width < 3 || this.Size.Height < 3)
+            {
+                template.HasFrameBorder = false;
+            }
             this.HasFrame = template.HasFrameBorder;
+
+            MaximumCharacters = template.CalculateMaxCharacters();
 
             CommitOnLostFocus = template.CommitOnLostFocus;
             ReplaceOnFirstKey = template.ReplaceOnFirstKey;
@@ -118,20 +151,14 @@ namespace OchreGui
             this.CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
             this.HilightWhenMouseOver = template.HilightWhenMouseOver;
 
+            this.VerticalAlign = template.VerticalAlign;
+            this.LabelAlign = template.LabelAlign;
+
             this.CurrentText = "";
             this.waitingToCommitText = false;
             this.TextInput = CurrentText;
-
-            if (template.HasFrameBorder)
-            {
-                labelPosX = 1;
-                labelPosY = 1;
-            }
-            else
-            {
-                labelPosX = 0;
-                labelPosY = 0;
-            }
+            
+            CalcMetrics(template);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -195,7 +222,7 @@ namespace OchreGui
         /// <summary>
         /// Get the maximum number of characters that can be typed
         /// </summary>
-        protected abstract int MaximumCharacters { get; }
+        protected int MaximumCharacters { get; private set; }
 
         /// <summary>
         /// Gets what the field defaults to if there is not current or previous valid entries.
@@ -224,6 +251,18 @@ namespace OchreGui
         /// seen in other GUI systems.  Defaults to false.
         /// </summary>
         protected bool ReplaceOnFirstKey { get; set; }
+
+        /// <summary>
+        /// The vertical alignment of the label and input field within the Entry control.
+        /// Defaults to VerticalAlignment.Center
+        /// </summary>
+        protected VerticalAlignment VerticalAlign { get; private set; }
+
+        /// <summary>
+        /// The horizontal alignment of the label withing the Entry control.
+        /// Defaults to HorizontalAlignment.Left
+        /// </summary>
+        protected HorizontalAlignment LabelAlign { get; private set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
@@ -270,23 +309,42 @@ namespace OchreGui
         {
             base.Redraw();
 
-            Canvas.PrintString(labelPosX, labelPosY, Label);
+            // Draw label
+            if (!string.IsNullOrEmpty(Label))
+            {
+                Canvas.PrintStringAligned(labelRect, Label,
+                    LabelAlign,
+                    VerticalAlign);
+            }
 
+            // Draw input field
             if (waitingToOverwrite)
             {
-                Canvas.PrintString(Label.Length + labelPosX, labelPosY,
-                    TextInput, Pigments[PigmentType.ViewSelected]);
+                Canvas.PrintStringAligned(fieldRect,
+                    TextInput,
+                    HorizontalAlignment.Left,
+                    VerticalAlign,
+                    Pigments[PigmentType.ViewSelected]);
             }
             else
             {
-                Canvas.PrintString(Label.Length + labelPosX, labelPosY, TextInput);
+                Canvas.PrintStringAligned(fieldRect,
+                    TextInput,
+                    HorizontalAlignment.Left,
+                    VerticalAlign);
             }
 
+            // Draw cursor
             if (cursorOn && HasKeyboardFocus)
             {
-                Canvas.PrintChar(Label.Length + labelPosX + CursorPos, labelPosY, 
-                    (int)TCODSpecialCharacter.Block1,
-                    Pigments[PigmentType.ViewSelected]);
+                int cursorX = fieldRect.Left + CursorPos;
+                if (cursorX <= LocalRect.Right)
+                {
+                    Canvas.PrintChar(cursorX, 
+                        cursorY,
+                        (int)TCODSpecialCharacter.Block1,
+                        Pigments[PigmentType.ViewSelected]);
+                }
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -400,8 +458,64 @@ namespace OchreGui
         // TODO: consider making definable, not a constant
         const uint blinkDelay = 500;
         // /////////////////////////////////////////////////////////////////////////////////
-        private int labelPosX;
-        private int labelPosY;
+
+        private Rect labelRect;
+        private Rect fieldRect;
+        private int cursorY;
+
+        private void CalcMetrics(EntryTemplate template)
+        {
+            Rect viewRect = this.LocalRect;
+
+            if (template.HasFrameBorder)
+            {
+                viewRect = Rect.Inflate(viewRect, -1, -1);
+            }
+
+            int remaining = viewRect.Size.Width;
+
+            int labelLength = template.Label.Length;
+            int fieldLength = template.CalculateMaxCharacters();
+
+            remaining -= fieldLength;
+
+            if (remaining < 0)
+            {
+                fieldLength += remaining;
+                labelLength = 0;
+            }
+            else
+            {
+                remaining -= labelLength;
+
+                labelLength += remaining -1;
+            }
+
+            if (labelLength < 1)
+            {
+                Label = "";
+                labelLength = 0;
+            }
+
+            labelRect = new Rect(viewRect.UpperLeft, new Size(labelLength, viewRect.Size.Height));
+            fieldRect = new Rect(labelRect.UpperRight.Shift(1,0), 
+                new Size(fieldLength, viewRect.Size.Height));
+
+            switch (VerticalAlign)
+            {
+                case VerticalAlignment.Top:
+                    cursorY = fieldRect.Top;
+                    break;
+
+                case VerticalAlignment.Center:
+                    cursorY = fieldRect.Center.Y;
+                    break;
+
+                case VerticalAlignment.Bottom:
+                    cursorY = fieldRect.Bottom;
+                    break;
+            }
+        }
 
         private void ToggleCursor()
         {

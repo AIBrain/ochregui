@@ -83,14 +83,14 @@ namespace OchreGui
         public bool CanHaveKeyboardFocus { get; set; }
 
         /// <summary>
-        /// If true, the button is sized to accomodate a border, and a frame is drawn
-        /// in the border by default.  Defaults to true.
+        /// If true, the button will have a frame drawn around it.  If autosizing, space
+        /// for the frame will be added.  Defaults to true.
         /// </summary>
         public bool HasFrameBorder { get; set; }
 
         /// <summary>
-        /// Overrides the automatically calculated size.  Set this to create a button
-        /// whose height is larger than 3.
+        /// Use this to manually provide a size for the button.  If empty (the default), then
+        /// the button will atuosize.
         /// </summary>
         public Size AutoSizeOverride { get; set; }
 
@@ -164,9 +164,10 @@ namespace OchreGui
             LabelRect = new Rect(Point.Origin, this.Size);
             VAlignment = template.VAlignment;
 
-            if (template.HasFrameBorder)
+            if (template.HasFrameBorder &&
+                this.Size.Width > 2 &&
+                this.Size.Height > 2)
             {
-                //LabelRect = new Rect(1, 1, this.Size.Width - 2, 1);
                 LabelRect = Rect.Inflate(LabelRect, -1, -1);
                 
             }
@@ -203,9 +204,10 @@ namespace OchreGui
             base.Redraw();
             if (!OwnerDraw)
             {
-                Canvas.PrintStringAligned(LabelRect.UpperLeft,Label, 
-                    LabelAlignment,VAlignment,
-                    LabelRect.Size);
+                Canvas.PrintStringAligned(LabelRect,
+                    Label,
+                    LabelAlignment,
+                    VAlignment);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

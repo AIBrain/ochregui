@@ -424,15 +424,15 @@ namespace OchreGui
             {
                 throw new ArgumentOutOfRangeException("fieldSize", "The specified height of fieldSize is less than 1");
             }
-
-            Point pos = GetHVAlign(new Point(x, y), text, hAlign, vAlign, fieldSize);
-
+            
             int trim = fieldSize.Width - text.Length;
 
             if (trim < 0)
             {
                 text = text.Substring(0, text.Length + trim);
             }
+
+            Point pos = GetHVAlign(new Point(x, y), text, hAlign, vAlign, fieldSize);
 
             PrintString(pos, text, pigment);
         }
@@ -482,6 +482,55 @@ namespace OchreGui
             PrintStringAligned(lPos.X, lPos.Y, text, hAlign, vAlign, fieldSize, pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Prints the specified string within the given Rect.  The text is aligned
+        /// both horizontally and vertically with the specified alignments.
+        /// If the text length is larger than the field width, then the text will be trimmed to fit.
+        /// The field width and height must be equal to or greater than 1, or an exception will
+        /// be thrown.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="text"/> is
+        /// null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="rect"/> is outside of this Canvas region</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the width or height of the rect is less than 1</exception>
+        public void PrintStringAligned(Rect rect, string text, HorizontalAlignment hAlign,
+            VerticalAlignment vAlign, Pigment pigment = null)
+        {
+            if (text == null)
+                throw new ArgumentNullException("text");
+
+            if (rect.UpperLeft.X < 0 || rect.UpperLeft.X >= this.Size.Width)
+            {
+                throw new ArgumentOutOfRangeException("rect", "The specified x coordinate is invalid.");
+            }
+
+            if (rect.UpperLeft.Y < 0 || rect.UpperLeft.Y >= this.Size.Height)
+            {
+                throw new ArgumentOutOfRangeException("rect", "The specified y coordinate is invalid.");
+            }
+
+            if (rect.Size.Width < 1)
+            {
+                throw new ArgumentOutOfRangeException("rect", "The specified width of rect is less than 1");
+            }
+
+            if (rect.Size.Height < 1)
+            {
+                throw new ArgumentOutOfRangeException("rect", "The specified height of rect is less than 1");
+            }
+
+            PrintStringAligned(rect.UpperLeft.X, rect.UpperLeft.Y, 
+                text, 
+                hAlign, vAlign,
+                rect.Size, 
+                pigment);
+        }
+        // /////////////////////////////////////////////////////////////////////////////////
+
 
         /// <summary>
         /// Draws a horizontal line of the given length and starting coordinates

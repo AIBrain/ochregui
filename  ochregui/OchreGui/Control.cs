@@ -475,7 +475,10 @@ namespace OchreGui
         /// </summary>
         protected void DrawFrame(Pigment pigment = null)
         {
-            Canvas.PrintFrame(null,pigment);
+            if (this.Size.Width > 2 && this.Size.Height > 2)
+            {
+                Canvas.PrintFrame(null, pigment);
+            }
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
