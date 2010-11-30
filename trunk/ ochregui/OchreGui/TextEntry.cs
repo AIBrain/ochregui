@@ -106,6 +106,12 @@ namespace OchreGui
         /// <returns></returns>
         public override Size CalculateSize()
         {
+            if (AutoSizeOverride.Height > 0 &&
+                AutoSizeOverride.Width >= MaximumCharacters)
+            {
+                return AutoSizeOverride;
+            }
+
             if (Label == null)
                 Label = "";
 
@@ -119,6 +125,15 @@ namespace OchreGui
             }
 
             return new Size(len + MaximumCharacters + 1 + frameSize, 1 + frameSize);
+        }
+
+        /// <summary>
+        /// Returns this.MaximumCharacters.
+        /// </summary>
+        /// <returns></returns>
+        public override int CalculateMaxCharacters()
+        {
+            return this.MaximumCharacters;
         }
         // /////////////////////////////////////////////////////////////////////////////////
     }
@@ -145,8 +160,6 @@ namespace OchreGui
         public TextEntry(TextEntryTemplate template)
             :base(template)
         {
-
-            this._maximumCharacters = template.MaximumCharacters;
             this.Validation = template.Validation;
             TrySetField(template.StartingField);
         }
@@ -163,17 +176,6 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Properties
-        /// <summary>
-        /// Get the maximum number of characters allowed.
-        /// </summary>
-        protected override int MaximumCharacters
-        {
-            get
-            {
-                return _maximumCharacters;
-            }
-        }
-
         /// <summary>
         /// Returns the default field of this entry if there is no valid previous or current field
         /// Base method returns the empty string "".
@@ -256,8 +258,6 @@ namespace OchreGui
         #endregion
 
         #endregion
-
-        private int _maximumCharacters;
     }
 
 

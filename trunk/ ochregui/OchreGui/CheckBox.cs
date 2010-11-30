@@ -46,13 +46,14 @@ namespace OchreGui
             HilightWhenMouseOver = false;
             CanHaveKeyboardFocus = false;
             HasFrameBorder = true;
+            VerticalAlign = VerticalAlignment.Center;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Overrides the automatically calculated size.  The label element is trimmed if
-        /// it will not fit in the checkbox.
+        /// Set this to manually size the check box.  If empty (the default), then the 
+        /// check box will be autosized.
         /// </summary>
         public Size AutoSizeOverride { get; set; }
 
@@ -62,7 +63,7 @@ namespace OchreGui
         public string Label { get; set; }
 
         /// <summary>
-        /// The minimum width of the button.  This property is ignored if MinimumWidth is less 
+        /// The minimum width of the button when autosizing.  This property is ignored if MinimumWidth is less 
         /// than the automatically calculated size.  Defaults to 0.
         /// </summary>
         public int MinimumWidth { get; set; }
@@ -72,6 +73,12 @@ namespace OchreGui
         /// according to this.  Defautls to HorizontalAlignment.Left
         /// </summary>
         public HorizontalAlignment LabelAlignment { get; set; }
+
+        /// <summary>
+        /// The vertical alignment of the label and check element.  Defaults to
+        /// VerticalAlignment.Center
+        /// </summary>
+        public VerticalAlignment VerticalAlign { get; set; }
 
         /// <summary>
         /// If true, the check field is placed left of the label, otherwise on the 
@@ -92,8 +99,8 @@ namespace OchreGui
         public bool CanHaveKeyboardFocus { get; set; }
 
         /// <summary>
-        /// If true, the checkbox is sized to accomodate a border, and a frame is drawn
-        /// in the border by default.  Defaults to true.
+        /// If true, a border will be drawn around the check box.  If autosizing, space for the
+        /// frame will be added.  Defaults to true.
         /// </summary>
         public bool HasFrameBorder { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +155,7 @@ namespace OchreGui
         {
             HasFrame = template.HasFrameBorder;
 
-            if (template.CalculateSize().Height < 3)
+            if (Size.Height < 3 || Size.Width < 3)
             {
                 HasFrame = false;
             }
@@ -162,26 +169,9 @@ namespace OchreGui
 
             this.CheckOnLeft = template.CheckOnLeft;
             this.LabelAlignment = template.LabelAlignment;
+            this.VerticalAlign = template.VerticalAlign;
 
-            Rect inner = this.LocalRect;
-
-            if (template.HasFrameBorder && template.CalculateSize().Height >= 3)
-            {
-                inner = Rect.Inflate(inner,-1,-1);
-            }
-
-            if (CheckOnLeft)
-            {
-                checkPos = inner.LeftCenter;
-                labelRect = new Rect(inner.UpperLeft.Shift(2, 0),
-                    inner.LowerRight);
-            }
-            else
-            {
-                checkPos = inner.RightCenter;
-                labelRect = new Rect(inner.UpperLeft,
-                    inner.LowerRight.Shift(-2, 0));
-            }
+            CalcMetrics(template);
 
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +197,12 @@ namespace OchreGui
         /// <summary>
         /// Text alignment of the label
         /// </summary>
-        public HorizontalAlignment LabelAlignment { get; protected set; }
+        public HorizontalAlignment LabelAlignment { get; private set; }
+
+        /// <summary>
+        /// The vertical alignment of the label and check element.
+        /// </summary>
+        public VerticalAlignment VerticalAlign { get; private set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Message Handlers
@@ -251,8 +246,10 @@ namespace OchreGui
 
             if (!string.IsNullOrEmpty(Label))
             {
-                Canvas.PrintStringAligned(labelRect.UpperLeft, Label,
-                    LabelAlignment, VerticalAlignment.Center, labelRect.Size);
+                Canvas.PrintStringAligned(labelRect,
+                    Label,
+                    LabelAlignment,
+                    VerticalAlign);
             }
 
             if (IsActive)
@@ -276,6 +273,46 @@ namespace OchreGui
         //private int labelPosY;
         private Rect labelRect;
         private Point checkPos;
+
+        private void CalcMetrics(CheckBoxTemplate template)
+        {
+            Rect inner = this.LocalRect;
+
+            if (template.HasFrameBorder && template.CalculateSize().Height >= 3)
+            {
+                inner = Rect.Inflate(inner, -1, -1);
+            }
+
+            int checkX;
+
+            if (CheckOnLeft)
+            {
+                checkX = inner.Left;
+                labelRect = new Rect(inner.UpperLeft.Shift(2, 0),
+                    inner.LowerRight);
+            }
+            else
+            {
+                checkX = inner.Right;
+                labelRect = new Rect(inner.UpperLeft,
+                    inner.LowerRight.Shift(-2, 0));
+            }
+
+            switch (VerticalAlign)
+            {
+                case VerticalAlignment.Bottom:
+                    checkPos = new Point(checkX, labelRect.Bottom);
+                    break;
+
+                case VerticalAlignment.Center:
+                    checkPos = new Point(checkX, labelRect.Center.Y);
+                    break;
+
+                case VerticalAlignment.Top:
+                    checkPos = new Point(checkX, labelRect.Top);
+                    break;
+            }
+        }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
     }

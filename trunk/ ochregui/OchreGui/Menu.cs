@@ -78,7 +78,7 @@ namespace OchreGui
     #endregion
 
 
-    #region MenuInfo Class
+    #region MenuTemplate Class
     /// <summary>
     /// This class builds on the Control Template, and adds options specific to a Menu.
     /// </summary>
@@ -94,6 +94,7 @@ namespace OchreGui
             LabelAlignment = HorizontalAlignment.Left;
             HilightWhenMouseOver = false;
             CanHaveKeyboardFocus = false;
+            HasFrameBorder = true;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -121,6 +122,18 @@ namespace OchreGui
         public bool HilightWhenMouseOver { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// True if a frame will be drawn around the menu.  If the menu is autosized, then
+        /// space for the border will be added.  Defaults to true.
+        /// </summary>
+        public bool HasFrameBorder { get; set; }
+
+        /// <summary>
+        /// Set this to manually provide a size for the menu.  If this is empty (the default),
+        /// then the menu will be autosized.
+        /// </summary>
+        public Size AutoSizeOverride { get; set; }
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Calculate the size that a menu will be if created with this template.  The size is
@@ -129,6 +142,11 @@ namespace OchreGui
         /// <returns></returns>
         public override Size CalculateSize()
         {
+            if (AutoSizeOverride.Width > 1 && AutoSizeOverride.Height > 2)
+            {
+                return AutoSizeOverride;
+            }
+
             int width = 0;
             foreach (MenuItemData data in Items)
             {
@@ -139,9 +157,13 @@ namespace OchreGui
                     width = data.Label.Length;
             }
 
-            width += 4;
+            int height = Items.Count;
 
-            int height = Items.Count + 2;
+            if (HasFrameBorder)
+            {
+                width += 2;
+                height += 2;
+            }
 
             return new Size(width, height);
         }
@@ -175,7 +197,12 @@ namespace OchreGui
         public Menu(MenuTemplate template)
             : base(template)
         {
-            HasFrame = true;
+            HasFrame = template.HasFrameBorder;
+            if (Size.Width < 3 || Size.Height < 3)
+            {
+                HasFrame = false;
+            }
+
             HilightWhenMouseOver = template.HilightWhenMouseOver;
             CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
 
@@ -183,6 +210,7 @@ namespace OchreGui
             Items = template.Items;
             mouseOverIndex = -1;
 
+            CalcMetrics(template);
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -217,7 +245,7 @@ namespace OchreGui
         /// </summary>
         protected void DrawItems()
         {
-            for (int i = 0; i < Items.Count; i++)
+            for (int i = 0; i < numberItemsDisplayed; i++)
             {
                 DrawItem(i);
             }
@@ -235,13 +263,21 @@ namespace OchreGui
 
             if (index == mouseOverIndex)
             {
-                Canvas.PrintStringAligned(1, index + 1, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewHilight]);
+                Canvas.PrintStringAligned(itemsRect.UpperLeft.X, 
+                    itemsRect.UpperLeft.Y + index, 
+                    item.Label, 
+                    LabelAlignment,
+                    itemsRect.Size.Width, 
+                    Pigments[PigmentType.ViewHilight]);
             }
             else
             {
-                Canvas.PrintStringAligned(1, index + 1, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewNormal]);
+                Canvas.PrintStringAligned(itemsRect.UpperLeft.X,
+                    itemsRect.UpperLeft.Y + index, 
+                    item.Label, 
+                    LabelAlignment,
+                    itemsRect.Size.Width, 
+                    Pigments[PigmentType.ViewNormal]);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +285,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Returns the index of the item at the given position, or -1 if there is not item
-        /// at that position.  The position is in local space coordinates.
+        /// at that position.  The position is given in local space coordinates.
         /// </summary>
         /// <param name="lPos"></param>
         /// <returns></returns>
@@ -257,13 +293,13 @@ namespace OchreGui
         {
             int index = -1;
 
-            if (lPos.X > 0 && lPos.X < Size.Width - 1)
+            if (itemsRect.Contains(lPos))
             {
-                int i = lPos.Y - 1;
-                if (i >= 0 && i < Size.Height - 2)
-                {
-                    index = i;
-                }
+                index = lPos.Y - itemsRect.Top;
+            }
+            if (index < 0 || index >= Items.Count)
+            {
+                index = -1;
             }
             return index;
         }
@@ -299,6 +335,10 @@ namespace OchreGui
             if (mouseOverIndex != -1)
             {
                 TooltipText = Items[mouseOverIndex].TooltipText;
+            }
+            else
+            {
+                TooltipText = null;
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +395,26 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         private List<MenuItemData> Items;
         private int mouseOverIndex;
+        private Rect itemsRect;
+        private int numberItemsDisplayed;
+
+        private void CalcMetrics(MenuTemplate template)
+        {
+            itemsRect = this.LocalRect;
+            if (HasFrame)
+            {
+                itemsRect = Rect.Inflate(itemsRect, -1, -1);
+            }
+
+            int delta = itemsRect.Size.Height - Items.Count;
+
+            numberItemsDisplayed = Items.Count;
+
+            if (delta < 0)
+            {
+                numberItemsDisplayed += delta;
+            }
+        }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
     }

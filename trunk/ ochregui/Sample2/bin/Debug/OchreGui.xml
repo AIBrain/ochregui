@@ -379,6 +379,19 @@
             Defaults to false.
             </summary>
         </member>
+        <member name="P:OchreGui.ListBoxTemplate.AutoSizeOverride">
+            <summary>
+            Use this to manually size the ListBox.  If this is empty (the default), then the
+            ListBox will autosize.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.HasFrameBorder">
+            <summary>
+            If true, a frame will be drawn around the listbox and between the title and list
+            of items.  If autosizing, the required space for the frame element will be added.
+            Defaults to true.
+            </summary>
+        </member>
         <member name="T:OchreGui.ListBox">
             <summary>
             A ListBox control allows the selection of a single option among a list of
@@ -1036,14 +1049,14 @@
         </member>
         <member name="P:OchreGui.ButtonTemplate.HasFrameBorder">
             <summary>
-            If true, the button is sized to accomodate a border, and a frame is drawn
-            in the border by default.  Defaults to true.
+            If true, the button will have a frame drawn around it.  If autosizing, space
+            for the frame will be added.  Defaults to true.
             </summary>
         </member>
         <member name="P:OchreGui.ButtonTemplate.AutoSizeOverride">
             <summary>
-            Overrides the automatically calculated size.  Set this to create a button
-            whose height is larger than 3.
+            Use this to manually provide a size for the button.  If empty (the default), then
+            the button will atuosize.
             </summary>
         </member>
         <member name="P:OchreGui.ButtonTemplate.VAlignment">
@@ -1131,6 +1144,12 @@
             Default constructor initializes properties to their defaults.
             </summary>
         </member>
+        <member name="M:OchreGui.EntryTemplate.CalculateMaxCharacters">
+            <summary>
+            Override must return the maximum number of characters allowed for input.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:OchreGui.EntryTemplate.Label">
             <summary>
             Displayed label, defautls to empty string
@@ -1161,7 +1180,25 @@
         </member>
         <member name="P:OchreGui.EntryTemplate.HasFrameBorder">
             <summary>
-            True if this control has a border for a frame.  Defaults to true.
+            True if this control draws a frame.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.AutoSizeOverride">
+            <summary>
+            Set this to manually size the entry.  If empty (the default), the entry will
+            be autosized.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and input field within the Entry control.
+            Defaults to VerticalAlignment.Center
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.LabelAlign">
+            <summary>
+            The horizontal alignment of the label withing the Entry control.
+            Defaults to HorizontalAlignment.Left
             </summary>
         </member>
         <member name="T:OchreGui.Entry">
@@ -1294,6 +1331,18 @@
             <summary>
             If true, simulates the "select-all and replace on first keypress" behaviour
             seen in other GUI systems.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and input field within the Entry control.
+            Defaults to VerticalAlignment.Center
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.LabelAlign">
+            <summary>
+            The horizontal alignment of the label withing the Entry control.
+            Defaults to HorizontalAlignment.Left
             </summary>
         </member>
         <member name="T:OchreGui.Color">
@@ -1891,6 +1940,21 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown when the width or height of the field size is less than 1</exception>
         </member>
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Rect,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Pigment)">
+            <summary>
+            Prints the specified string within the given Rect.  The text is aligned
+            both horizontally and vertically with the specified alignments.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="rect"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the rect is less than 1</exception>
+        </member>
         <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a horizontal line of the given length and starting coordinates
@@ -2058,8 +2122,8 @@
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.AutoSizeOverride">
             <summary>
-            Overrides the automatically calculated size.  The label element is trimmed if
-            it will not fit in the checkbox.
+            Set this to manually size the check box.  If empty (the default), then the 
+            check box will be autosized.
             </summary>
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.Label">
@@ -2069,7 +2133,7 @@
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.MinimumWidth">
             <summary>
-            The minimum width of the button.  This property is ignored if MinimumWidth is less 
+            The minimum width of the button when autosizing.  This property is ignored if MinimumWidth is less 
             than the automatically calculated size.  Defaults to 0.
             </summary>
         </member>
@@ -2077,6 +2141,12 @@
             <summary>
             If there is extra spacing in the label area, the label gets aligned
             according to this.  Defautls to HorizontalAlignment.Left
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and check element.  Defaults to
+            VerticalAlignment.Center
             </summary>
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.CheckOnLeft">
@@ -2099,8 +2169,8 @@
         </member>
         <member name="P:OchreGui.CheckBoxTemplate.HasFrameBorder">
             <summary>
-            If true, the checkbox is sized to accomodate a border, and a frame is drawn
-            in the border by default.  Defaults to true.
+            If true, a border will be drawn around the check box.  If autosizing, space for the
+            frame will be added.  Defaults to true.
             </summary>
         </member>
         <member name="T:OchreGui.CheckBox">
@@ -2155,6 +2225,132 @@
             <summary>
             Text alignment of the label
             </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and check element.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PigmentType">
+            <summary>
+            The various UI Pigment types used by the framework.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Window">
+            <summary>
+            The pigment used for the window drawing area
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Tooltip">
+            <summary>
+            The pigment used for a tooltip
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.DragItem">
+            <summary>
+            The pigment used for an item that is being dragged
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameFocus">
+            <summary>
+            The pigment for the frame of a control that has the keyboard focus
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameInactive">
+            <summary>
+            The pigment used for the frame of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameHilight">
+            <summary>
+            The pigment used for the frame of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameNormal">
+            <summary>
+            The pigment used for the frame of a control when no other states are applicable.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameDepressed">
+            <summary>
+            The pigment used for the frame of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameSelected">
+            <summary>
+            The pigment used for the frame of a control when it is selected.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewFocus">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewInactive">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewHilight">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewNormal">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewDepressed">
+            <summary>
+            The pigment used for the main area of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewSelected">
+            <summary>
+            The pigment used for the main area of a control when it is selected.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PigmentAlternatives">
+            <summary>
+            This class is simply a wrapper around a Dictionary using PigmentType as keys
+            and Pigment as values.  Also provides a Copy() method to make a copy
+            of this instance.
+            This class is used to pass a collection of alternative pigments to a widget in the
+            template.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentAlternatives.Copy">
+            <summary>
+            Performs a copy of this instance.  Since the Pigment class is
+            immutable, this is conceptually a deep copy.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.PigmentMap">
+            <summary>
+            Simply wraps an AlternativeMap object for code cleanliness.
+            This class is used to store the pigments for a UI object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults.
+            </summary>
+            <param name="defaults"></param>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment},System.Collections.Generic.Dictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults and a
+            Dictionary of alternatives.
+            </summary>
+            <param name="defaults"></param>
+            <param name="alternatives"></param>
         </member>
         <member name="T:OchreGui.InputManager">
             <summary>
@@ -2524,6 +2720,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:OchreGui.TextEntryTemplate.CalculateMaxCharacters">
+            <summary>
+            Returns this.MaximumCharacters.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:OchreGui.TextEntryTemplate.MaximumCharacters">
             <summary>
             Maximum number of accepted characters.  Defaults to 1.
@@ -2578,11 +2780,6 @@
             Get or set the character validation type for this control.  If a typed character is
             not valid according to this property, then it will be ignored (not added to the 
             entry field).
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntry.MaximumCharacters">
-            <summary>
-            Get the maximum number of characters allowed.
             </summary>
         </member>
         <member name="P:OchreGui.TextEntry.DefaultField">
@@ -2696,6 +2893,18 @@
             by mosue over automatically.
             </summary>
         </member>
+        <member name="P:OchreGui.MenuTemplate.HasFrameBorder">
+            <summary>
+            True if a frame will be drawn around the menu.  If the menu is autosized, then
+            space for the border will be added.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.MenuTemplate.AutoSizeOverride">
+            <summary>
+            Set this to manually provide a size for the menu.  If this is empty (the default),
+            then the menu will be autosized.
+            </summary>
+        </member>
         <member name="T:OchreGui.Menu">
             <summary>
             A menu is similar to a list box, except it does not have a title and item selection
@@ -2730,7 +2939,7 @@
         <member name="M:OchreGui.Menu.GetItemAt(OchreGui.Utility.Point)">
             <summary>
             Returns the index of the item at the given position, or -1 if there is not item
-            at that position.  The position is in local space coordinates.
+            at that position.  The position is given in local space coordinates.
             </summary>
             <param name="lPos"></param>
             <returns></returns>
@@ -2845,127 +3054,6 @@
             <summary>
             The parent window of this manager instance.
             </summary>
-        </member>
-        <member name="T:OchreGui.PigmentType">
-            <summary>
-            The various UI Pigment types used by the framework.
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.Window">
-            <summary>
-            The pigment used for the window drawing area
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.Tooltip">
-            <summary>
-            The pigment used for a tooltip
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.DragItem">
-            <summary>
-            The pigment used for an item that is being dragged
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameFocus">
-            <summary>
-            The pigment for the frame of a control that has the keyboard focus
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameInactive">
-            <summary>
-            The pigment used for the frame of a control that is inactive
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameHilight">
-            <summary>
-            The pigment used for the frame of a control that is hilighted (e.g. when
-            hilighted by mouse over state)
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameNormal">
-            <summary>
-            The pigment used for the frame of a control when no other states are applicable.
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameDepressed">
-            <summary>
-            The pigment used for the frame of a control when it is depressed (e.g. when
-            a button is being pusehd)
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.FrameSelected">
-            <summary>
-            The pigment used for the frame of a control when it is selected.
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewFocus">
-            <summary>
-            The pigment used for the main area of a control that is inactive
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewInactive">
-            <summary>
-            The pigment used for the main area of a control that is inactive
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewHilight">
-            <summary>
-            The pigment used for the main area of a control that is hilighted (e.g. when
-            hilighted by mouse over state)
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewNormal">
-            <summary>
-            The pigment used for the main area of a control that is hilighted (e.g. when
-            hilighted by mouse over state)
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewDepressed">
-            <summary>
-            The pigment used for the main area of a control when it is depressed (e.g. when
-            a button is being pusehd)
-            </summary>
-        </member>
-        <member name="F:OchreGui.PigmentType.ViewSelected">
-            <summary>
-            The pigment used for the main area of a control when it is selected.
-            </summary>
-        </member>
-        <member name="T:OchreGui.PigmentAlternatives">
-            <summary>
-            This class is simply a wrapper around a Dictionary using PigmentType as keys
-            and Pigment as values.  Also provides a Copy() method to make a copy
-            of this instance.
-            This class is used to pass a collection of alternative pigments to a widget in the
-            template.
-            </summary>
-        </member>
-        <member name="M:OchreGui.PigmentAlternatives.Copy">
-            <summary>
-            Performs a copy of this instance.  Since the Pigment class is
-            immutable, this is conceptually a deep copy.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:OchreGui.PigmentMap">
-            <summary>
-            Simply wraps an AlternativeMap object for code cleanliness.
-            This class is used to store the pigments for a UI object.
-            </summary>
-        </member>
-        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment})">
-            <summary>
-            Construct a PigmentMap instance given the defaults.
-            </summary>
-            <param name="defaults"></param>
-        </member>
-        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment},System.Collections.Generic.Dictionary{OchreGui.PigmentType,OchreGui.Pigment})">
-            <summary>
-            Construct a PigmentMap instance given the defaults and a
-            Dictionary of alternatives.
-            </summary>
-            <param name="defaults"></param>
-            <param name="alternatives"></param>
         </member>
     </members>
 </doc>

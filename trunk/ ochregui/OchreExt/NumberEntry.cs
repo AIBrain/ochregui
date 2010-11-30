@@ -91,7 +91,7 @@ namespace OchreGui.Extended
         /// Used to autosize a NumberEntry.
         /// </summary>
         /// <returns></returns>
-        public int CalculateMaxCharacters()
+        public override int CalculateMaxCharacters()
         {
             return Math.Max(MaximumValue.ToString().Length,
                 MinimumValue.ToString().Length);
@@ -129,16 +129,10 @@ namespace OchreGui.Extended
         public NumberEntry(NumberEntryTemplate template)
             : base(template)
         {
-
             MaximumValue = template.MaximumValue;
             MinimumValue = template.MinimumValue;
 
             TrySetField(template.StartingValue.ToString());
-
-            _maximumCharacters = template.CalculateMaxCharacters();
-
-            CurrentText = CurrentValue.ToString();
-            TextInput = CurrentText;
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -233,16 +227,6 @@ namespace OchreGui.Extended
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
-        protected override int MaximumCharacters
-        {
-            get
-            {
-                return _maximumCharacters;
-            }
-        }
-        // /////////////////////////////////////////////////////////////////////////////////
-
-        // /////////////////////////////////////////////////////////////////////////////////
         protected override bool ValidateField(string entry)
         {
             int value;
@@ -275,12 +259,6 @@ namespace OchreGui.Extended
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
-        #region Private
-        // /////////////////////////////////////////////////////////////////////////////////
-        private int _maximumCharacters;
-        // /////////////////////////////////////////////////////////////////////////////////
-        #endregion
-
     }
     #endregion
 }

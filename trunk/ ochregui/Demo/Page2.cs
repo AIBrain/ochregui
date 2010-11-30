@@ -19,9 +19,6 @@ namespace OchreGui.Demo
             {
                 Label = "A Checkbox",
                 UpperLeftPos = ViewRect.UpperLeft.Shift(1, 3),
-                CheckOnLeft = false,
-                AutoSizeOverride = new Size(15, 5),
-                LabelAlignment = HorizontalAlignment.Right,
             };
             AddControl(new CheckBox(cb1));
 
@@ -104,7 +101,7 @@ namespace OchreGui.Demo
                     new ListItemData("Item 2","Item 2 Tooltip"),
                     new ListItemData("Item 3","Item 3 Tooltip"),
                     new ListItemData("Item 4","Item 4 Tooltip")
-                }
+                },
             };
             lb1.AlignTo(LayoutDirection.South, cb4, 2);
             AddControl(new ListBox(lb1));
@@ -112,7 +109,7 @@ namespace OchreGui.Demo
             ListBoxTemplate lb2 = new ListBoxTemplate()
             {
                 Title = "A List Box",
-                TitleAlignment = HorizontalAlignment.Left,
+                TitleAlignment = HorizontalAlignment.Right,
                 LabelAlignment = HorizontalAlignment.Center,
                 MinimumListBoxWidth = 20,
                 Items = new System.Collections.Generic.List<ListItemData>()
@@ -158,7 +155,7 @@ namespace OchreGui.Demo
             {
                 Label = "Don't need to hit Enter: ",
                 MaximumCharacters = 4,
-                CommitOnLostFocus = true
+                CommitOnLostFocus = true,
             };
             t4.AlignTo(LayoutDirection.South, t3, 2);
             t4.UpperLeftPos = t4.UpperLeftPos.Shift(4, 0);
@@ -170,7 +167,8 @@ namespace OchreGui.Demo
                 MaximumCharacters = 11,
                 CommitOnLostFocus = true,
                 ReplaceOnFirstKey = true,
-                StartingField = "Replace me"
+                StartingField = "Replace me",
+                HasFrameBorder = false
             };
             t5.AlignTo(LayoutDirection.South, t4, 2);
             AddControl(new TextEntry(t5));
@@ -227,19 +225,17 @@ namespace OchreGui.Demo
                     {
                         Items = new System.Collections.Generic.List<MenuItemData>()
                         {
-                            new MenuItemData("Menu Item 1"),
-                            new MenuItemData("Menu Item 2"),
-                            new MenuItemData("Menu Item 3"),
-                            new MenuItemData("Menu Item 4")
+                            new MenuItemData("Menu Item 1","Selected Menu Item 1"),
+                            new MenuItemData("Menu Item 2","Selected Menu Item 2"),
+                            new MenuItemData("Menu Item 3","Selected Menu Item 3"),
+                            new MenuItemData("Menu Item 4","Selected Menu Item 4")
                         },
-                        UpperLeftPos = mouseData.Position
+                        UpperLeftPos = mouseData.Position,
                     });
 
                     ParentWindow.AddControl(menu);
                 }
             }
-
-
         }
     }
 }

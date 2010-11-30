@@ -98,6 +98,7 @@ namespace OchreGui
             InitialSelectedIndex = 0;
             CanHaveKeyboardFocus = false;
             HilightWhenMouseOver = false;
+            HasFrameBorder = true;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -142,6 +143,19 @@ namespace OchreGui
         /// Defaults to false.
         /// </summary>
         public bool HilightWhenMouseOver { get; set; }
+
+        /// <summary>
+        /// Use this to manually size the ListBox.  If this is empty (the default), then the
+        /// ListBox will autosize.
+        /// </summary>
+        public Size AutoSizeOverride { get; set; }
+
+        /// <summary>
+        /// If true, a frame will be drawn around the listbox and between the title and list
+        /// of items.  If autosizing, the required space for the frame element will be added.
+        /// Defaults to true.
+        /// </summary>
+        public bool HasFrameBorder { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +165,11 @@ namespace OchreGui
         /// <returns></returns>
         public override Size CalculateSize()
         {
+            if (AutoSizeOverride.Width > 0 && AutoSizeOverride.Height > 0)
+            {
+                return AutoSizeOverride;
+            }
+
             int width = Title.Length;
             foreach (ListItemData i in Items)
             {
@@ -161,12 +180,18 @@ namespace OchreGui
                     width = i.Label.Length;
             }
 
-            width += 4;
+            width += 2;
+
+            if (HasFrameBorder)
+                width += 2;
 
             if (this.MinimumListBoxWidth > width)
                 width = MinimumListBoxWidth;
 
-            int height = Items.Count + 4;
+            int height = Items.Count + 1;
+
+            if (HasFrameBorder)
+                height += 3;
 
             return new Size(width, height);
         }
@@ -202,10 +227,18 @@ namespace OchreGui
         {
             Items = template.Items;
             Title = template.Title;
+            if (Title == null)
+                Title = "";
+
             CurrentSelected = -1;
             OwnerDraw = template.OwnerDraw;
 
-            HasFrame = true;
+            if (this.Size.Width < 3 || this.Size.Height < 3)
+            {
+                template.HasFrameBorder = false;
+            }
+
+            HasFrame = template.HasFrameBorder;
             HilightWhenMouseOver = template.HilightWhenMouseOver;
             CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
 
@@ -214,6 +247,9 @@ namespace OchreGui
             CurrentSelected = template.InitialSelectedIndex;
 
             mouseOverIndex = -1;
+
+            CalcMetrics(template);
+
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -266,14 +302,21 @@ namespace OchreGui
 
             if (!string.IsNullOrEmpty(Title))
             {
-                Canvas.PrintStringAligned(1, 1, Title, TitleAlignment,
-                    Size.Width - 2);
+                Canvas.PrintStringAligned(titleRect, Title, TitleAlignment,
+                    VerticalAlignment.Center);
             }
 
-            Canvas.SetDefaultPigment(DetermineFramePigment());
-            Canvas.DrawHLine(1, 2, Size.Width - 2);
-            Canvas.PrintChar(0, 2, (int)TCODSpecialCharacter.TeeEast);
-            Canvas.PrintChar(Size.Width - 1, 2, (int)TCODSpecialCharacter.TeeWest);
+            if (HasFrame &&
+                this.Size.Width > 2 &&
+                this.Size.Height > 2)
+            {
+                int fy = titleRect.Bottom + 1;
+
+                Canvas.SetDefaultPigment(DetermineFramePigment());
+                Canvas.DrawHLine(1, fy, Size.Width - 2);
+                Canvas.PrintChar(0, fy, (int)TCODSpecialCharacter.TeeEast);
+                Canvas.PrintChar(Size.Width - 1, fy, (int)TCODSpecialCharacter.TeeWest);
+            }
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -283,7 +326,7 @@ namespace OchreGui
         /// </summary>
         protected void DrawItems()
         {
-            for (int i = 0; i < Items.Count; i++)
+            for (int i = 0; i < numberItemsDisplayed; i++)
             {
                 DrawItem(i);
             }
@@ -301,21 +344,35 @@ namespace OchreGui
 
             if (index == CurrentSelected)
             {
-                Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewSelected]);
+                Canvas.PrintStringAligned(itemsRect.UpperLeft.X, 
+                    itemsRect.UpperLeft.Y + index, 
+                    item.Label, 
+                    LabelAlignment,
+                    itemsRect.Size.Width, 
+                    Pigments[PigmentType.ViewSelected]);
 
-                Canvas.PrintChar(Size.Width-2, index + 3,
-                    (int)TCODSpecialCharacter.ArrowWest, Pigments[PigmentType.ViewSelected]);
+                Canvas.PrintChar(itemsRect.UpperRight.X,
+                    itemsRect.UpperLeft.Y + index,
+                    (int)TCODSpecialCharacter.ArrowWest, 
+                    Pigments[PigmentType.ViewSelected]);
             }
             else if (index == mouseOverIndex)
             {
-                Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewHilight]);
+                Canvas.PrintStringAligned(itemsRect.UpperLeft.X,
+                    itemsRect.UpperLeft.Y + index, 
+                    item.Label, 
+                    LabelAlignment,
+                    itemsRect.Size.Width, 
+                    Pigments[PigmentType.ViewHilight]);
             }
             else
             {
-                Canvas.PrintStringAligned(1, index + 3, item.Label, LabelAlignment,
-                    Size.Width - 2, Pigments[PigmentType.ViewNormal]);
+                Canvas.PrintStringAligned(itemsRect.UpperLeft.X,
+                    itemsRect.UpperLeft.Y + index, 
+                    item.Label, 
+                    LabelAlignment,
+                    itemsRect.Size.Width, 
+                    Pigments[PigmentType.ViewNormal]);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -331,13 +388,15 @@ namespace OchreGui
         {
             int index = -1;
 
-            if (lPos.X > 0 && lPos.X < Size.Width - 1)
+            if (itemsRect.Contains(lPos))
             {
-                int i = lPos.Y - 3;
-                if (i >= 0 && i < Size.Height - 4)
-                {
-                    index = i;
-                }
+                int i = lPos.Y - itemsRect.Top;
+                index = i;
+            }
+
+            if (index < 0 || index >= Items.Count)
+            {
+                index = -1;
             }
             return index;
         }
@@ -423,6 +482,63 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         private List<ListItemData> Items;
         private int mouseOverIndex;
+        private Rect titleRect;
+        private Rect itemsRect;
+        private int numberItemsDisplayed;
+
+        private void CalcMetrics(ListBoxTemplate template)
+        {
+            int nitms = Items.Count;
+            int expandTitle = 0;
+
+            int delta = Size.Height - nitms - 1;
+            if (template.HasFrameBorder)
+            {
+                delta -= 3;
+            }
+
+            numberItemsDisplayed = Items.Count;
+            if (delta < 0)
+            {
+                numberItemsDisplayed += delta;
+            }
+            else if (delta > 0)
+            {
+                expandTitle = delta;
+            }
+
+            int titleWidth = Size.Width;
+
+            int titleHeight = 1 + expandTitle;
+
+            if (Title != "")
+            {
+                if (template.HasFrameBorder)
+                {
+                    titleRect = new Rect(Point.Origin.Shift(1, 1),
+                        new Size(titleWidth - 2, titleHeight));
+                }
+                else
+                {
+                    titleRect = new Rect(Point.Origin,
+                        new Size(titleWidth, titleHeight));
+                }
+            }
+
+            int itemsWidth = Size.Width;
+            int itemsHeight = numberItemsDisplayed;
+
+            if (template.HasFrameBorder)
+            {
+                itemsRect = new Rect(titleRect.LowerLeft.Shift(0, 2),
+                    new Size(itemsWidth - 2, itemsHeight));
+            }
+            else
+            {
+                itemsRect = new Rect(titleRect.LowerLeft.Shift(0, 1),
+                    new Size(itemsWidth, itemsHeight));
+            }
+        }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
     }

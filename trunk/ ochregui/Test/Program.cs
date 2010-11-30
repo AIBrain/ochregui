@@ -62,7 +62,7 @@ namespace Test
                 MaximumValue = 1000,
                 SpinDelay = 200,
                 SpinSpeed = 10,
-                StartingValue = -5
+                StartingValue = 15
             });
 
             AddControl(spin);
@@ -78,8 +78,6 @@ namespace Test
 
             AddControl(bar);
 
-
-
             Slider sld = new Slider(new SliderTemplate()
             {
                 MinimumValue = -30,
@@ -87,7 +85,8 @@ namespace Test
                 UpperLeftPos = new Point(10,5),
                 MinimumWidth = 12,
                 Label = "Slide",
-                BarPigment = new Pigment(0x0044ef,0x221144)
+                BarPigment = new Pigment(0x0044ef,0x221144),
+                StartingValue = 5
             });
 
             AddControl(sld);
