@@ -46,6 +46,7 @@ namespace OchreGui.Extended
         }
 
         public int NumberOfLines { get; private set; }
+
         public int LineLength { get; private set; }
 
         private uint _textSpeed;
@@ -66,7 +67,7 @@ namespace OchreGui.Extended
             }
         }
 
-        public void AddText(string text)
+        public void AddText(string text,Pigment pigment=null)
         {
             string[] words = Explode(text);
 
@@ -77,13 +78,13 @@ namespace OchreGui.Extended
                     if ((currVirtualPos + word.Length >= LineLength) &&
                         (word[0] != '\n'))
                     {
-                        buffer.Enqueue('\n');
+                        buffer.Enqueue(new Atom('\n'));
                         currVirtualPos = 0;
                     }
 
                     foreach (char c in word)
                     {
-                        buffer.Enqueue(c);
+                        buffer.Enqueue(new Atom(c,pigment));
                         currVirtualPos++;
 
                         if (c == '\n')
@@ -92,11 +93,23 @@ namespace OchreGui.Extended
 
                     if (currVirtualPos != 0)
                     {
-                        buffer.Enqueue(' ');
+                        buffer.Enqueue(new Atom(' ',pigment));
                         currVirtualPos++;
                     }
                 }
             }
+        }
+
+        public void AddText(string text, Color foreground)
+        {
+            if (foreground == null)
+            {
+                throw new ArgumentNullException("foreground");
+            }
+
+            Pigment pigment = DetermineMainPigment().ReplaceForeground(foreground);
+
+            AddText(text, pigment);
         }
 
         protected override void OnSettingUp()
@@ -126,6 +139,9 @@ namespace OchreGui.Extended
             AddSchedule(typeSchedule);
 
             textCanvas = new Canvas(textRect.Size);
+            textCanvas.SetDefaultPigment(DetermineMainPigment());
+            textCanvas.Clear();
+
             textCanvasPos = textRect.UpperLeft;
         }
 
@@ -135,6 +151,11 @@ namespace OchreGui.Extended
             base.Redraw();
 
             Canvas.Blit(textCanvas, textCanvasPos);
+        }
+
+        protected override Pigment DetermineMainPigment()
+        {
+            return base.DetermineMainPigment();
         }
 
 
@@ -160,9 +181,9 @@ namespace OchreGui.Extended
                 return;
             }
 
-            char next = buffer.Dequeue();
+            Atom next = buffer.Dequeue();
 
-            if (next == '\n')
+            if (next.c == '\n')
             {
                 currPos = 0;
                 currLine++;
@@ -178,7 +199,8 @@ namespace OchreGui.Extended
             {
                 if (currPos < LineLength && currLine < NumberOfLines)
                 {
-                    textCanvas.PrintChar(currPos, currLine, next);
+                    textCanvas.SetDefaultPigment(DetermineMainPigment());
+                    textCanvas.PrintChar(currPos, currLine, next.c,next.pigment);
                 }
                 currPos++;
             }
@@ -211,8 +233,19 @@ namespace OchreGui.Extended
 
         private int currVirtualPos;
 
-        private Queue<char> buffer = new Queue<char>();
+        private Queue<Atom> buffer = new Queue<Atom>();
 
-        
+        private class Atom
+        {
+            public Atom(char c,Pigment pigment=null)
+            {
+                this.c = c;
+                this.pigment = pigment;
+            }
+
+            public char c;
+            public Pigment pigment;
+        }
     }
+
 }

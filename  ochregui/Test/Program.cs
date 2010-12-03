@@ -20,7 +20,8 @@ namespace Test
                     Title = "Test",
                     ScreenSize = new Size(40, 25),
                     Font = "courier12x12_aa_tc.png",
-                    FontFlags = libtcod.TCODFontFlags.LayoutTCOD
+                    FontFlags = libtcod.TCODFontFlags.LayoutTCOD,
+
                 });
             }
         }
@@ -62,7 +63,7 @@ namespace Test
                 MaximumValue = 1000,
                 SpinDelay = 200,
                 SpinSpeed = 10,
-                StartingValue = 15
+                StartingValue = 15,
             });
 
             AddControl(spin);
@@ -96,7 +97,11 @@ namespace Test
                 Size = new Size(25,10),
                 UpperLeftPos = new Point(1,10),
                 HasFrame = false,
-                TextSpeed = 20
+                TextSpeed = 20,
+                Pigments = new PigmentAlternatives()
+                {
+                    {PigmentType.Window,new Pigment(0X55CCAA,0X222222)}
+                }
             });
 
             Button addTextBtn = new Button(new ButtonTemplate()
@@ -127,7 +132,8 @@ namespace Test
             if (spd >= 0)
             {
                 tBox.TextSpeed = (uint)spd;
-                tBox.AddText("\nChanged: " + tBox.TextSpeed.ToString() + "\n");
+                tBox.AddText("\nChanged: " + tBox.TextSpeed.ToString() + "\n",
+                    new Pigment(0xcc3355,0x000000));
             }
         }
 
@@ -140,7 +146,8 @@ namespace Test
         void spin_ValueChanged(object sender, EventArgs e)
         {
             tBox.TextSpeed = (uint)(sender as SpinBox).CurrentValue;
-            tBox.AddText("\nchanged: " + tBox.TextSpeed.ToString() + "\n");
+            tBox.AddText("\nchanged: " + tBox.TextSpeed.ToString() + "\n",
+                new Color(libtcod.TCODColor.amber));
         }
 
         protected override void Redraw()

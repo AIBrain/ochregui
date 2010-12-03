@@ -64,6 +64,7 @@
     <Compile Include="Panel.cs" />
     <Compile Include="PigmentMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadioBox.cs" />
     <Compile Include="TextEntry.cs" />
     <Compile Include="Tooltip.cs" />
     <Compile Include="Window.cs" />
