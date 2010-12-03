@@ -298,6 +298,11 @@ namespace OchreGui
                     inner.LowerRight.Shift(-2, 0));
             }
 
+            if (labelRect.Size.Width < 1)
+            {
+                Label = "";
+            }
+
             switch (VerticalAlign)
             {
                 case VerticalAlignment.Bottom:

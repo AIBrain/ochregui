@@ -278,6 +278,44 @@ namespace OchreGui
             return new TCODColor(color.Red, color.Green, color.Blue);
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        public string GetCode()
+        {
+            char r = (char)(Math.Max(this.red, (byte)1));
+            char g = (char)(Math.Max(this.green, (byte)1));
+            char b = (char)(Math.Max(this.blue, (byte)1));
+
+            string str = r.ToString() + g.ToString() + b.ToString();
+
+            return str;
+        }
+
+        public static string CodeForeground
+        {
+            get
+            {
+                return colorCodeFore;
+            }
+        }
+        static readonly string colorCodeFore = "\x06";
+
+        public static string CodeBackground
+        {
+            get
+            {
+                return colorCodeBack;
+            }
+        }
+        static readonly string colorCodeBack = "\x07";
+
+        public static string CodeStop
+        {
+            get
+            {
+                return colorCodeStop;
+            }
+        }
+        static readonly string colorCodeStop = "\x08";
         #endregion
         #region Private Fields
         // /////////////////////////////////////////////////////////////////////////////////
@@ -472,6 +510,17 @@ namespace OchreGui
             return new Pigment(Foreground, Background, newBGFlag);
         }
         // /////////////////////////////////////////////////////////////////////////////////
+
+        public string GetCode()
+        {
+            string str = string.Format("{0}{1}{2}{3}",
+                Color.CodeForeground,
+                Foreground.GetCode(),
+                Color.CodeBackground,
+                Background.GetCode());
+
+            return str;
+        }
         #endregion
         #region Private Fields
         // /////////////////////////////////////////////////////////////////////////////////

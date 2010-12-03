@@ -38,6 +38,8 @@ namespace OchreGui.Demo
 
             ViewRect = Rect.Inflate(panelTemplate.CalculateRect(),-1,-1);
 
+
+
             ButtonTemplate nextButtonTemplate = new ButtonTemplate()
             {
                 Label = "Next->",
