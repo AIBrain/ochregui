@@ -67,7 +67,7 @@ namespace OchreGui.Extended
             }
 
             width += NumberEntryTemplate.CalculateFieldWidth(MaximumValue, MinimumValue);
-            width += 3;
+            //width += 3;
 
             width = Math.Max(width, MinimumWidth);
 
@@ -157,7 +157,6 @@ namespace OchreGui.Extended
                 if (newVal != _currentValue)
                 {
                     _currentValue = newVal;
-                    OnValueChanged();
                 }
             }
         }
@@ -253,12 +252,9 @@ namespace OchreGui.Extended
         {
             if (e.MouseData.MouseButton == MouseButton.LeftButton)
             {
-                CurrentValue = CalculateValue(e.MouseData.PixelPosition.X);
-                
+                int newVal = CalculateValue(e.MouseData.PixelPosition.X);
 
-                //numEntry.CurrentValue = CurrentValue;
-                numEntry.TrySetValue(CurrentValue);
-                valueBar.CurrentValue = CurrentValue;
+                numEntry.TrySetValue(newVal);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +280,12 @@ namespace OchreGui.Extended
         {
             int value = numEntry.CurrentValue;
 
-            valueBar.CurrentValue = value;
+            if (this.CurrentValue != value)
+            {
+                this.CurrentValue = value;
+                valueBar.CurrentValue = this.CurrentValue;
+                OnValueChanged();
+            }
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
@@ -293,11 +294,9 @@ namespace OchreGui.Extended
         {
             if (e.MouseData.MouseButton == MouseButton.LeftButton)
             {
-                CurrentValue = CalculateValue(e.MouseData.PixelPosition.X);
+                int newVal = CalculateValue(e.MouseData.PixelPosition.X);
 
-                //numEntry.CurrentValue = CurrentValue;
-                numEntry.TrySetValue(CurrentValue);
-                valueBar.CurrentValue = CurrentValue;
+                numEntry.TrySetValue(newVal);
             }            
         }
         // /////////////////////////////////////////////////////////////////////////////////

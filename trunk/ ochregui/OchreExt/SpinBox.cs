@@ -132,8 +132,18 @@ namespace OchreGui.Extended
             get { return _currentValue; }
             set
             {
-                _currentValue = value;
-                OnValueChanged();
+                int newVal = value;
+
+                if (newVal < MinimumValue)
+                    newVal = MinimumValue;
+
+                if (newVal > MaximumValue)
+                    newVal = MaximumValue;
+
+                if (newVal != _currentValue)
+                {
+                    _currentValue = value;
+                }
             }
         }
         private int _currentValue;
@@ -273,6 +283,7 @@ namespace OchreGui.Extended
             if(this.CurrentValue != entry.CurrentValue)
             {
                 this.CurrentValue = entry.CurrentValue;
+                OnValueChanged();
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -283,11 +294,7 @@ namespace OchreGui.Extended
             numEntry.TryCommit();
             if (CurrentValue > MinimumValue)
             {
-                //numEntry.CurrentValue = CurrentValue;
-                if (numEntry.TrySetValue(CurrentValue - 1))
-                {
-                }
-                
+                numEntry.TrySetValue(CurrentValue - 1);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
@@ -298,10 +305,7 @@ namespace OchreGui.Extended
             numEntry.TryCommit();
             if (CurrentValue < MaximumValue)
             {
-                //numEntry.CurrentValue = CurrentValue;
-                if (numEntry.TrySetValue(CurrentValue + 1))
-                {
-                }
+                numEntry.TrySetValue(CurrentValue + 1);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////

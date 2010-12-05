@@ -18,7 +18,7 @@ namespace Test
                 myApp.Start(new ApplicationInfo()
                 {
                     Title = "Test",
-                    ScreenSize = new Size(40, 25),
+                    ScreenSize = new Size(40, 40),
                     Font = "courier12x12_aa_tc.png",
                     FontFlags = libtcod.TCODFontFlags.LayoutTCOD,
 
@@ -68,23 +68,12 @@ namespace Test
 
             AddControl(spin);
 
-            bar = new ValueBar(new ValueBarTemplate()
-            {
-                UpperLeftPos = new Point(0,5),
-                MinimumValue = -50,
-                MaximumValue = 50,
-                StartingValue = 40,
-                Width = 10
-            });
-
-            AddControl(bar);
-
             Slider sld = new Slider(new SliderTemplate()
             {
                 MinimumValue = -30,
                 MaximumValue = 30,
                 UpperLeftPos = new Point(10,5),
-                MinimumWidth = 12,
+                //MinimumWidth = 12,
                 Label = "Slide",
                 BarPigment = new Pigment(0x0044ef,0x221144),
                 StartingValue = 5
@@ -110,6 +99,24 @@ namespace Test
                 UpperLeftPos = new Point(15, 1)
             });
 
+            RadioGroup rg = new RadioGroup(new RadioGroupTemplate()
+            {
+                Items = new System.Collections.Generic.List<RadioItemData>()
+                {
+                    new RadioItemData("Radio 1"),
+                    new RadioItemData("Radio 2"),
+                    new RadioItemData("Radio 3")
+                },
+                UpperLeftPos = new Point(5,30),
+                RadioOnLeft = true,
+                InitialSelectedIndex = 1,
+                //AutoSizeOverride = new Size(1,3),
+                //HasFrameBorder = false,
+                HilightRadioMouseOver = true
+            });
+
+            AddControl(rg);
+
             AddControl(addTextBtn);
 
             addTextBtn.ButtonPushed += new EventHandler(addTextBtn_ButtonPushed);
@@ -119,8 +126,6 @@ namespace Test
             spin.ValueChanged += new EventHandler(spin_ValueChanged);
 
             sld.ValueChanged += new EventHandler(sld_ValueChanged);
-
-            AddSchedule(new Schedule(TestAnimBar,100));
 
             tBox.AddText("This is a bunch of text that will get printed to the console.");
         }
@@ -139,8 +144,8 @@ namespace Test
 
         void addTextBtn_ButtonPushed(object sender, EventArgs e)
         {
-            tBox.AddText("Some more text to get printed, with some commas and stuff.");
-            tBox.AddText("a b c d e f g h i j k l m n o p q r s t u v w x y z aa bb cc dd ee ff gg hhh iii jjj kkk");
+            tBox.AddText("\n\nSome more text to get printed, with some commas and stuff.");
+            tBox.AddText("\na b c d e f g h i j k l m n o p q r s t u v w x y z aa bb cc dd ee ff gg hhh iii jjj kkk");
         }
 
         void spin_ValueChanged(object sender, EventArgs e)
@@ -159,21 +164,9 @@ namespace Test
                 Canvas.PrintFrame(null, DetermineFramePigment());
             }
 
-            Canvas.PrintString(0, 8, currBarVal.ToString(),DetermineMainPigment());
         }
-
-        int currBarVal;
-        ValueBar bar;
 
         TextBox tBox;
 
-        void TestAnimBar()
-        {
-            currBarVal++;
-            if (currBarVal > 100)
-                currBarVal = 0;
-
-            bar.CurrentValue = currBarVal;
-        }
     }
 }

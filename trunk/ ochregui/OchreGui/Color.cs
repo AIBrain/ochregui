@@ -279,6 +279,11 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Returns the embedded code for this color
+        /// <note>Embedded colors are currently not working correctly</note>
+        /// </summary>
+        /// <returns></returns>
         public string GetCode()
         {
             char r = (char)(Math.Max(this.red, (byte)1));
@@ -290,6 +295,10 @@ namespace OchreGui
             return str;
         }
 
+        /// <summary>
+        /// Returns the embedded foreground color code.
+        /// <note>Embedded colors are currently not working correctly</note>
+        /// </summary>
         public static string CodeForeground
         {
             get
@@ -299,6 +308,10 @@ namespace OchreGui
         }
         static readonly string colorCodeFore = "\x06";
 
+        /// <summary>
+        /// Returns the embedded background color code.
+        /// <note>Embedded colors are currently not working correctly</note>
+        /// </summary>
         public static string CodeBackground
         {
             get
@@ -308,6 +321,10 @@ namespace OchreGui
         }
         static readonly string colorCodeBack = "\x07";
 
+        /// <summary>
+        /// Returns the embedded stop code
+        /// <note>Embedded colors are currently not working correctly</note>
+        /// </summary>
         public static string CodeStop
         {
             get
@@ -511,6 +528,11 @@ namespace OchreGui
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Returns the embedded string code for this color.
+        /// <note>Embedded colors are currently not working correctly</note>
+        /// </summary>
+        /// <returns></returns>
         public string GetCode()
         {
             string str = string.Format("{0}{1}{2}{3}",
