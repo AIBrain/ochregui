@@ -172,7 +172,8 @@ namespace OchreGui.Extended
         #region Public Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// If the specified value is valid, this method changes this entry to that value.
+        /// If the specified value is valid, this method changes this entry to that value and
+        /// the EntryChanged event is raised.
         /// </summary>
         /// <param name="changeTo"></param>
         /// <returns></returns>

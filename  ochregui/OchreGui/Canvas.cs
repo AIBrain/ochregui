@@ -869,37 +869,6 @@ namespace OchreGui
             }
         }
 
-        public static int GetStringWidth(string str)
-        {
-            if (!string.IsNullOrEmpty(str))
-                return 0;
-
-            int count = 0;
-            int index = 0;
-
-            while(index < str.Length)
-            {
-                char c = str[index];
-
-                if(c == '\x06' || c == '\x07')
-                {
-                    index += 4;
-                    continue;
-                }
-                else if (c == '\x08')
-                {
-                    index++;
-                    continue;
-                }
-
-                count++;
-                index++;
-            }
-
-            return count;
-        }
-
-
         /// <summary>
         /// Get the size, in pixels, of a single character, as per TCODSystem.getCharSize().
         /// </summary>

@@ -21,115 +21,98 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
+using OchreGui;
 using OchreGui.Utility;
-using libtcod;
-
 
 namespace OchreGui
 {
-    #region ListBox Helper Classes
+    #region RadioGroup Helper Classes
     /// <summary>
-    /// This is the argument sent as part of a ListBox.ItemSelected event.
+    /// This is the argument sent as part of a RadioBox.RadioToggled event.
     /// </summary>
-    public class ListItemSelectedEventArgs : EventArgs
+    public class RadioToggledEventArgs : EventArgs
     {
         /// <summary>
-        /// Construct a ListItemSelectedEventArgs object with the specified item index number.
+        /// Construct a RadioToggledEventArgs object with the specified item radio index.
         /// </summary>
         /// <param name="index"></param>
-        public ListItemSelectedEventArgs(int index)
+        public RadioToggledEventArgs(int index)
         {
             Index = index;
         }
 
         /// <summary>
-        /// The index of the selected item.
+        /// The index of the toggled radio.
         /// </summary>
         public int Index { get; private set; }
 
     }
 
     /// <summary>
-    /// Contains the label and tooltip text for each Listitem that will be added
+    /// Contains the label and tooltip text for each RadioItem that will be added
     /// to a Listbox.
     /// </summary>
-    public class ListItemData
+    public class RadioItemData
     {
         /// <summary>
         /// Construct a ListItemData instance given the label and an optional tooltip.
         /// </summary>
         /// <param name="label"></param>
         /// <param name="toolTip"></param>
-        public ListItemData(string label, string toolTip = null)
+        public RadioItemData(string label, string toolTip = null)
         {
             this.Label = label;
             this.TooltipText = toolTip;
         }
 
         /// <summary>
-        /// The label of this list item.
+        /// The label of this radio item.
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// The optional tooltip text for this list item.
+        /// The optional tooltip text for this radio item.
         /// </summary>
         public string TooltipText { get; set; }
     }
     #endregion
 
-
-    #region ListBoxTemplate
+    #region RadioGroupTemplate
     /// <summary>
-    /// This class builds on the Control Template, and adds options specific to a ListBox.
+    /// Used to contructs a RadioGroup object.
     /// </summary>
-    public class ListBoxTemplate : ControlTemplate
+    public class RadioGroupTemplate : ControlTemplate
     {
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Default constructor initializes properties to their defaults.
         /// </summary>
-        public ListBoxTemplate()
+        public RadioGroupTemplate()
         {
-            Items = new List<ListItemData>();
-            Title = "";
+            Items = new List<RadioItemData>();
             LabelAlignment = HorizontalAlignment.Left;
-            TitleAlignment = HorizontalAlignment.Center;
             InitialSelectedIndex = 0;
             CanHaveKeyboardFocus = false;
-            HilightWhenMouseOver = false;
+            HilightRadioMouseOver = false;
             HasFrameBorder = true;
+            RadioOnLeft = true;
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// The list of ListItemData elements that will be included in the list box.  Defaults
+        /// The list of RadioItemData elements that will be included in the radio group.  Defaults
         /// to an empty list.
         /// </summary>
-        public List<ListItemData> Items { get; set; }
+        public List<RadioItemData> Items { get; set; }
 
         /// <summary>
-        /// The horizontal alignment of the item labels.  Defaults to left.
+        /// The horizontal alignment of the radio labels.  Defaults to left.
         /// </summary>
         public HorizontalAlignment LabelAlignment { get; set; }
 
         /// <summary>
-        /// The horiontal alignment of the title. Defaults to left.
-        /// </summary>
-        public HorizontalAlignment TitleAlignment { get; set; }
-
-        /// <summary>
-        /// The title string, defaults to ""
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// The list box width if larger than the calculated width.  Defaults to 0.
-        /// </summary>
-        public int MinimumListBoxWidth { get; set; }
-
-        /// <summary>
-        /// Which item index will be selected initially.  Defaults to 0.
+        /// Which radio index will be selected initially.  Defaults to 0.
         /// </summary>
         public int InitialSelectedIndex { get; set; }
 
@@ -139,28 +122,34 @@ namespace OchreGui
         public bool CanHaveKeyboardFocus { get; set; }
 
         /// <summary>
-        /// Specifies if this control is drawn in hilighted colors when under the mouse pointer.
+        /// Specifies if the radio item is drawn in hilighted colors when under the mouse pointer.
         /// Defaults to false.
         /// </summary>
-        public bool HilightWhenMouseOver { get; set; }
+        public bool HilightRadioMouseOver { get; set; }
 
         /// <summary>
-        /// Use this to manually size the ListBox.  If this is empty (the default), then the
-        /// ListBox will autosize.
+        /// Use this to manually size the RadioGroup.  If this is empty (the default), then the
+        /// RadioGroup will autosize.
         /// </summary>
         public Size AutoSizeOverride { get; set; }
 
         /// <summary>
-        /// If true, a frame will be drawn around the listbox and between the title and list
-        /// of items.  If autosizing, the required space for the frame element will be added.
+        /// If true, a frame will be drawn around the RadioGroup.
+        /// If autosizing, the required space for the frame element will be added.
         /// Defaults to true.
         /// </summary>
         public bool HasFrameBorder { get; set; }
         // /////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Set to true if the radio element will be drawn to the left of the label.  Otherwise
+        /// the label will be drawn left of the radio element.  Defaults to true.
+        /// </summary>
+        public bool RadioOnLeft { get; set; }
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Calculates the ListBox size based on the properties of this template.
+        /// Calculates the RadioGroup size based on the properties of this template.
         /// </summary>
         /// <returns></returns>
         public override Size CalculateSize()
@@ -170,8 +159,8 @@ namespace OchreGui
                 return AutoSizeOverride;
             }
 
-            int width = Title.Length;
-            foreach (ListItemData i in Items)
+            int width = 0;
+            foreach (RadioItemData i in Items)
             {
                 if (i.Label == null)
                     i.Label = "";
@@ -180,18 +169,15 @@ namespace OchreGui
                     width = i.Label.Length;
             }
 
-            width += 2;
+            width += 2; // room for the radio element
+
+            int height = Items.Count;
 
             if (HasFrameBorder)
+            {
                 width += 2;
-
-            if (this.MinimumListBoxWidth > width)
-                width = MinimumListBoxWidth;
-
-            int height = Items.Count + 1;
-
-            if (HasFrameBorder)
-                height += 3;
+                height += 2;
+            }
 
             return new Size(width, height);
         }
@@ -199,54 +185,53 @@ namespace OchreGui
     }
     #endregion
 
-
-    #region ListBox
+    #region RadioGroup
     /// <summary>
-    /// A ListBox control allows the selection of a single option among a list of
-    /// options presented in rows.  The selection state of an item is persistant, and
-    /// is marked as currently selected.
+    /// Represents a group (list) of radio boxes.  Only one radio can be selected (toggled) at
+    /// a time.
     /// </summary>
-    public class ListBox : Control
+    public class RadioGroup : Control
     {
         #region Events
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Raised when an item has been selected by the left mouse button.
+        /// Raised when a radio box has been toggled (selected) by user input.  The
+        /// RadioToggledEventArgs contains the index number of the selected radio.
         /// </summary>
-        public event EventHandler<ListItemSelectedEventArgs> ItemSelected;
+        public event EventHandler<RadioToggledEventArgs> RadioToggled;
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Constructors
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Construct a ListBox instance from the given template.
+        /// Construct a RadioGroup from the specified templated.
         /// </summary>
         /// <param name="template"></param>
-        public ListBox(ListBoxTemplate template)
+        public RadioGroup(RadioGroupTemplate template)
             : base(template)
         {
-            Items = template.Items;
-            Title = template.Title;
-            if (Title == null)
-                Title = "";
+            HasFrame = template.HasFrameBorder;
 
-            CurrentSelected = -1;
-            OwnerDraw = template.OwnerDraw;
-
-            if (this.Size.Width < 3 || this.Size.Height < 3)
+            if (Size.Width < 3 || Size.Height < 3)
             {
-                template.HasFrameBorder = false;
+                HasFrame = false;
             }
 
-            HasFrame = template.HasFrameBorder;
-            HilightWhenMouseOver = template.HilightWhenMouseOver;
-            CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
+            HilightWhenMouseOver = false;
 
+            HilightRadioMouseOver = template.HilightRadioMouseOver;
+            CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
             LabelAlignment = template.LabelAlignment;
-            TitleAlignment = template.TitleAlignment;
+            Items = template.Items;
+            mouseOverIndex = -1;
+            RadioOnLeft = template.RadioOnLeft;
+
             CurrentSelected = template.InitialSelectedIndex;
 
-            mouseOverIndex = -1;
+            if (CurrentSelected < 0 || CurrentSelected >= Items.Count)
+            {
+                CurrentSelected = 0;
+            }
 
             CalcMetrics(template);
 
@@ -256,73 +241,31 @@ namespace OchreGui
         #region Public Properties
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// The horizontal alignment of the item labels.
+        /// The alignment of the radio labels.
         /// </summary>
         public HorizontalAlignment LabelAlignment { get; set; }
 
         /// <summary>
-        /// The horiontal alignment of the title.
+        /// Set to true if the radio element will be drawn to the left of the label.  Otherwise
+        /// the label will be drawn left of the radio element.
         /// </summary>
-        public HorizontalAlignment TitleAlignment { get; set; }
+        public bool RadioOnLeft { get; set; }
 
         /// <summary>
-        /// The title string.
-        /// </summary>
-        public string Title { get; private set; }
-
-        /// <summary>
-        /// Get the index of the item currently selected.
+        /// The currently selected radio index.
         /// </summary>
         public int CurrentSelected { get; protected set; }
-        // /////////////////////////////////////////////////////////////////////////////////
-        #endregion
-        #region Public Methods
-        // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Returns the label of the item with the specified index.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public string GetItemLabel(int index)
-        {
-            if(index < 0 || index >= Items.Count)
-                throw(new ArgumentOutOfRangeException("index"));
 
-            return Items[index].Label;
-        }
+        /// <summary>
+        /// Specifies if the radio item is drawn in hilighted colors when under the mouse pointer.
+        /// </summary>
+        public bool HilightRadioMouseOver { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Protected Methods
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Draws the title and title frame.
-        /// </summary>
-        protected void DrawTitle()
-        {
-
-            if (!string.IsNullOrEmpty(Title))
-            {
-                Canvas.PrintStringAligned(titleRect, Title, TitleAlignment,
-                    VerticalAlignment.Center);
-            }
-
-            if (HasFrame &&
-                this.Size.Width > 2 &&
-                this.Size.Height > 2)
-            {
-                int fy = titleRect.Bottom + 1;
-
-                Canvas.SetDefaultPigment(DetermineFramePigment());
-                Canvas.DrawHLine(1, fy, Size.Width - 2);
-                Canvas.PrintChar(0, fy, (int)TCODSpecialCharacter.TeeEast);
-                Canvas.PrintChar(Size.Width - 1, fy, (int)TCODSpecialCharacter.TeeWest);
-            }
-        }
-        // /////////////////////////////////////////////////////////////////////////////////
-
-        // /////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Draws each of the items in the list.
+        /// Draws all of the items.
         /// </summary>
         protected void DrawItems()
         {
@@ -335,52 +278,55 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Draws a single item with the given index.
+        /// Draws the specified item.
         /// </summary>
         /// <param name="index"></param>
         protected void DrawItem(int index)
         {
-            ListItemData item = Items[index];
+            RadioItemData item = Items[index];
+            Pigment pigment;
 
-            if (index == CurrentSelected)
+            if (mouseOverIndex == index && HilightRadioMouseOver)
             {
-                Canvas.PrintStringAligned(itemsRect.UpperLeft.X, 
-                    itemsRect.UpperLeft.Y + index, 
-                    item.Label, 
-                    LabelAlignment,
-                    itemsRect.Size.Width, 
-                    Pigments[PigmentType.ViewSelected]);
-
-                Canvas.PrintChar(itemsRect.UpperRight.X,
-                    itemsRect.UpperLeft.Y + index,
-                    (int)TCODSpecialCharacter.ArrowWest, 
-                    Pigments[PigmentType.ViewSelected]);
-            }
-            else if (index == mouseOverIndex)
-            {
-                Canvas.PrintStringAligned(itemsRect.UpperLeft.X,
-                    itemsRect.UpperLeft.Y + index, 
-                    item.Label, 
-                    LabelAlignment,
-                    itemsRect.Size.Width, 
-                    Pigments[PigmentType.ViewHilight]);
+                pigment = Pigments[PigmentType.ViewHilight];
             }
             else
             {
-                Canvas.PrintStringAligned(itemsRect.UpperLeft.X,
-                    itemsRect.UpperLeft.Y + index, 
-                    item.Label, 
-                    LabelAlignment,
-                    itemsRect.Size.Width, 
-                    Pigments[PigmentType.ViewNormal]);
+                pigment = DetermineMainPigment();
             }
+
+            if (labelRect.Size.Width > 0 &&
+                !string.IsNullOrEmpty(item.Label))
+            {
+                Canvas.PrintStringAligned(labelRect.UpperLeft.X,
+                    labelRect.UpperLeft.Y + index,
+                    item.Label,
+                    LabelAlignment,
+                    labelRect.Size.Width,
+                    pigment);
+            }
+            char rc;
+
+            if (CurrentSelected == index)
+            {
+                rc = (char)10;
+            }
+            else
+            {
+                rc = (char)9;
+            }
+
+            Canvas.PrintChar(radioRect.UpperLeft.X,
+                radioRect.UpperLeft.Y + index,
+                rc, 
+                pigment);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Returns the index of the item that contains the provided point, specified in local
-        /// space coordinates.  Returns -1 if no items are at that position.
+        /// Returns the index of the item at the given position, or -1 if there is not item
+        /// at that position.  The position is given in local space coordinates.
         /// </summary>
         /// <param name="lPos"></param>
         /// <returns></returns>
@@ -390,10 +336,8 @@ namespace OchreGui
 
             if (itemsRect.Contains(lPos))
             {
-                int i = lPos.Y - itemsRect.Top;
-                index = i;
+                index = lPos.Y - itemsRect.Top;
             }
-
             if (index < 0 || index >= Items.Count)
             {
                 index = -1;
@@ -401,25 +345,23 @@ namespace OchreGui
             return index;
         }
         // /////////////////////////////////////////////////////////////////////////////////
-        #endregion
-        #region Message Handlers
+
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Draws the title and items.  Override to add custom drawing code.
+        /// Draws the radio items.  Override to add custom drawing code.
         /// </summary>
         protected override void Redraw()
         {
             base.Redraw();
 
-            DrawTitle();
             DrawItems();
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Base method detects if the mouse is over one of the items, and changes state
-        /// accordingly.  Override to add custom handling.
+        /// Base method detects if the mouse pointer is currently over a radio item and
+        /// sets the state accordingly.  Override to add custom handling.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseMoved(MouseData mouseData)
@@ -443,8 +385,8 @@ namespace OchreGui
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Detects which, if any, item has been selected by a left mouse button.  Override
-        /// to add custom handling.
+        /// Base method detects if a radio item was selected, and calls OnItemSelected if this
+        /// is the case.  Override to add custom handling.
         /// </summary>
         /// <param name="mouseData"></param>
         protected internal override void OnMouseButtonDown(MouseData mouseData)
@@ -453,90 +395,67 @@ namespace OchreGui
 
             if (mouseOverIndex != -1)
             {
-                if (CurrentSelected != mouseOverIndex)
-                {
-                    CurrentSelected = mouseOverIndex;
-                    OnItemSelected(CurrentSelected);
-                }
-
+                OnItemSelected(mouseOverIndex);
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
-        /// Called when one of the items in the list has been selected with the left mouse
-        /// button.  Base method triggers appropriate event.  Override to add custom handling.
+        /// Triggers the appropriate event, and removes this menu from the parent window.  Override
+        /// to add custom handling.
         /// </summary>
         /// <param name="index"></param>
         protected virtual void OnItemSelected(int index)
         {
-            if (ItemSelected != null)
+            CurrentSelected = index;
+            if (RadioToggled != null)
             {
-                ItemSelected(this, new ListItemSelectedEventArgs(index));
+                RadioToggled(this, new RadioToggledEventArgs(index));
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Private
         // /////////////////////////////////////////////////////////////////////////////////
-        private List<ListItemData> Items;
+        private List<RadioItemData> Items;
         private int mouseOverIndex;
-        private Rect titleRect;
         private Rect itemsRect;
         private int numberItemsDisplayed;
 
-        private void CalcMetrics(ListBoxTemplate template)
-        {
-            int nitms = Items.Count;
-            int expandTitle = 0;
+        private Rect radioRect;
+        private Rect labelRect;
+        // /////////////////////////////////////////////////////////////////////////////////
 
-            int delta = Size.Height - nitms - 1;
-            if (template.HasFrameBorder)
+        // /////////////////////////////////////////////////////////////////////////////////
+        private void CalcMetrics(RadioGroupTemplate template)
+        {
+            itemsRect = this.LocalRect;
+            if (HasFrame)
             {
-                delta -= 3;
+                itemsRect = Rect.Inflate(itemsRect, -1, -1);
             }
 
+            int delta = itemsRect.Size.Height - Items.Count;
+
             numberItemsDisplayed = Items.Count;
+
             if (delta < 0)
             {
                 numberItemsDisplayed += delta;
             }
-            else if (delta > 0)
+
+            if (RadioOnLeft)
             {
-                expandTitle = delta;
-            }
-
-            int titleWidth = Size.Width;
-
-            int titleHeight = 1 + expandTitle;
-
-            if (Title != "")
-            {
-                if (template.HasFrameBorder)
-                {
-                    titleRect = new Rect(Point.Origin.Shift(1, 1),
-                        new Size(titleWidth - 2, titleHeight));
-                }
-                else
-                {
-                    titleRect = new Rect(Point.Origin,
-                        new Size(titleWidth, titleHeight));
-                }
-            }
-
-            int itemsWidth = Size.Width;
-            int itemsHeight = numberItemsDisplayed;
-
-            if (template.HasFrameBorder)
-            {
-                itemsRect = new Rect(titleRect.LowerLeft.Shift(0, 2),
-                    new Size(itemsWidth - 2, itemsHeight));
+                radioRect = new Rect(itemsRect.UpperLeft, new Size(1, 1));
+                labelRect = new Rect(radioRect.UpperRight.Shift(2,0), 
+                    itemsRect.UpperRight);
             }
             else
             {
-                itemsRect = new Rect(titleRect.LowerLeft.Shift(0, 1),
-                    new Size(itemsWidth, itemsHeight));
+                radioRect = new Rect(itemsRect.UpperRight, new Size(1, 1));
+                labelRect = new Rect(itemsRect.UpperLeft, 
+                    radioRect.LowerLeft.Shift(-2,0));
             }
         }
         // /////////////////////////////////////////////////////////////////////////////////
