@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using OchreGui;
+using OchreGui.Extended;
 using OchreGui.Utility;
 
 namespace OchreGui.Demo
@@ -18,6 +19,7 @@ namespace OchreGui.Demo
         {
             base.OnSettingUp();
 
+            // Start creating and adding the various sample controls.
             ButtonTemplate bt0 = new ButtonTemplate()
             {
                 Label = "Autosize",
@@ -95,7 +97,8 @@ namespace OchreGui.Demo
                 Label = "Sized",
                 AutoSizeOverride = new Size(15, 5),
                 VAlignment = VerticalAlignment.Top,
-                LabelAlignment = HorizontalAlignment.Center
+                LabelAlignment = HorizontalAlignment.Center,
+                HasFrameBorder = false,
             };
             bt8.AlignTo(LayoutDirection.East, bt5, 2);
             AddControl(new Button(bt8));
@@ -105,7 +108,8 @@ namespace OchreGui.Demo
                 Label = "Sized",
                 AutoSizeOverride = new Size(15, 5),
                 VAlignment = VerticalAlignment.Center,
-                LabelAlignment = HorizontalAlignment.Center
+                LabelAlignment = HorizontalAlignment.Center,
+                HasFrameBorder = false,
             };
             bt9.AlignTo(LayoutDirection.South, bt8, 2);
             AddControl(new Button(bt9));
@@ -115,7 +119,8 @@ namespace OchreGui.Demo
                 Label = "Sized",
                 AutoSizeOverride = new Size(15, 5),
                 VAlignment = VerticalAlignment.Bottom,
-                LabelAlignment = HorizontalAlignment.Center
+                LabelAlignment = HorizontalAlignment.Center,
+                HasFrameBorder = false,
             };
             bt10.AlignTo(LayoutDirection.South, bt9, 2);
             AddControl(new Button(bt10));
@@ -145,7 +150,7 @@ namespace OchreGui.Demo
                 Label = "Sized",
                 AutoSizeOverride = new Size(15, 5),
                 VAlignment = VerticalAlignment.Bottom,
-                LabelAlignment = HorizontalAlignment.Right
+                LabelAlignment = HorizontalAlignment.Right,
             };
             bt13.AlignTo(LayoutDirection.South, bt12, 2);
             AddControl(new Button(bt13));
@@ -175,6 +180,10 @@ namespace OchreGui.Demo
             bt16.AlignTo(LayoutDirection.South, bt10, 2);
             AddControl(new Button(bt16));
 
+            // Create the matrix of animated buttons.
+            // Note there is actually a large amount of overhead here - this is 
+            // NOT the efficient way to do this.  However, this is meant to 
+            // "stress test" the library, so this is how we are doing it.
             for (int y = 30; y < 47; y++)
             {
                 for (int x = 20; x < 73; x++)
@@ -184,14 +193,28 @@ namespace OchreGui.Demo
                         Label = " ",
                         AutoSizeOverride = new Size(1, 1),
                         HasFrameBorder = false,
-                        UpperLeftPos = new Point(x,y)
+                        UpperLeftPos = new Point(x, y)
                     };
 
                     AddControl(new SparkleButton(bt17));
                 }
             }
-        }
 
+            PageInfo.AddText("Here is a sample selection of buttons, in various styles." +
+                "\n\nTry clicking on the Animated and Owner Draw buttons to see custom behavior." +
+                "\n\nNote that the 901 animated button matrix is a stress test - each button is being " +
+                "created individually, each with its own scheduler, message hooks, and memory console. This is an " +
+                "enormous amount of overhead, and here we can see how much it slows down the framework by "+
+                "comparing the text output of this TextBox to the other pages.");
+
+            PageInfo.AddText("\n\nHere are a couple of general things to note about the demo project:");
+            PageInfo.AddText("\n* Each page is a seperate Window with its own controls" +
+                "\n* The popup tooltips are intelligently constrained to the window"+
+                "\n* This text is being drawn by a TextBox control from extended library",
+                PageInfo.Pigments[PigmentType.Window].ReplaceForeground(new Color(0x885599))
+                );
+        }
+        
     }
 
 

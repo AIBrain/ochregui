@@ -10,3 +10,5 @@ C:\Documents and Settings\shamus\Desktop\Ochre\Demo\bin\Debug\Utility.xml
 C:\Documents and Settings\shamus\Desktop\Ochre\Demo\obj\Debug\ResolveAssemblyReference.cache
 C:\Documents and Settings\shamus\Desktop\Ochre\Demo\obj\Debug\Demo.exe
 C:\Documents and Settings\shamus\Desktop\Ochre\Demo\obj\Debug\Demo.pdb
+C:\Documents and Settings\shamus\Desktop\Ochre\Demo\bin\Debug\OchreExt.dll
+C:\Documents and Settings\shamus\Desktop\Ochre\Demo\bin\Debug\OchreExt.pdb

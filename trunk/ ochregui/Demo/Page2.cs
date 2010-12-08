@@ -17,14 +17,14 @@ namespace OchreGui.Demo
 
             CheckBoxTemplate cb1 = new CheckBoxTemplate()
             {
-                Label = "A Checkbox",
+                Label = " A Checkbox",
                 UpperLeftPos = ViewRect.UpperLeft.Shift(1, 3),
             };
             AddControl(new CheckBox(cb1));
 
             CheckBoxTemplate cb2 = new CheckBoxTemplate()
             {
-                Label = "Another",
+                Label = " Checkbox",
                 MinimumWidth = cb1.CalculateSize().Width,
                 CheckOnLeft = true
             };
@@ -33,7 +33,7 @@ namespace OchreGui.Demo
 
             CheckBoxTemplate cb3 = new CheckBoxTemplate()
             {
-                Label = "Another",
+                Label = "Checkbox",
                 MinimumWidth = cb1.CalculateSize().Width,
                 CheckOnLeft = true,
                 LabelAlignment = HorizontalAlignment.Right
@@ -43,40 +43,46 @@ namespace OchreGui.Demo
 
             CheckBoxTemplate cb4 = new CheckBoxTemplate()
             {
-                Label = "Another",
+                Label = "Checkbox",
                 MinimumWidth = cb1.CalculateSize().Width,
                 CheckOnLeft = true,
-                LabelAlignment = HorizontalAlignment.Center
+                LabelAlignment = HorizontalAlignment.Center,
             };
             cb4.AlignTo(LayoutDirection.South, cb3, 1);
             AddControl(new CheckBox(cb4));
 
             CheckBoxTemplate cb5 = new CheckBoxTemplate()
             {
-                Label = "Another",
+                Label = "Checkbox",
                 MinimumWidth = cb1.CalculateSize().Width,
                 CheckOnLeft = false,
-                LabelAlignment = HorizontalAlignment.Left
+                LabelAlignment = HorizontalAlignment.Left,
+                VerticalAlign = VerticalAlignment.Center,
+                AutoSizeOverride = new Size(14,3),
+                HasFrameBorder = false,
             };
             cb5.AlignTo(LayoutDirection.East, cb2, 1);
             AddControl(new CheckBox(cb5));
 
             CheckBoxTemplate cb6 = new CheckBoxTemplate()
             {
-                Label = "Another",
+                Label = "Checkbox ",
                 MinimumWidth = cb1.CalculateSize().Width,
                 CheckOnLeft = false,
-                LabelAlignment = HorizontalAlignment.Right
+                LabelAlignment = HorizontalAlignment.Right,
+                VerticalAlign = VerticalAlignment.Center,
+                AutoSizeOverride = new Size(14, 3),
+                HasFrameBorder = false,
             };
             cb6.AlignTo(LayoutDirection.South, cb5, 1);
             AddControl(new CheckBox(cb6));
 
             CheckBoxTemplate cb7 = new CheckBoxTemplate()
             {
-                Label = "Another",
-                MinimumWidth = cb1.CalculateSize().Width,
+                Label = "Checkbox ",
                 CheckOnLeft = false,
                 LabelAlignment = HorizontalAlignment.Center,
+                HasFrameBorder = false,
             };
             cb7.AlignTo(LayoutDirection.South, cb6, 1);
             AddControl(new CheckBox(cb7));
@@ -123,7 +129,6 @@ namespace OchreGui.Demo
             lb2.AlignTo(LayoutDirection.East, lb1, 2);
             AddControl(new ListBox(lb2));
             
-
 
             TextEntryTemplate t1 = new TextEntryTemplate()
             {
@@ -180,6 +185,42 @@ namespace OchreGui.Demo
             };
             mb1.AlignTo(LayoutDirection.South, lb2,3);
             AddControl(new MenuButton(mb1));
+
+
+            RadioGroupTemplate rg1 = new RadioGroupTemplate()
+            {
+                Items = new System.Collections.Generic.List<RadioItemData>()
+                {
+                    new RadioItemData("Radio One","Tooltip for radio 1"),
+                    new RadioItemData("Radio Two","Tooltip for radio 2"),
+                    new RadioItemData("Radio Three","Tooltip for radio 3")
+                },
+            };
+            rg1.AlignTo(LayoutDirection.South, t5, 2);
+            AddControl(new RadioGroup(rg1));
+
+            RadioGroupTemplate rg2 = new RadioGroupTemplate()
+            {
+                Items = new System.Collections.Generic.List<RadioItemData>()
+                {
+                    new RadioItemData("Radio One","Tooltip for radio 1"),
+                    new RadioItemData("Radio Two","Tooltip for radio 2"),
+                    new RadioItemData("Radio Three","Tooltip for radio 3")
+                },
+                HasFrameBorder = false,
+                RadioOnLeft = false
+            };
+            rg2.AlignTo(LayoutDirection.South, rg1, 1);
+            AddControl(new RadioGroup(rg2));
+
+
+            PageInfo.AddText("This page shows a selection of Checkbox, TextEntry, ListBox, and RadioGroup controls." +
+                "\n\nCheckbox controls are similar to buttons, except that there state (IsChecked) is persistant, and" +
+                " this state is, by default, shown by a check box graphic." +
+                "\n\nTextEntry controls allow user input.  Various behaviors of validation and committing the input are available." +
+                "\n\nListBox controls are basically a list of clickable buttons with persistant state - one item is always the currently selected." +
+                "\n\nMenu controls are similar to ListBox, except they automatically close if an item is selected or the mouse pointer leaves the area." +
+                "\n\nRadioGroups are the same as ListBoxes, except the currently selected item is displayed differently.");
         }
 
 
