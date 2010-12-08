@@ -115,7 +115,7 @@ namespace OchreGui
                 return AutoSizeOverride;
             }
 
-            int width = Label.Length + 2;
+            int width = Label.Length + 1;
             int height = 1;
 
             if (HasFrameBorder)
@@ -288,14 +288,14 @@ namespace OchreGui
             if (CheckOnLeft)
             {
                 checkX = inner.Left;
-                labelRect = new Rect(inner.UpperLeft.Shift(2, 0),
+                labelRect = new Rect(inner.UpperLeft.Shift(1, 0),
                     inner.LowerRight);
             }
             else
             {
                 checkX = inner.Right;
                 labelRect = new Rect(inner.UpperLeft,
-                    inner.LowerRight.Shift(-2, 0));
+                    inner.LowerRight.Shift(-1, 0));
             }
 
             if (labelRect.Size.Width < 1)

@@ -4,6 +4,1532 @@
         <name>OchreGui</name>
     </assembly>
     <members>
+        <member name="T:OchreGui.ApplicationInfo">
+            <summary>
+            This class holds the application options passed to Application.Start().
+            </summary>
+        </member>
+        <member name="M:OchreGui.ApplicationInfo.#ctor">
+            <summary>
+            Default constructor, sets data to defaults
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.Fullscreen">
+            <summary>
+            True if fulscreen.  Defaults to false
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.ScreenSize">
+            <summary>
+            The size of the screen.  This sets the screen resolution if Fullscreen is true,
+            otherwise affacts the system window size.  Defaults to 80x60 characters.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.Title">
+            <summary>
+            The title of the system window.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.Font">
+            <summary>
+            The name of the font file to use, which must be in the same path as the executable.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.FontFlags">
+            <summary>
+            Information about the specified font as per TCODFontFlags.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ApplicationInfo.Pigments">
+            <summary>
+            Any pigments added to this dictionary will override the defaults for this application
+            and all child widgets.  Use this to set application-wide pigments.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Application">
+            <summary>
+            Represents the entire application, and controls top-level logic and state.  The Application
+            contains a Window, which is a container for all of the controls.<para>This object, of which there
+            is only one being executed, handles libtcod initialization, encapsulates the main application loop,
+            and is the ultimate origin for all top level messages</para>
+            <remarks>A custom class should be derived from Application to, at minimal, implement setup code by
+            overriding OnSetup.  Call Application.Start to initialize and start the application loop, which will
+            continue until IsQuitting is set to true.</remarks>
+            </summary>
+        </member>
+        <member name="M:OchreGui.Application.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Application.Start(OchreGui.ApplicationInfo)">
+            <summary>
+            Initializes libtcod and starts the application's main loop.  This will loop 
+            until IsQuitting is set to true or the main system window is closed.
+            </summary>
+            <param name="setupInfo">An ApplicationInfo object containing the options specific
+            to this application</param>
+        </member>
+        <member name="M:OchreGui.Application.SetWindow(OchreGui.Window)">
+            <summary>
+            Sets the current Window, which will immediately begin to receive
+            framework messages.  Windows can be changed at any time.  If the specified window
+            has not yet received a SettingUp message (i.e. it has not already been set as
+            an application window previously), then OnSettingUp will be called.
+            </summary>
+            <param name="win"></param>
+        </member>
+        <member name="M:OchreGui.Application.Setup(OchreGui.ApplicationInfo)">
+            <summary>
+            Called after Application.Start has been called.  Override and place application specific
+            setup code here after calling base method.
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:OchreGui.Application.Update">
+            <summary>
+            Called each iteration of the main loop (each frame).  
+            Override and add specific logic update code after calling base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Application.Finalize">
+            <summary>
+            Default finalizer calls Dispose.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Application.Dispose">
+            <summary>
+            Safely dispose this object and all of its contents.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Application.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
+        </member>
+        <member name="E:OchreGui.Application.SetupEventHandler">
+            <summary>
+            Raised when the application is setting up.  This is raised after TCODInitRoot() has
+            been called, so place any intitialization code dependant on libtcod being initialized here.
+            This event is provided in case the
+            framework is being used in a non-standard way - typically, the derived class will place top level
+            setup code in an overriden Setup method.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Application.UpdateEventHandler">
+            <summary>
+            Raised each iteration of the main application loop.  This event is provided in case the
+            framework is being used in a non-standard way - typically, the derived class will place top level
+            logic updating in an overriden Update method, or within a custom Window class.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.IsQuitting">
+            <summary>
+            True if the application wants to quit.  Set to true to quit.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.Pigments">
+            <summary>
+            Holds the map of pigments for this application.  Use this to make application-wide
+            changes to pigments.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.ScreenSize">
+            <summary>
+            Gets the size of TCODConsole.root, which is the size of the screen (or system window)
+            in cells.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.ScreenRect">
+            <summary>
+            Gets a Rect representing the screen (or the system window).  The UpperLeft position
+            will always be the origin (0,0).
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.CurrentWindow">
+            <summary>
+            Get the Application's current window.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Application.Input">
+            <summary>
+            Get the current InputManager for the current Window.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ListItemSelectedEventArgs">
+            <summary>
+            This is the argument sent as part of a ListBox.ItemSelected event.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListItemSelectedEventArgs.#ctor(System.Int32)">
+            <summary>
+            Construct a ListItemSelectedEventArgs object with the specified item index number.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:OchreGui.ListItemSelectedEventArgs.Index">
+            <summary>
+            The index of the selected item.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ListItemData">
+            <summary>
+            Contains the label and tooltip text for each Listitem that will be added
+            to a Listbox.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListItemData.#ctor(System.String,System.String)">
+            <summary>
+            Construct a ListItemData instance given the label and an optional tooltip.
+            </summary>
+            <param name="label"></param>
+            <param name="toolTip"></param>
+        </member>
+        <member name="P:OchreGui.ListItemData.Label">
+            <summary>
+            The label of this list item.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListItemData.TooltipText">
+            <summary>
+            The optional tooltip text for this list item.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ListBoxTemplate">
+            <summary>
+            This class builds on the Control Template, and adds options specific to a ListBox.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ControlTemplate">
+            <summary>
+            This class builds on the Widget Template, and offers some layout helper methods for
+            positioning controls relative to each other.
+            </summary>
+        </member>
+        <member name="T:OchreGui.WidgetTemplate">
+            <summary>
+            The abstract base class for widget templates.  When subclassing a type of Widget, consider
+            also subclassing WidgetTemplate to provide an interface for the client to specify
+            options, and override CalculateSize to ensure that the widget is created with the correct
+            size.
+            </summary>
+        </member>
+        <member name="M:OchreGui.WidgetTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.WidgetTemplate.CalculateSize">
+            <summary>
+            An override of this method should return the exact and final size of the widget.  This size is
+            used during the contruction of an object from a template.
+            </summary>
+        </member>
+        <member name="P:OchreGui.WidgetTemplate.OwnerDraw">
+            <summary>
+            If true, then base classes will not do any drawing to the canvas, including clearing
+            or blitting to the screen.  This property is present so that subclasses can implement
+            specialized drawing code for optimization or that would otherwise be difficult to 
+            implement using overrides/events.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.WidgetTemplate.Pigments">
+            <summary>
+            Any pigments added to this dictionary will override the default pigments for the widget.
+            Use this to define custom pigments for a widget and any of its children.
+            Defaults to an empty collection.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.CalculateRect">
+            <summary>
+            Calculates the Rect (in screen coordinates) of this control.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetUpperRight(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the upper right coordinates.
+            </summary>
+            <param name="upperRight"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetLowerRight(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the lower right coordinates.
+            </summary>
+            <param name="lowerRight"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetLowerLeft(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the lower left coordinates.
+            </summary>
+            <param name="lowerLeft"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetTopCenter(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the top center coordinates.
+            </summary>
+            <param name="topCenter"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetRightCenter(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the center right coordinates.
+            </summary>
+            <param name="rightCenter"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetBottomCenter(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the bottom center coordinates.
+            </summary>
+            <param name="bottomCenter"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.SetLeftCenter(OchreGui.Utility.Point)">
+            <summary>
+            Layout helper - positions the control by setting the center left coordinates.
+            </summary>
+            <param name="leftCenter"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.AlignTo(OchreGui.LayoutDirection,OchreGui.ControlTemplate,System.Int32)">
+            <summary>
+            Layout helper - Aligns this control to the specified direction of the spcecified
+            control template.  This provides a means to specify control positions relative to
+            previously created templates.
+            </summary>
+            <param name="toDirection"></param>
+            <param name="ofControl"></param>
+            <param name="padding"></param>
+        </member>
+        <member name="M:OchreGui.ControlTemplate.AlignBetween(OchreGui.ControlTemplate,OchreGui.ControlTemplate)">
+            <summary>
+            Not implemented.
+            </summary>
+            <param name="template1"></param>
+            <param name="template2"></param>
+        </member>
+        <member name="P:OchreGui.ControlTemplate.UpperLeftPos">
+            <summary>
+            The upper left position of this control.  Defaults to the origin (0,0)
+            </summary>
+        </member>
+        <member name="P:OchreGui.ControlTemplate.Tooltip">
+            <summary>
+            If not null (the default), the text that is displayed as a tooltip.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ControlTemplate.IsActiveInitially">
+            <summary>
+            If true (the default), this control will be Active when created.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBoxTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBoxTemplate.CalculateSize">
+            <summary>
+            Calculates the ListBox size based on the properties of this template.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.Items">
+            <summary>
+            The list of ListItemData elements that will be included in the list box.  Defaults
+            to an empty list.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.LabelAlignment">
+            <summary>
+            The horizontal alignment of the item labels.  Defaults to left.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.TitleAlignment">
+            <summary>
+            The horiontal alignment of the title. Defaults to left.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.Title">
+            <summary>
+            The title string, defaults to ""
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.MinimumListBoxWidth">
+            <summary>
+            The list box width if larger than the calculated width.  Defaults to 0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.InitialSelectedIndex">
+            <summary>
+            Which item index will be selected initially.  Defaults to 0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.CanHaveKeyboardFocus">
+            <summary>
+            Specifies if this control can receive the keyboard focus.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.HilightWhenMouseOver">
+            <summary>
+            Specifies if this control is drawn in hilighted colors when under the mouse pointer.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.AutoSizeOverride">
+            <summary>
+            Use this to manually size the ListBox.  If this is empty (the default), then the
+            ListBox will autosize.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBoxTemplate.HasFrameBorder">
+            <summary>
+            If true, a frame will be drawn around the listbox and between the title and list
+            of items.  If autosizing, the required space for the frame element will be added.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ListBox">
+            <summary>
+            A ListBox control allows the selection of a single option among a list of
+            options presented in rows.  The selection state of an item is persistant, and
+            is marked as currently selected.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Control">
+            <summary>
+            Controls are added to a window, through which they receive action and system
+            messages.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Widget">
+            <summary>
+            Base class for any component that gets drawn on the screen.  A widget provides
+            a Canvas for drawing operations.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Component">
+            <summary>
+            Base class for any objects that need to receive system and action messages.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.AddSchedule(OchreGui.Schedule)">
+            <summary>
+            Add a schedule to this component.  All schedule must be reference-unique to this component,
+            or this method will throw an ArgumentException.  The schedule is actually  added
+            to the list on the next tick - this ensures that schedules can be added/removed during
+            another schedule's callback method.
+            </summary>
+            <example>
+            <code>
+            AddSchedule(new Scheduel(MyCallback,100));
+            </code>
+            This will cause the MyCallback method to be called every 100 milliseconds until removed with
+            RemoveSchedule.  Elsewhere the MyCallback method must be defined as follows:
+            <code>
+            void MyCallback()
+            {
+                // insert callback code here
+            }
+            </code>
+            </example>
+            <param name="schedule"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="schedule"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="schedule"/> is already
+            contained by this component</exception>
+        </member>
+        <member name="M:OchreGui.Component.RemoveSchedule(OchreGui.Schedule)">
+            <summary>
+            Remove the specified schedule from this component.  The schedule is actually  removed
+            from the list on the next tick - this ensures that schedules can be added/removed during
+            another schedule's callback method.
+            </summary>
+            <param name="schedule"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="schedule"/> is null.</exception>
+        </member>
+        <member name="M:OchreGui.Component.ContainsSchedule(OchreGui.Schedule)">
+            <summary>
+            Returns true if the specified schedule is currently contained in this component.
+            </summary>
+            <param name="schedule"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Component.OnSettingUp">
+            <summary>
+            Called during a compoment's setup, and is called only once.  See specific children
+            for when this occurs.
+            Override to add specific setup code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnTick">
+            <summary>
+            Called each application loop iteration.  Override to add specific update code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnQuitting">
+            <summary>
+            Called exactly once when the application is about to exit.  Override to add
+            specific de-initialation code.  <Note>Release of unmanaged resource and
+            typical finalizer code should go in the typical Dispose() or finalizer
+            methods of the derivative class.</Note>
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnKeyPressed(OchreGui.KeyboardData)">
+            <summary>
+            Called when the user has pressed a keyboard key.  Override to add specific keypress
+            handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnKeyReleased(OchreGui.KeyboardData)">
+            <summary>
+            Called when the user has released a previously pressed key.  Override to add
+            key release handling code.
+            </summary>
+            <param name="keyData"></param>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseMoved(OchreGui.MouseData)">
+            <summary>
+            Called when the mouse has moved to a new cell position.  Override to add
+            mouse move handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseButtonDown(OchreGui.MouseData)">
+            <summary>
+            Called when a mouse button has been pressed.  Override to add mouse button
+            handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseButtonUp(OchreGui.MouseData)">
+            <summary>
+            Called when a previously pressed mouse button has been released.  Override to
+            add mouse button handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseHoverBegin(OchreGui.MouseData)">
+            <summary>
+            Called when the mouse has entered a hover state.  Override to add mouse hover
+            handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseHoverEnd(OchreGui.MouseData)">
+            <summary>
+            Called when the mouse has left a hover state.  Override to add
+            mouse hover handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseDragBegin(OchreGui.Utility.Point)">
+            <summary>
+            Called when the mouse has starting a drag action.  Override to add mouse drag
+            handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Component.OnMouseDragEnd(OchreGui.Utility.Point)">
+            <summary>
+            Called when the drag state for the mouse has ended.  Override to add mouse drag
+            handling code.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.SettingUp">
+            <summary>
+            This event is raised once during the a component's setup.  Various descendents
+            of Component raise this event at different times during the application lifetime:
+            see the various OnSettingUp methods for details.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.Tick">
+            <summary>
+            Raised every update tick of the application loop.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.Quitting">
+            <summary>
+            Raised when application is about to quit.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.KeyPressed">
+            <summary>
+            Raised when a key has been pressed.  Controls will only raise
+            this event if they have the current keyboard focus and are active.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.KeyReleased">
+            <summary>
+            Raised when a key has been released.  Controls will only raise
+            this event if they have the current keyboard focus and are active.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseMoved">
+            <summary>
+            Raised when the mouse has moved to a different position.  Active controls 
+            will only raise this event if the mouse is currently over the control and the control
+            is topmost at that position.  The framework
+            checks the pixel position to see if movement has occurred.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseButtonUp">
+            <summary>
+            Raised when a mouse button has been released.. Controls will only
+            raise this event if the mouse is currently over the control and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseButtonDown">
+            <summary>
+            Raised when a mouse button has been pressed.  Controls will only
+            raise this event if the mouse is currently over the control and the
+            control is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseHoverBegin">
+            <summary>
+            Raised when the mouse has started hovering (has stayed still 
+            for a short time).  Controls will only
+            raise this event if the mouse is currently over the control and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseHoverEnd">
+            <summary>
+            Raised when the mouse has stopped hovering (has moved while
+            previously hovering).  Controls will only
+            raise this event if the mouse is currently over the control and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseDragBegin">
+            <summary>
+            Raised when the mouse drag has started (mouse has moved a 
+            small distance with the left button held down).  Controls will only
+            raise this event if the mouse is currently over the control and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Component.MouseDragEnd">
+            <summary>
+            Raised when the mouse has stopped a mouse drag (e.g. left button
+            released).  Controls will only
+            raise this event if the mouse is currently over the control and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Component.CurrentMousePos">
+            <summary>
+            Holds the mouse position (in screen space) from the last MouseMove message this
+            component has received.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Component.TotalElapsed">
+            <summary>
+            Total elapsed time since start of application, in milliseconds.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Component.LastTickElapsed">
+            <summary>
+            Elapsed time in milliseconds since the last tick message this component
+            has received.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Widget.#ctor(OchreGui.WidgetTemplate)">
+            <summary>
+            Construct a Widget instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.Widget.Redraw">
+            <summary>
+            If OwnerDraw is false, this base method clears the Canvas with the Pigment
+            returned from DetermineMainPigment.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Widget.DetermineMainPigment">
+            <summary>
+            Calculates the current Pigment of the main drawing area for the widget.  Override to change
+            which pigment is used.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Widget.DetermineFramePigment">
+            <summary>
+            Calculate and return the current Pigment of the frame area for this widget.
+            Override to change which pigment is used.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Widget.OnDraw">
+            <summary>
+            Called during the drawing phase of the application loop.  Base method calls Redraw(), 
+            triggers the Draw event, and blits the canvas to the screen if OwnerDraw is false.
+            This method should rarely need to be overriden - instead, to provide custom drawing code
+            (whether OwnerDraw is true or false), override Redraw(), DetermineMainPigment(), and DetermineFramePigment().
+            </summary>
+        </member>
+        <member name="M:OchreGui.Widget.Finalize">
+            <summary>
+            Default finalizer calls Dispose.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Widget.Dispose">
+            <summary>
+            Safely dispose this object and all of its contents.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Widget.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
+        </member>
+        <member name="E:OchreGui.Widget.Draw">
+            <summary>
+            Raised when the the Widget receives a draw message from the framework.  Subscribers
+            can perform custom drawing when this is raised.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.ScreenRect">
+            <summary>
+            Returns widget's rect in screen space coordinates
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.LocalRect">
+            <summary>
+            Returns the widget's rect in local space coordinates.  The UpperLeft coordinate
+            will always be the Origin (0,0).
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.Canvas">
+            <summary>
+            Get the Canvas object associated with this widget.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.Size">
+            <summary>
+            Get the the size of the widget.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.Pigments">
+            <summary>
+            Get the pigment map for this widget.  Alternatives can be set or removed
+            to change the pigments for this widget and its children during runtime.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.ScreenPosition">
+            <summary>
+            The upper left position of this widget in screen space coordinates.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Widget.OwnerDraw">
+            <summary>
+            If true, then base classes will not do any drawing to the canvas, including clearing
+            or blitting to the screen.  This property is present so that subclasses can implement
+            specialized drawing code for optimization or that would otherwise be difficult to 
+            implement using overrides/events.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.#ctor(OchreGui.ControlTemplate)">
+            <summary>
+            Construct a Control instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.Control.ScreenToLocal(OchreGui.Utility.Point)">
+            <summary>
+            Translates the given screen space position to local space.  This is often necessary
+            when handling mouse messages, since the position contained in MouseData is in screen
+            space.
+            </summary>
+            <param name="screenPos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Control.LocalToScreen(OchreGui.Utility.Point)">
+            <summary>
+            Translates the given local space position to screen space position.
+            </summary>
+            <param name="localPos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Control.DrawFrame(OchreGui.Pigment)">
+            <summary>
+            Draw a frame around the control border.  If the <paramref name="pigment"/> is null,
+            the frame will drawn with the Canvas' current default pigment.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.Redraw">
+            <summary>
+            Base class clears the Canvas and draws the frame if HasFrame is true.  If OwnerDraw
+            is true, this method does nothing. Override to add custom drawing
+            code after calling base class.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.DetermineMainPigment">
+            <summary>
+            Returns the pigment for the control according to its state.
+            Override to return a custom color for the main drawing area of the control, or to add
+            additional colors for the control based on custom states.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.DetermineFramePigment">
+            <summary>
+            Returns the pigment for the frame according to its state.
+            Override to return a custom color for the frame area of the control, or to add
+            additional colors for the control based on custom states.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.DetermineTooltipText">
+            <summary>
+            Returns a string representing the displayed tooltip, or null if none.  Base method
+            simply returns the TooltipText property.  Override to add custom tooltip code, e.g.
+            when the tooltip depends on where the mouse is positioned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Control.OnTakeKeyboardFocus">
+            <summary>
+            This method sets HasKeyboardFocus to true, and raises the TakeKBFocus event.  Override
+            to add custom handling code after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.OnReleaseKeyboardFocus">
+            <summary>
+            This method sets HasKBFocus to false, and raises the ReleaseKeyboardFocus event.
+            Override to add custom handling code after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.OnSettingUp">
+            <summary>
+            Called by the framework once when this control is first added to a Window.  Later
+            adds will not cause this method to be called again.  Override and place custom
+            startup code here after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.OnMouseEnter">
+            <summary>
+            This raises the Enter event and sets IsMouseOver to true.  Override to add
+            custom handling code after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.OnMouseLeave">
+            <summary>
+            This method raises the Leave event and sets IsMouseOver to false.  Override to add
+            custom handling code after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Control.OnMouseButtonDown(OchreGui.MouseData)">
+            <summary>
+            Base method sets the IsBeingPushed state if applicable.  Override to add
+            custom handling code after calling this base method.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.Control.OnMouseButtonUp(OchreGui.MouseData)">
+            <summary>
+            Base method sets the IsBeingPushed state if applicable.  Override to add
+            custom handling code after calling this base method.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.Control.OnMouseHoverBegin(OchreGui.MouseData)">
+            <summary>
+            Base method requests that a tooltip be displayed, calling this.DetermineTooltipText()
+            to get the displayed text.  Override to add custom handling code after calling 
+            this base method.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="E:OchreGui.Control.TakeKeyboardFocus">
+            <summary>
+            Raised when control has taken the keyboard focus.  This typically happens after
+            the control recieves a left mouse button down message.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Control.ReleaseKeyboardFocus">
+            <summary>
+            Raised when the control has released the keyboard focus.  This typically
+            happens when a left mouse button down action happens away from this control.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Control.MouseEnter">
+            <summary>
+            Raised when the mouse cursor has entered the control region and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Control.MouseLeave">
+            <summary>
+            Raised when the mouse cursor has left the control region and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.HasKeyboardFocus">
+            <summary>
+            True if currently has keyboard focus.  This is set automatically by
+            the framework in response to user input, or by calling Window.TakeKeyboard.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.CanHaveKeyboardFocus">
+            <summary>
+            True tells parent window that this control is able to
+            capture keyboard focus.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.IsActive">
+            <summary>
+            If false, notifies framework that it does not want to receive user input messages.  This
+            control will stil receive system messages.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.HilightWhenMouseOver">
+            <summary>
+            True if this control will draw itself hilighted when the mouse is over it.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.IsMouseOver">
+            <summary>
+            True if the mouse pointer is currently over this control, and the control
+            is topmost at that position.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.IsBeingPushed">
+            <summary>
+            True if this control is currently being pushed (left mouse button down while over)
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.HasFrame">
+            <summary>
+            Set to true if a frame should be drawn around the boder.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.TooltipText">
+            <summary>
+            Set to a non-empty string to display a tooltip over this control on a hover action.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Control.ParentWindow">
+            <summary>
+            Get the current parent window of control
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBox.#ctor(OchreGui.ListBoxTemplate)">
+            <summary>
+            Construct a ListBox instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.ListBox.GetItemLabel(System.Int32)">
+            <summary>
+            Returns the label of the item with the specified index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.ListBox.DrawTitle">
+            <summary>
+            Draws the title and title frame.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBox.DrawItems">
+            <summary>
+            Draws each of the items in the list.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBox.DrawItem(System.Int32)">
+            <summary>
+            Draws a single item with the given index.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:OchreGui.ListBox.GetItemAt(OchreGui.Utility.Point)">
+            <summary>
+            Returns the index of the item that contains the provided point, specified in local
+            space coordinates.  Returns -1 if no items are at that position.
+            </summary>
+            <param name="lPos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.ListBox.Redraw">
+            <summary>
+            Draws the title and items.  Override to add custom drawing code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ListBox.OnMouseMoved(OchreGui.MouseData)">
+            <summary>
+            Base method detects if the mouse is over one of the items, and changes state
+            accordingly.  Override to add custom handling.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.ListBox.OnMouseButtonDown(OchreGui.MouseData)">
+            <summary>
+            Detects which, if any, item has been selected by a left mouse button.  Override
+            to add custom handling.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.ListBox.OnItemSelected(System.Int32)">
+            <summary>
+            Called when one of the items in the list has been selected with the left mouse
+            button.  Base method triggers appropriate event.  Override to add custom handling.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="E:OchreGui.ListBox.ItemSelected">
+            <summary>
+            Raised when an item has been selected by the left mouse button.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBox.LabelAlignment">
+            <summary>
+            The horizontal alignment of the item labels.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBox.TitleAlignment">
+            <summary>
+            The horiontal alignment of the title.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBox.Title">
+            <summary>
+            The title string.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ListBox.CurrentSelected">
+            <summary>
+            Get the index of the item currently selected.
+            </summary>
+        </member>
+        <member name="T:OchreGui.ButtonTemplate">
+            <summary>
+            Contains the data needed to construct a Button object.  A button will, by default, automatically
+            generate its size based on the Label and MinimumWidth properties of the template, and will always
+            have a height of 3 (1 space for the label and 2 spaces for the borders).  Otherwise,
+            specify a custom size using the AutoSizeOverride property.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ButtonTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.ButtonTemplate.CalculateSize">
+            <summary>
+            Auto generates the size of the button based on the other options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.Label">
+            <summary>
+            The text displayed by the button.  Defaults to empty string ""
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.MinimumWidth">
+            <summary>
+            The minimum width of the button.  This property is ignored if either AutoSizeOverride
+            is set to a non-zero size, or if MinimumWidth is less than the automatically calculated
+            size.  Defaults to 0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.LabelAlignment">
+            <summary>
+            The horizontal alignment of the label.  Defaults to HorizontalAlignment.Left.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.HilightWhenMouseOver">
+            <summary>
+            True if the button will draw itself with hilight colors when under the mouse
+            pointer.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.CanHaveKeyboardFocus">
+            <summary>
+            Set to true if this button can take the keyboard focus by being left-clicked on.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.HasFrameBorder">
+            <summary>
+            If true, the button will have a frame drawn around it.  If autosizing, space
+            for the frame will be added.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.AutoSizeOverride">
+            <summary>
+            Use this to manually provide a size for the button.  If empty (the default), then
+            the button will atuosize.
+            </summary>
+        </member>
+        <member name="P:OchreGui.ButtonTemplate.VAlignment">
+            <summary>
+            The vertical alignment of the label.  Only used if the AutoSizeOverride property
+            has been set to a height of greater than 1.  Defaults to VerticalAlignment.Center.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Button">
+            <summary>
+            Represents a button control.  A button can be pushed, which happens when the left mouse button is 
+            pressed then subsequently released while over the button.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Button.#ctor(OchreGui.ButtonTemplate)">
+            <summary>
+            Constructs a Button instance given the template.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Button.Redraw">
+            <summary>
+            This base method clears the Canvas, draws the frame (if any), and draws the label, unless
+            OwnerDraw is set to true in which case the base methods do nothing.  Override to add custom
+            drawing code here.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Button.DetermineMainPigment">
+            <summary>
+            Returns the pigment of the main control area based on its current state.
+            Override to return a custom color for the main drawing area of the button, or to add
+            additional colors for the button based on custom states.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Button.DetermineFramePigment">
+            <summary>
+            Returns the pigment of the frame based on the current state.
+            Override to return a custom color for the frame, or to add additional colors
+            for the button based on custom states.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Button.OnMouseButtonUp(OchreGui.MouseData)">
+            <summary>
+            Called when a mouse button is released while over this button.  Triggers proper
+            events.  Override to add custom handling.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.Button.OnButtonPushed">
+            <summary>
+            Called by the framework when a buton click
+            action is performed.  Triggers proper
+            events.  Override to add custom handling.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Button.ButtonPushed">
+            <summary>
+            Raised when a button has been pushed (mouse button down then up over control).
+            </summary>
+        </member>
+        <member name="P:OchreGui.Button.Label">
+            <summary>
+            Get the button Label.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Button.LabelAlignment">
+            <summary>
+            Get or set the label's horizontal alignment.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Button.VAlignment">
+            <summary>
+            Get or set the label's vertical alignment.  This will only have an effect if
+            the height of the button is larger than 3 as specified by the AutoSizeOverride
+            property of the creating template.
+            </summary>
+        </member>
+        <member name="T:OchreGui.RadioToggledEventArgs">
+            <summary>
+            This is the argument sent as part of a RadioBox.RadioToggled event.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioToggledEventArgs.#ctor(System.Int32)">
+            <summary>
+            Construct a RadioToggledEventArgs object with the specified item radio index.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:OchreGui.RadioToggledEventArgs.Index">
+            <summary>
+            The index of the toggled radio.
+            </summary>
+        </member>
+        <member name="T:OchreGui.RadioItemData">
+            <summary>
+            Contains the label and tooltip text for each RadioItem that will be added
+            to a Listbox.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioItemData.#ctor(System.String,System.String)">
+            <summary>
+            Construct a ListItemData instance given the label and an optional tooltip.
+            </summary>
+            <param name="label"></param>
+            <param name="toolTip"></param>
+        </member>
+        <member name="P:OchreGui.RadioItemData.Label">
+            <summary>
+            The label of this radio item.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioItemData.TooltipText">
+            <summary>
+            The optional tooltip text for this radio item.
+            </summary>
+        </member>
+        <member name="T:OchreGui.RadioGroupTemplate">
+            <summary>
+            Used to contructs a RadioGroup object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioGroupTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioGroupTemplate.CalculateSize">
+            <summary>
+            Calculates the RadioGroup size based on the properties of this template.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.Items">
+            <summary>
+            The list of RadioItemData elements that will be included in the radio group.  Defaults
+            to an empty list.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.LabelAlignment">
+            <summary>
+            The horizontal alignment of the radio labels.  Defaults to left.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.InitialSelectedIndex">
+            <summary>
+            Which radio index will be selected initially.  Defaults to 0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.CanHaveKeyboardFocus">
+            <summary>
+            Specifies if this control can receive the keyboard focus.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.HilightRadioMouseOver">
+            <summary>
+            Specifies if the radio item is drawn in hilighted colors when under the mouse pointer.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.AutoSizeOverride">
+            <summary>
+            Use this to manually size the RadioGroup.  If this is empty (the default), then the
+            RadioGroup will autosize.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.HasFrameBorder">
+            <summary>
+            If true, a frame will be drawn around the RadioGroup.
+            If autosizing, the required space for the frame element will be added.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroupTemplate.RadioOnLeft">
+            <summary>
+            Set to true if the radio element will be drawn to the left of the label.  Otherwise
+            the label will be drawn left of the radio element.  Defaults to true.
+            </summary>
+        </member>
+        <member name="T:OchreGui.RadioGroup">
+            <summary>
+            Represents a group (list) of radio boxes.  Only one radio can be selected (toggled) at
+            a time.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioGroup.#ctor(OchreGui.RadioGroupTemplate)">
+            <summary>
+            Construct a RadioGroup from the specified templated.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.RadioGroup.DrawItems">
+            <summary>
+            Draws all of the items.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioGroup.DrawItem(System.Int32)">
+            <summary>
+            Draws the specified item.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:OchreGui.RadioGroup.GetItemAt(OchreGui.Utility.Point)">
+            <summary>
+            Returns the index of the item at the given position, or -1 if there is not item
+            at that position.  The position is given in local space coordinates.
+            </summary>
+            <param name="lPos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.RadioGroup.Redraw">
+            <summary>
+            Draws the radio items.  Override to add custom drawing code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.RadioGroup.OnMouseMoved(OchreGui.MouseData)">
+            <summary>
+            Base method detects if the mouse pointer is currently over a radio item and
+            sets the state accordingly.  Override to add custom handling.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.RadioGroup.OnMouseButtonDown(OchreGui.MouseData)">
+            <summary>
+            Base method detects if a radio item was selected, and calls OnItemSelected if this
+            is the case.  Override to add custom handling.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.RadioGroup.OnItemSelected(System.Int32)">
+            <summary>
+            Triggers the appropriate event, and removes this menu from the parent window.  Override
+            to add custom handling.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="E:OchreGui.RadioGroup.RadioToggled">
+            <summary>
+            Raised when a radio box has been toggled (selected) by user input.  The
+            RadioToggledEventArgs contains the index number of the selected radio.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroup.LabelAlignment">
+            <summary>
+            The alignment of the radio labels.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroup.RadioOnLeft">
+            <summary>
+            Set to true if the radio element will be drawn to the left of the label.  Otherwise
+            the label will be drawn left of the radio element.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroup.CurrentSelected">
+            <summary>
+            The currently selected radio index.
+            </summary>
+        </member>
+        <member name="P:OchreGui.RadioGroup.HilightRadioMouseOver">
+            <summary>
+            Specifies if the radio item is drawn in hilighted colors when under the mouse pointer.
+            </summary>
+        </member>
+        <member name="T:OchreGui.EntryTemplate">
+            <summary>
+            Base class used for Entry template classes.
+            </summary>
+        </member>
+        <member name="M:OchreGui.EntryTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.EntryTemplate.CalculateMaxCharacters">
+            <summary>
+            Override must return the maximum number of characters allowed for input.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.Label">
+            <summary>
+            Displayed label, defautls to empty string
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.CanHaveKeyboardFocus">
+            <summary>
+            True if this control initially accepts the keyboard focus.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.HilightWhenMouseOver">
+            <summary>
+            True if this control is drawn hilighted when under the mouse pointer.  Defaults
+            to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.CommitOnLostFocus">
+            <summary>
+            If true, the entered text will be committed if the control looses the keyboard
+            focus before the ENTER key is pressed.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.ReplaceOnFirstKey">
+            <summary>
+            If true, simulates the "select-all and replace on first keypress" behaviour
+            seen in other GUI systems.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.HasFrameBorder">
+            <summary>
+            True if this control draws a frame.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.AutoSizeOverride">
+            <summary>
+            Set this to manually size the entry.  If empty (the default), the entry will
+            be autosized.
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and input field within the Entry control.
+            Defaults to VerticalAlignment.Center
+            </summary>
+        </member>
+        <member name="P:OchreGui.EntryTemplate.LabelAlign">
+            <summary>
+            The horizontal alignment of the label withing the Entry control.
+            Defaults to HorizontalAlignment.Left
+            </summary>
+        </member>
+        <member name="T:OchreGui.Entry">
+            <summary>
+            This is the base class for an Entry control.  Entry controls allow keyboard input
+            from the user, and the input can be validated on a character by character basis and/or
+            validate the entire entry field when it is being committed.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.#ctor(OchreGui.EntryTemplate)">
+            <summary>
+            Construct an Entry instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.Entry.TrySetField(System.String)">
+            <summary>
+            Tries to set the entry's Field to the specified text.  This method calls TryCommit()
+            to see if the commit was successful, and returns true if the commit was successful.
+            </summary>
+            <param name="changeTo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Entry.TryCommit">
+            <summary>
+            Trys to commmit the current text, by calling ValidateField.  If successful,
+            the CurrentText will be set to the current text, and OnFieldChanged will
+            be called.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Entry.ValidateCharacter(System.Char)">
+            <summary>
+            Return true if character is a valid entry.  An invalid character will be ignored
+            by the entry and not added to the entry field.  Override to implement custom character
+            validation.
+            </summary>
+            <param name="character"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Entry.ValidateField(System.String)">
+            <summary>
+            Returns true if the provided entry is valid.  This is checked when the field is about
+            to be committed; if invalid, the field will revert to the last valid field.  Override to implement
+            custom field validation.
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Entry.OnSettingUp">
+            <summary>
+            Base method sets up a scheduler for blinking the cursor.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.Redraw">
+            <summary>
+            Draws the entry, including the cursor and any state-dependant colors.  Override
+            to add custom drawing code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.OnFieldChanged">
+            <summary>
+            Called when the a different field has been committed to the entry.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.OnKeyPressed(OchreGui.KeyboardData)">
+            <summary>
+            Base method handles keyboard input for the entry.  Override to add custom
+            behavior.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.OnTakeKeyboardFocus">
+            <summary>
+            Base method gets the entry ready for user keyboard input.  Override to add
+            custom handling after calling this base method.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Entry.OnReleaseKeyboardFocus">
+            <summary>
+            Base method performs any necessary cleanup when the keyboard focus is lost.  Override
+            to add custom handling after calling this base method.
+            </summary>
+        </member>
+        <member name="E:OchreGui.Entry.EntryChanged">
+            <summary>
+            Triggered when the entered text has been committed, usually by pressing the ENTER key.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.CurrentText">
+            <summary>
+            Gets the last valid, committed text that has been entered.  This may or may not be
+            the same as what is being currently displayed by the entry (as a user types input,
+            for example).
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.TextInput">
+            <summary>
+            The current text state of the control as it is typed.  This text has not yet been
+            validated.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.MaximumCharacters">
+            <summary>
+            Get the maximum number of characters that can be typed
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.DefaultField">
+            <summary>
+            Gets what the field defaults to if there is not current or previous valid entries.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.Label">
+            <summary>
+            Get the label string
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.CursorPos">
+            <summary>
+            Get the current position of the entry cursor, representing the position
+            of the next typed character.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.CommitOnLostFocus">
+            <summary>
+            If true, the entered text will be committed if the control looses the keyboard
+            focus before the ENTER key is pressed.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.ReplaceOnFirstKey">
+            <summary>
+            If true, simulates the "select-all and replace on first keypress" behaviour
+            seen in other GUI systems.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and input field within the Entry control.
+            Defaults to VerticalAlignment.Center
+            </summary>
+        </member>
+        <member name="P:OchreGui.Entry.LabelAlign">
+            <summary>
+            The horizontal alignment of the label withing the Entry control.
+            Defaults to HorizontalAlignment.Left
+            </summary>
+        </member>
         <member name="T:OchreGui.Color">
             <summary>
             This class wraps a TCODColor in an immutable data type.  Provides nearly identical
@@ -93,6 +1619,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:OchreGui.Color.GetCode">
+            <summary>
+            Returns the embedded code for this color
+            <note>Embedded colors are currently not working correctly</note>
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:OchreGui.Color.Lerp(OchreGui.Color,OchreGui.Color,System.Single)">
             <summary>
             Wrapper around TCODColor.Interpolate
@@ -101,6 +1634,22 @@
             <param name="destinationColor"></param>
             <param name="coefficient"></param>
             <returns></returns>
+        </member>
+        <member name="M:OchreGui.Color.Finalize">
+            <summary>
+            Default finalizer calls Dispose.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Color.Dispose">
+            <summary>
+            Safely dispose this object and all of its contents.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Color.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
         </member>
         <member name="P:OchreGui.Color.Red">
             <summary>
@@ -117,919 +1666,126 @@
             Get the blue value of the color, 0-255
             </summary>
         </member>
-        <member name="T:OchreGui.ColorStyle">
+        <member name="P:OchreGui.Color.CodeForeground">
+            <summary>
+            Returns the embedded foreground color code.
+            <note>Embedded colors are currently not working correctly</note>
+            </summary>
+        </member>
+        <member name="P:OchreGui.Color.CodeBackground">
+            <summary>
+            Returns the embedded background color code.
+            <note>Embedded colors are currently not working correctly</note>
+            </summary>
+        </member>
+        <member name="P:OchreGui.Color.CodeStop">
+            <summary>
+            Returns the embedded stop code
+            <note>Embedded colors are currently not working correctly</note>
+            </summary>
+        </member>
+        <member name="T:OchreGui.Pigment">
             <summary>
             Stores forground color, background color, and background flag in a convenient
             single immutable data type
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(OchreGui.Color,OchreGui.Color,libtcod.TCODBackgroundFlag)">
+        <member name="M:OchreGui.Pigment.#ctor(OchreGui.Color,OchreGui.Color,libtcod.TCODBackgroundFlag)">
             <summary>
-            Construct a ColorStyle given foreground and background colors and background flag
+            Construct a Pigment given foreground and background colors and background flag
             </summary>
             <param name="foreground"></param>
             <param name="background"></param>
             <param name="bgFlag"></param>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(OchreGui.Color,OchreGui.Color)">
+        <member name="M:OchreGui.Pigment.#ctor(OchreGui.Color,OchreGui.Color)">
             <summary>
             BGFlag defaults to TCODBackgroundFlag.Set
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(System.Int64,System.Int64,libtcod.TCODBackgroundFlag)">
+        <member name="M:OchreGui.Pigment.#ctor(System.Int64,System.Int64,libtcod.TCODBackgroundFlag)">
             <summary>
-            Construct a ColorStyle given foreground and background colors and background flag.
+            Construct a Pigment given foreground and background colors and background flag.
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.#ctor(System.Int64,System.Int64)">
+        <member name="M:OchreGui.Pigment.#ctor(System.Int64,System.Int64)">
             <summary>
             BGFlag defaults to TCODBackgroundFlag.Set
             </summary>
         </member>
-        <member name="M:OchreGui.ColorStyle.Invert">
+        <member name="M:OchreGui.Pigment.Invert">
             <summary>
-            Swaps a ColorStyles's foreground and background
+            Swaps a Pigments's foreground and background.  Returns a new Pigment instance,
+            this instance is unchanged.
             </summary>
             <returns></returns>
         </member>
-        <member name="P:OchreGui.ColorStyle.Foreground">
+        <member name="M:OchreGui.Pigment.ReplaceForeground(OchreGui.Color)">
+            <summary>
+            Returns a new Pigment by replacing the foreground color.  This isntance remains
+            unchanged.
+            </summary>
+            <param name="newFGColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Pigment.ReplaceBackground(OchreGui.Color)">
+            <summary>
+            Returns a new Pigment by replacing the background color.  This isntance remains
+            unchanged.
+            </summary>
+            <param name="newBGColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Pigment.ReplaceBGFlag(libtcod.TCODBackgroundFlag)">
+            <summary>
+            Returns a new Pigment by replacing the background flag.  This isntance remains
+            unchanged.
+            </summary>
+            <param name="newBGFlag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Pigment.GetCode">
+            <summary>
+            Returns the embedded string code for this color.
+            <note>Embedded colors are currently not working correctly</note>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Pigment.Finalize">
+            <summary>
+            Default finalizer calls Dispose.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Pigment.Dispose">
+            <summary>
+            Safely dispose this object and its contents.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Pigment.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
+        </member>
+        <member name="P:OchreGui.Pigment.Foreground">
             <summary>
             Get the foreground color
             </summary>
         </member>
-        <member name="P:OchreGui.ColorStyle.Background">
+        <member name="P:OchreGui.Pigment.Background">
             <summary>
             Get the background color
             </summary>
         </member>
-        <member name="P:OchreGui.ColorStyle.BackgroundFlag">
+        <member name="P:OchreGui.Pigment.BackgroundFlag">
             <summary>
             Get the background flag;
             </summary>
         </member>
-        <member name="T:OchreGui.TextEntryValidations">
+        <member name="T:OchreGui.LayoutDirection">
             <summary>
-            Types of characters for use in entry validation.
+            Specifies a cardinal direction (assuming Up is North) for use in the layout helper methods.
             </summary>
-        </member>
-        <member name="F:OchreGui.TextEntryValidations.All">
-            <summary>
-            Allow all printable characters (but no control codes)
-            </summary>
-        </member>
-        <member name="F:OchreGui.TextEntryValidations.Letters">
-            <summary>
-            Allow only letters, uppercase or lowercase, and spaces
-            </summary>
-        </member>
-        <member name="F:OchreGui.TextEntryValidations.Numbers">
-            <summary>
-            Allow only the digits 0 through 9
-            </summary>
-        </member>
-        <member name="F:OchreGui.TextEntryValidations.Decimal">
-            <summary>
-            Allow plus, minus and decimal point signs along with numbers.
-            </summary>
-        </member>
-        <member name="F:OchreGui.TextEntryValidations.Symbols">
-            <summary>
-            Allow all printable symbols that are not numbers or letters.  Setting this
-            flag will effectively override the Decimal flag validation of the plus, minus
-            and decimal point symbols.
-            </summary>
-        </member>
-        <member name="T:OchreGui.TextEntryTemplate">
-            <summary>
-            Simple data structure for passing to textentry's constructor.  This allows
-            re-using the same setup parameters, for example, on multiple textentries.
-            Also allows use of named initializers.
-            </summary>
-        </member>
-        <member name="T:OchreGui.EntryTemplate">
-            <summary>
-            Base class used for Entry template classes.
-            </summary>
-        </member>
-        <member name="T:OchreGui.ControlTemplate">
-            <summary>
-            This class builds on the Widget Template, and offers some layout helper methods.
-            </summary>
-        </member>
-        <member name="T:OchreGui.WidgetTemplate">
-            <summary>
-            The abstract base class for widget templates.  When subclassing a type of Widget, consider
-            also subclassing WidgetTemplate to provide an interface for the client to specify
-            options, and override CalculateSize to ensure that the widget is created with the correct
-            size.
-            </summary>
-        </member>
-        <member name="T:OchreGui.ITemplate">
-            <summary>
-            Implemented by widget templates and their derivatives. Defines the CalculateSize
-            method, which should return the exact and final size of the widget.
-            </summary>
-        </member>
-        <member name="P:OchreGui.WidgetTemplate.DefaultStyles">
-            <summary>
-            The default styles that this widget will have.  Defaults to null, which tells
-            the child classes to inherit or create new styles.
-            </summary>
-        </member>
-        <member name="P:OchreGui.WidgetTemplate.OwnerDraw">
-            <summary>
-            If true, then base classes will not do any drawing to the canvas, including clearing
-            or blitting to the screen.  This property is present so that subclasses can implement
-            specialized drawing code for optimization or that would otherwise be difficult to 
-            implement using overrides/events.  Defaults to false.
-            </summary>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.CalculateRect">
-            <summary>
-            Calculates the Rect (in screen coordinates) of this control.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetUpperRight(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the upper right coordinates.
-            </summary>
-            <param name="upperRight"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetLowerRight(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the lower right coordinates.
-            </summary>
-            <param name="lowerRight"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetLowerLeft(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the lower left coordinates.
-            </summary>
-            <param name="lowerLeft"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetTopCenter(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the top center coordinates.
-            </summary>
-            <param name="topCenter"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetRightCenter(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the center right coordinates.
-            </summary>
-            <param name="rightCenter"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetBottomCenter(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the bottom center coordinates.
-            </summary>
-            <param name="bottomCenter"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.SetLeftCenter(OchreGui.Utility.Point)">
-            <summary>
-            Layout helper - positions the control by setting the center left coordinates.
-            </summary>
-            <param name="leftCenter"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.AlignTo(OchreGui.LayoutDirection,OchreGui.ControlTemplate,System.Int32)">
-            <summary>
-            Layout helper - Aligns this control to the specified direction of the spcecified
-            control template.  This provides a means to specify control positions relative to
-            previously created templates.
-            </summary>
-            <param name="toDirection"></param>
-            <param name="ofControl"></param>
-            <param name="padding"></param>
-        </member>
-        <member name="M:OchreGui.ControlTemplate.AlignBetween(OchreGui.ControlTemplate,OchreGui.ControlTemplate)">
-            <summary>
-            Not implemented.
-            </summary>
-            <param name="template1"></param>
-            <param name="template2"></param>
-        </member>
-        <member name="P:OchreGui.ControlTemplate.UpperLeftPos">
-            <summary>
-            The upper left position of this control.  Defaults to the origin (0,0)
-            </summary>
-        </member>
-        <member name="P:OchreGui.ControlTemplate.Tooltip">
-            <summary>
-            If not null (the default), the text that is displayed as a tooltip.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ControlTemplate.IsActiveInitially">
-            <summary>
-            If true (the default), this control will be Active when created.
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.Label">
-            <summary>
-            Displayed label, defautls to empty string
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.CanHaveKeyboardFocus">
-            <summary>
-            True if this control initially accepts the keyboard focus.  Defaults to true.
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.HilightWhenMouseOver">
-            <summary>
-            True if this control is drawn hilighted when under the mouse pointer.  Defaults
-            to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.CommitOnLostFocus">
-            <summary>
-            If true, the entered text will be committed if the control looses the keyboard
-            focus before the ENTER key is pressed.  Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.ReplaceOnFirstKey">
-            <summary>
-            If true, simulates the "select-all and replace on first keypress" behaviour
-            seen in other GUI systems.  Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.EntryTemplate.HasFrameBorder">
-            <summary>
-            True if this control has a border for a frame.  Defaults to true.
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntryTemplate.MaximumCharacters">
-            <summary>
-            Maximum number of accepted characters
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntryTemplate.Validation">
-            <summary>
-            Characters allowed to be entered, defaults to All
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntryTemplate.StartingField">
-            <summary>
-             The field of the text entry when first created.
-            </summary>
-        </member>
-        <member name="T:OchreGui.TextEntry">
-            <summary>
-            A text entry accepts general text input from the user.  The input can be validated by 
-            the maximum number of characters
-            and which characters are accepted.  The control must have keyboard focus to receive
-            input, and commits the changes to the text field when the enter key is pressed (by default).
-            Hitting the escape key or otherwise loosing the keyboard focus (by default) before hitting 
-            enter cancels the current text from being committed.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Control">
-            <summary>
-            Controls are added to a window, and receive the highest level of
-            action messages.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Widget">
-            <summary>
-            Base class for any component that gets drawn on the screen.  A widget provides
-            an offscreen TCODConsole (Widget.Console) to draw to.  The framework automatically
-            blits the Console to the screen each frame.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Component">
-            <summary>
-            Base class for any objects that need to receive system and input messages.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.AddSchedule(OchreGui.Schedule)">
-            <summary>
-            Add a schedule to this component.  All schedule must be reference-unique to this component,
-            or this method will throw an ArgumentException.  The schedule(s) added will begin to receive
-            update ticks during the next application loop iteration.
-            </summary>
-            <param name="schedule"></param>
-        </member>
-        <member name="M:OchreGui.Component.RemoveSchedule(OchreGui.Schedule)">
-            <summary>
-            Remove the specified schedule from this component.
-            </summary>
-            <param name="schedule"></param>
-        </member>
-        <member name="M:OchreGui.Component.HasSchedule(OchreGui.Schedule)">
-            <summary>
-            Returns true if the specified schedule has previously been added to this
-            component.
-            </summary>
-            <param name="schedule"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Component.OnSettingUp">
-            <summary>
-            Called during a compoment's setup, and is called only once.  See specific children
-            for when this occurs.
-            Override to add specific setup code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnTick">
-            <summary>
-            Called each application loop iteration.  Override to add specific update code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnQuitting">
-            <summary>
-            Called exactly once when the application is about to exit.  Override to add
-            specific de-initialation code.  <Note>Release of unmanaged resource and
-            typical finalizer code should go in the typical Dispose() or finalizer
-            methods of the derivative class.</Note>
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnKeyPressed(OchreGui.KeyboardData)">
-            <summary>
-            Called when the user has pressed a keyboard key.  Override to add specific keypress
-            handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnKeyReleased(OchreGui.KeyboardData)">
-            <summary>
-            Called when the user has released a previously pressed key.  Override to add
-            key release handling code.
-            </summary>
-            <param name="keyData"></param>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseMoved(OchreGui.MouseData)">
-            <summary>
-            Called when the mouse has moved to a new cell position.  Override to add
-            mouse move handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseButtonDown(OchreGui.MouseData)">
-            <summary>
-            Called when a mouse button has been pressed.  Override to add mouse button
-            handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseButtonUp(OchreGui.MouseData)">
-            <summary>
-            Called when a previously pressed mouse button has been released.  Override to
-            add mouse button handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseHoverBegin(OchreGui.MouseData)">
-            <summary>
-            Called when the mouse has entered a hover state.  Override to add mouse hover
-            handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseHoverEnd(OchreGui.MouseData)">
-            <summary>
-            Called when the mouse has left a hover state.  Override to add
-            mouse hover handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseDragBegin(OchreGui.Utility.Point)">
-            <summary>
-            Called when the mouse has starting a drag action.  Override to add mouse drag
-            handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Component.OnMouseDragEnd(OchreGui.Utility.Point)">
-            <summary>
-            Called when the drag state for the mouse has ended.  Override to add mouse drag
-            handling code.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.SettingUp">
-            <summary>
-            This event is raised once during the a component's setup.  Various descendents
-            of Component raise this event at different times during the application lifetime:
-            see the various OnSettingUp methods for details.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.Tick">
-            <summary>
-            Raised every update tick
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.Quitting">
-            <summary>
-            Raised when application is about to quit
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.KeyPressed">
-            <summary>
-            Raised when a key has been pressed.  Controls will only raise
-            this event if they have the current keyboard focus and are active.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.KeyReleased">
-            <summary>
-            Raised when a key has been released.  Controls will only raise
-            this event if they have the current keyboard focus and are active.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseMoved">
-            <summary>
-            Raised when the mouse has moved to a different cell position.  Active controls 
-            will only raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseButtonUp">
-            <summary>
-            Raised when a mouse button has been released.. Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseButtonDown">
-            <summary>
-            Raised when a mouse button has been pressed.  Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseHoverBegin">
-            <summary>
-            Raised when the mouse has started hovering (has stayed still 
-            for a short time).  Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseHoverEnd">
-            <summary>
-            Raised when the mouse has stopped hovering (has moved while
-            previously hovering).  Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseDragBegin">
-            <summary>
-            Raised when the mouse drag has started (mouse has moved a 
-            small distance with the left button held down).  Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Component.MouseDragEnd">
-            <summary>
-            Raised when the mouse has stopped a mouse drag (e.g. left button
-            released).  Controls will only
-            raise this event if the mouse is currently over the control.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Component.CurrentMousePos">
-            <summary>
-            Holds last stored mouse position
-            </summary>
-        </member>
-        <member name="P:OchreGui.Component.TotalEllapsed">
-            <summary>
-            Total ellapsed time since start of application, in milliseconds
-            </summary>
-        </member>
-        <member name="P:OchreGui.Component.LastFrameEllapsed">
-            <summary>
-            Ellapsed time in milliseconds since last frame
-            </summary>
-        </member>
-        <member name="M:OchreGui.Widget.Redraw">
-            <summary>
-            If OwnerDraw is false, this base method sets the Canvas colors according to the
-            GetMainStyle() method, and clears the Canvas.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Widget.GetMainStyle">
-            <summary>
-            Get the ColorStyle of the main drawing area for the widget.  Override to change
-            which style is used.  Base method returns this.DefaultStyles.Window.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Widget.GetFrameStyle">
-            <summary>
-            Get the ColorStyle of the frame area for this widget.  Override to change which
-            style is used.  Base method returns this.DefaultStyles.Frame
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Widget.OnDraw">
-            <summary>
-            Called during the drawing phase of the application loop.  Base method calls Redraw(), 
-            triggers appropriate event, and blits the canvas to the screen if OwnerDraw is false.
-            This method should rarely need to be overriden - instead, to provide custom drawing code
-            (whether OwnerDraw is true or false), override Redraw(), GetMainStyle(), and GetFrameStyle().
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.ScreenRect">
-            <summary>
-            Returns widget's rect in screen space coordinates
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.LocalRect">
-            <summary>
-            Returns the widget's rect in local space coordinates.  The UpperLeft coordinate
-            will always be the Origin (0,0).
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.Canvas">
-            <summary>
-            Get the Canvas object associated with this widget.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.DefaultStyles">
-            <summary>
-            Get the default Styles associated with this widget.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.Size">
-            <summary>
-            Get the the Size of the widget.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.OwnerDraw">
-            <summary>
-            If true, then base classes will not do any drawing to the canvas, including clearing
-            or blitting to the screen.  This property is present so that subclasses can implement
-            specialized drawing code for optimization or that would otherwise be difficult to 
-            implement using overrides/events.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Widget.ScreenPosition">
-            <summary>
-            The upper left position of this widget in screen space coordinates.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.ScreenToLocalPosition(OchreGui.Utility.Point)">
-            <summary>
-            Translates given screen space position to local control space position
-            </summary>
-            <param name="screenPos"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Control.LocalToScreen(OchreGui.Utility.Point)">
-            <summary>
-            Translates given control space position to screen space position
-            </summary>
-            <param name="localPos"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Control.DrawFrame(OchreGui.ColorStyle)">
-            <summary>
-            Draw a frame around the control border
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.Redraw">
-            <summary>
-            Base class draws the frame if HasFrame is true.  Override to add custom drawing
-            code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.GetMainStyle">
-            <summary>
-            Sets the colors for the control according to its state.  Base
-            method sets the colors Hilight, Active or Inactive depending
-            on IsActive, IsSelected and IsMouseOver.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.GetTooltipText">
-            <summary>
-            Returns a string representing the displayed tooltip or null if none.  Base method
-            simply returns the TooltipText property.  Override to add custom tooltip code.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Control.OnTakeKeyboardFocus">
-            <summary>
-            This method sets HasKeyboardFocus to true, and raises the TakeKBFocusEvent  Override
-            to add custom handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.OnReleaseKeyboardFocus">
-            <summary>
-            This method sets HasKBFocus to false, and raises the ReleaseKeyboardFocusEvent.
-            Override to add custom handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.OnSettingUp">
-            <summary>
-            Called by the framework once when this control is first added to a Window.  Later
-            adds will not cause this method to be called again.  Override and place custom
-            startup code here.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.OnMouseEnter">
-            <summary>
-            This raises the EnterEvent and sets IsMouseOver to true.  Override to add
-            custom handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.OnMouseLeave">
-            <summary>
-            This method raises the LeaveEvent and sets IsMouseOver to false.  Override to add
-            custom handling code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Control.OnMouseButtonDown(OchreGui.MouseData)">
-            <summary>
-            Base method sets the IsBeingPushed state if applicable.  Override to add
-            custom handling code.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.Control.OnMouseButtonUp(OchreGui.MouseData)">
-            <summary>
-            Base method sets the IsBeingPushed state if applicable.  Override to add
-            custom handling code.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.Control.OnMouseHoverBegin(OchreGui.MouseData)">
-            <summary>
-            Base method requests that a tooltip be displayed, calling this.GetTooltipText()
-            to get the displayed text.  Override to add custom handling code.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="E:OchreGui.Control.TakeKeyboardFocus">
-            <summary>
-            Raised when control has taken the keyboard focus.  This typically happens after
-            the control recieves a left mouse button down message.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Control.ReleaseKeyboardFocus">
-            <summary>
-            Raised when the control has released the keyboard focus.  This automatically
-            happens when a left mouse button down action happens away from this control.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Control.MouseEnter">
-            <summary>
-            Raised when the mouse cursor has entered the control region
-            </summary>
-        </member>
-        <member name="E:OchreGui.Control.MouseLeave">
-            <summary>
-            Raised when the mouse cursor has left the control region
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.HasKeyboardFocus">
-            <summary>
-            True if currently has keyboard focus.  This is set automatically by
-            the framework.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.CanHaveKeyboardFocus">
-            <summary>
-            True tells parent window that this control is able to
-            capture keyboard focus
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.IsActive">
-            <summary>
-            If false, notifies framework that it does not want to receive user input messages
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.IsMouseOver">
-            <summary>
-            True if the mouse pointer is currently over this control
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.IsBeingPushed">
-            <summary>
-            True if this control is currently being pushed (left mouse button down while over)
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.HasFrame">
-            <summary>
-            Set to true if a frame should be drawn around control boder
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.TooltipText">
-            <summary>
-            Set to a non-empty string to display a tooltip over this control on a hover action
-            </summary>
-        </member>
-        <member name="P:OchreGui.Control.ParentWindow">
-            <summary>
-            Get the current parent window of control
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.TrySetField(System.String)">
-            <summary>
-            Sets this entry's Field property if the specified field is valid according to 
-            the ValidateField method.  Also calls OnFieldChanged if valid.
-            </summary>
-            <param name="field"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Entry.ValidateCharacter(System.Char)">
-            <summary>
-            Return true if character is a valid entry.  Override to implement custom
-            validation.
-            </summary>
-            <param name="character"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Entry.ValidateField(System.String)">
-            <summary>
-            Returns true if the provided entry is valid.  Override to implement
-            custom validation.
-            </summary>
-            <param name="entry"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Entry.GetMainStyle">
-            <summary>
-            Returns the color style based on whether the entry has the keyboard focus or not.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.OnSettingUp">
-            <summary>
-            Base method sets up a scheduler for blinking the cursor.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.Redraw">
-            <summary>
-            Draws the entry, including the cursor and any state-dependant colors.  Override
-            to add custom drawing code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.OnFieldChanged">
-            <summary>
-            Called when the a different field has been committed to the entry.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.OnKeyPressed(OchreGui.KeyboardData)">
-            <summary>
-            Base method handles keyboard input for the entry.  Override to add custom
-            behavior.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.OnTakeKeyboardFocus">
-            <summary>
-            Base method gets the entry ready for user keyboard input.  Override to add
-            custom handling.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Entry.OnReleaseKeyboardFocus">
-            <summary>
-            Base method performs any necessary cleanup when the keyboard focus is lost.  Override
-            to add custom handling.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Entry.EntryChanged">
-            <summary>
-            Triggered when the entered text has been committed, usually by pressing the ENTER key.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.Field">
-            <summary>
-            Gets the last valid, committed text that has been entered.  This may or may not be
-            the same as what is being currently displayed by the entry (as a user types input,
-            for example).
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.MaximumCharacters">
-            <summary>
-            Get the maximum number of characters that can be typed
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.DefaultField">
-            <summary>
-            Gets what the field defaults if there is not current or previous valid entries.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.Label">
-            <summary>
-            Get the label string
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.CurrentText">
-            <summary>
-            The current text state of the control to track user input
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.CursorPos">
-            <summary>
-            Get the current position of the entry cursor, representing the position
-            of the next typed character.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.CommitOnLostFocus">
-            <summary>
-            If true, the entered text will be committed if the control looses the keyboard
-            focus before the ENTER key is pressed.  Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Entry.ReplaceOnFirstKey">
-            <summary>
-            If true, simulates the "select-all and replace on first keypress" behaviour
-            seen in other GUI systems.  Defaults to false.
-            </summary>
-        </member>
-        <member name="M:OchreGui.TextEntry.ValidateCharacter(System.Char)">
-            <summary>
-            Returns true if character is a valid entry.  Override to implement custom
-            validation.  Base method uses the property Validation to make a determination
-            if the specified character is valid.
-            </summary>
-            <param name="character"></param>
-            <returns></returns>
-        </member>
-        <member name="P:OchreGui.TextEntry.Validation">
-            <summary>
-            Get the validation type (allowed characters) for this control
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntry.MaximumCharacters">
-            <summary>
-            Get the maximum number of characters allowed.
-            </summary>
-        </member>
-        <member name="P:OchreGui.TextEntry.DefaultField">
-            <summary>
-            Base method returns the empty string "".
-            </summary>
-        </member>
-        <member name="T:OchreGui.Manager">
-            <summary>
-            A Manager is basically a Coomponent that can be instatiated and added to a Window.
-            The proposed purpose of this class is to make division of gui logic more convenient.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Styles">
-            <summary>
-            Stores all of the default styles used by the framework.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Styles.#ctor">
-            <summary>
-            Defaults to the predefined styles.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Window">
-            <summary>
-            The main widget drawing area style, mainly used for owner-drawn controls,
-            Windows, and Panels.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Frame">
-            <summary>
-            The style of the frame.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Active">
-            <summary>
-            A control's style when active.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Inactive">
-            <summary>
-            A control's style when inactive.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Hilight">
-            <summary>
-            A control's style when hilighted, for example when the mouse
-            pointer is over it.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Depressed">
-            <summary>
-            A button's style when depressed.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Selected">
-            <summary>
-            A control's style when selected.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.Tooltip">
-            <summary>
-            The style of a tooltip.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Styles.DragItem">
-            <summary>
-            The style of the visual component of a drag and drop operation.
-            <Note>Drag and drop is not currently implemented.</Note>
-            </summary>
-        </member>
-        <member name="T:OchreGui.Schedule">
-            <summary>
-            This class holds a delelgate and an associated timing value for use with the AddSchedule
-            method in the Component class.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Schedule.#ctor(OchreGui.Component.ScheduleCallback,System.UInt32)">
-            <summary>
-            Construct a Scheduler with the specified callback method, and number of
-            milliseconds between each callback.
-            </summary>
-            <param name="callback"></param>
-            <param name="delayMS"></param>
-        </member>
-        <member name="M:OchreGui.Schedule.Update(System.UInt32)">
-            <summary>
-            Update the Schedule according to the ellapsed milliseconds since the last call to
-            this method.  This should be called every tick to provide accurate timing.
-            </summary>
-            <param name="ellapsedMS"></param>
         </member>
         <member name="T:OchreGui.MouseButton">
             <summary>
@@ -1202,245 +1958,23 @@
             Get the keyboard state as a KeyboardData object
             </summary>
         </member>
-        <member name="T:OchreGui.ButtonTemplate">
+        <member name="T:OchreGui.MouseDragEventArgs">
             <summary>
-            Contains the setttings needed to construct a Button object.  
+            Argument for a MouseDrag event.
             </summary>
         </member>
-        <member name="M:OchreGui.ButtonTemplate.CalculateSize">
+        <member name="M:OchreGui.MouseDragEventArgs.#ctor(OchreGui.Utility.Point)">
             <summary>
-            Auto generates the size of the button based on the other options.
+            Construct a MouseDragEventArgs instance given the screen position related to the
+            drag action.
             </summary>
-            <returns></returns>
+            <param name="sPos"></param>
         </member>
-        <member name="P:OchreGui.ButtonTemplate.Label">
+        <member name="P:OchreGui.MouseDragEventArgs.SPos">
             <summary>
-            The text displayed by the button.  Defaults to empty string ""
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.MinimumWidth">
-            <summary>
-            The minimum width of the button.  This property is ignored if either AutoSizeOverride
-            is set to a non-zero size, or if MinimumWidth is less than the automatically calculated
-            size.  Defaults to 0.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.LabelAlignment">
-            <summary>
-            The horizontal alignment of the label.  Defaults to HorizontalAlignment.Left.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.HilightWhenMouseOver">
-            <summary>
-            True if the button will draw itself with hilight colors when under the mouse
-            pointer.  Defaults to true.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.CanHaveKeyboardFocus">
-            <summary>
-            Set to true if this button can take the keyboard focus by being left-clicked on.
-            Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.HasFrameBorder">
-            <summary>
-            If true, the button is sized to accomodate a border, and a frame is drawn
-            in the border by default.  Defaults to true.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.AutoSizeOverride">
-            <summary>
-            Overrides the automatically calculated size.  Set this to create a button
-            whose height is larger than 3.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ButtonTemplate.VAlignment">
-            <summary>
-            The vertical alignment of the label.  Only used if the AutoSizeOverride property
-            has been set to a height of greater than 1.  Defaults to VerticalAlignment.Center.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Button">
-            <summary>
-            A button can be clicked, which happens when the left mouse button is pressed then released while
-            over the button.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Button.Redraw">
-            <summary>
-            This base method draws the label if OwnerDraw is false.  Override to add custom
-            drawing code here.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Button.GetMainStyle">
-            <summary>
-            Returns the color of the main control area based on its current state.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.Button.OnMouseButtonUp(OchreGui.MouseData)">
-            <summary>
-            Called when a mouse button is pressed while over this button.  Triggers proper
-            events.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.Button.OnButtonClicked">
-            <summary>
-            Triggers the OnButtonClicked() event.  Called by the framework when a buton click
-            action is performed.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Button.ButtonClicked">
-            <summary>
-            Raised when a button has been clicked on (mouse down then up).
-            </summary>
-        </member>
-        <member name="P:OchreGui.Button.Label">
-            <summary>
-            Get the button Label.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Button.LabelAlignment">
-            <summary>
-            Get or set the label's horizontal alignment.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Button.VAlignment">
-            <summary>
-            Get or set the label's vertical alignment.
-            </summary>
-        </member>
-        <member name="T:OchreGui.ListItemData">
-            <summary>
-            Contains the label and tooltip text for each Listitem that will be added
-            to a Listbox.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.Items">
-            <summary>
-            The list of ListItemData elements that will be included in the list box.  Defaults
-            to an empty list.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.LabelAlignment">
-            <summary>
-            The horizontal alignment of the item labels.  Defaults to left.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.TitleAlignment">
-            <summary>
-            The horiontal alignment of the title. Defaults to left.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.Title">
-            <summary>
-            The title string, defaults to ""
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.MinimumListBoxWidth">
-            <summary>
-            The list box width if larger than the calculated width.  Defaults to 0.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.InitialSelectedIndex">
-            <summary>
-            Which item index will be selected initially.  Defaults to 0.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.CanHaveKeyboardFocus">
-            <summary>
-            Specifies if this control can receive the keyboard focus.  Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBoxTemplate.HilightWhenMouseOver">
-            <summary>
-            Specifies if this control is drawn in hilighted colors when under the mouse pointer.
-            Defaults to false.
-            </summary>
-        </member>
-        <member name="T:OchreGui.ListBox">
-            <summary>
-            A ListBox control allows the selection of a single option among a list of
-            options presented in rows.  The selection state of an item is persistant, and
-            is marked as currently selected.
-            </summary>
-        </member>
-        <member name="M:OchreGui.ListBox.GetItemLabel(System.Int32)">
-            <summary>
-            Returns the label of the item with the specified index.
-            </summary>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.ListBox.DrawTitle">
-            <summary>
-            Draws the title and title frame.
-            </summary>
-        </member>
-        <member name="M:OchreGui.ListBox.DrawItems">
-            <summary>
-            Draws each of the items in the list.
-            </summary>
-        </member>
-        <member name="M:OchreGui.ListBox.DrawItem(System.Int32)">
-            <summary>
-            Draws a single item with the given index.
-            </summary>
-            <param name="index"></param>
-        </member>
-        <member name="M:OchreGui.ListBox.GetItemAt(OchreGui.Utility.Point)">
-            <summary>
-            Returns the index of the item that contains the provided point, specified in local
-            space coordinates.  Returns -1 if no items are at that position.
-            </summary>
-            <param name="lPos"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OchreGui.ListBox.Redraw">
-            <summary>
-            Draws the title and items.  Override to add custom drawing code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.ListBox.OnMouseMoved(OchreGui.MouseData)">
-            <summary>
-            Base method detects if the mouse is over one of the items, and changes state
-            accordingly.  Override to add custom handling.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.ListBox.OnMouseButtonDown(OchreGui.MouseData)">
-            <summary>
-            Detects which, if any, item has been selected by a left mouse button.  Override
-            to add custom handling.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.ListBox.OnItemSelected(System.Int32)">
-            <summary>
-            Called when one of the items in the list has been selected with the left mouse
-            button.  Base method triggers appropriate event.  Override to add custom handling.
-            </summary>
-            <param name="index"></param>
-        </member>
-        <member name="P:OchreGui.ListBox.LabelAlignment">
-            <summary>
-            The horizontal alignment of the item labels.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBox.TitleAlignment">
-            <summary>
-            The horiontal alignment of the title.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBox.Title">
-            <summary>
-            The title string.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ListBox.CurrentSelected">
-            <summary>
-            Get the index of the item currently selected.
+            The position in screen space coordinates related to the drag action.  For DragBegin,
+            this position is the origin of the drag (not the current mouse position).  For DragEnd,
+            this position is the mouse position when the left mouse button was released.
             </summary>
         </member>
         <member name="T:OchreGui.HorizontalAlignment">
@@ -1486,108 +2020,185 @@
         <member name="T:OchreGui.Canvas">
             <summary>
             A canvas is basically a wrapper around an off-screen TCODConsole.  Every window
-            exposes a Canvas property to provide drawing functionality.
+            exposes a Canvas property to provide drawing functionality.  Drawing can be performed
+            using the provided Canvas methods, or by exposing the underlying TCODConsole object
+            through the Console property.
             </summary>
         </member>
         <member name="M:OchreGui.Canvas.#ctor(OchreGui.Utility.Size)">
             <summary>
             Construct a Canvas object of the given size.
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the specified
+            <paramref name="size"/> is larger than the screen size</exception>
         </member>
         <member name="M:OchreGui.Canvas.#ctor(System.Int32,System.Int32)">
             <summary>
             Construct a Canvas object with the given dimensions.
             </summary>
         </member>
-        <member name="M:OchreGui.Canvas.SetDefaultColors(OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetDefaultPigment(OchreGui.Pigment)">
             <summary>
-            Sets the default color style for this Canvas.  If no other color style is specified
-            for drawing operations, this style is used.
+            Sets the default pigment for this Canvas.  If no other pigment is specified
+            for drawing operations, this pigment is used.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="pigment"/> 
+            is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetCharPigment(System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
-            Sets the colors of a single character at the given coordinates.
+            Sets the pigment of a single character at the given coordinates.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="pigment"/>
+            is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.SetCharColors(OchreGui.Utility.Point,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.SetCharPigment(OchreGui.Utility.Point,OchreGui.Pigment)">
             <summary>
-            Sets the colors of a single character at the given coordinates.
+            Sets the pigment of a single character at the given coordinates.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when pigment is null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="position"/> is outside of this Canvas region</exception>
         </member>
         <member name="M:OchreGui.Canvas.Clear">
             <summary>
-            Clear the Canvas using the default color style
+            Clear the Canvas using the default pigment
             </summary>
         </member>
-        <member name="M:OchreGui.Canvas.PrintChar(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintChar(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints a single character at the specified coordinates.
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintChar(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintChar(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints a single character at the specified coordinates.
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintString(System.Int32,System.Int32,System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintString(System.Int32,System.Int32,System.String,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintString(OchreGui.Utility.Point,System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintString(OchreGui.Utility.Point,System.String,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
+            If the text length is larger than the field length, then the text will be trimmed to fit.
+            The field length must be equal to or greater than 1, or an exception will be thrown.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified field length is less than 1</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             horizontally with the specified alignment and within the specified field length.
+            If the text length is larger than the field length, then the text will be trimmed to fit.
+            The field length must be equal to or greater than 1, or an exception will be thrown.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified field length is less than 1</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(System.Int32,System.Int32,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
             the specified size of the field.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the field size is less than 1</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size,OchreGui.Pigment)">
             <summary>
             Prints the specified string at the given coordinates.  The text is aligned
             both horizontally and vertically with the specified alignments, and within
             the specified size of the field.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="lPos"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the field size is less than 1</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintStringAligned(OchreGui.Utility.Rect,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Pigment)">
+            <summary>
+            Prints the specified string within the given Rect.  The text is aligned
+            both horizontally and vertically with the specified alignments.
+            If the text length is larger than the field width, then the text will be trimmed to fit.
+            The field width and height must be equal to or greater than 1, or an exception will
+            be thrown.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text"/> is
+            null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="rect"/> is outside of this Canvas region</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the width or height of the rect is less than 1</exception>
+        </member>
+        <member name="M:OchreGui.Canvas.DrawHLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a horizontal line of the given length and starting coordinates
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawHLine(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawHLine(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a horizontal line of the given length and starting coordinates
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawVLine(System.Int32,System.Int32,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawVLine(System.Int32,System.Int32,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a vertical line of the given length and starting coordinates
             </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified position is outside of this Canvas region</exception>
         </member>
-        <member name="M:OchreGui.Canvas.DrawVLine(OchreGui.Utility.Point,System.Int32,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.DrawVLine(OchreGui.Utility.Point,System.Int32,OchreGui.Pigment)">
             <summary>
             Draws a vertical line of the given length and starting coordinates
             </summary>
-            <param name="startPos"></param>
-            <param name="length"></param>
-            <param name="colorStyle"></param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when the specified <paramref name="startPos"/> is outside of this Canvas region</exception>
         </member>
         <member name="M:OchreGui.Canvas.ToScreen(System.Int32,System.Int32)">
             <summary>
@@ -1627,6 +2238,7 @@
             </summary>
             <param name="source">The destination position in local (to this) coordinate space</param>
             <param name="destPos"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="source"/> is null</exception>
         </member>
         <member name="M:OchreGui.Canvas.Blit(OchreGui.Canvas,System.Int32,System.Int32)">
             <summary>
@@ -1635,11 +2247,41 @@
             <param name="source"></param>
             <param name="x"></param>
             <param name="y"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="source"/> is null</exception>
         </member>
-        <member name="M:OchreGui.Canvas.PrintFrame(System.String,OchreGui.ColorStyle)">
+        <member name="M:OchreGui.Canvas.PrintFrame(System.String,OchreGui.Pigment)">
             <summary>
             Prints a frame border around the canvas, with an optional centered title.
             </summary>
+        </member>
+        <member name="M:OchreGui.Canvas.Scroll(System.Int32,System.Int32)">
+            <summary>
+            Scrolls this Canvas by the given delta x and y amounts.  
+            </summary>
+            <param name="deltaX"></param>
+            <param name="deltaY"></param>
+        </member>
+        <member name="M:OchreGui.Canvas.GetCharSize">
+            <summary>
+            Get the size, in pixels, of a single character, as per TCODSystem.getCharSize().
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Canvas.Finalize">
+            <summary>
+            Default finalizer calls Dispose.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Canvas.Dispose">
+            <summary>
+            Safely dispose this object and all of its contents.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Canvas.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
         </member>
         <member name="P:OchreGui.Canvas.Size">
             <summary>
@@ -1650,242 +2292,6 @@
             <summary>
             Get the TCODConsole associated with this Canvas
             </summary>
-        </member>
-        <member name="T:OchreGui.LayoutDirection">
-            <summary>
-            Specifies a cardinal direction (assuming Up is North) for use in the layout helper methods.
-            </summary>
-        </member>
-        <member name="M:OchreGui.CheckBoxTemplate.#ctor">
-            <summary>
-            Default constructor, sets all properties to the default.
-            </summary>
-        </member>
-        <member name="M:OchreGui.CheckBoxTemplate.CalculateSize">
-            <summary>
-            Auto generates the size of the control based on the other options.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.Label">
-            <summary>
-            The text displayed by the checkbox.  Defaults to "Checkbox"
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.MinimumWidth">
-            <summary>
-            The minimum width of the button.  This property is ignored if MinimumWidth is less 
-            than the automatically calculated size.  Defaults to 0.
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.LabelAlignment">
-            <summary>
-            If there is extra spacing in the label area, the label gets aligned
-            according to this.  Defautls to TCODAlignment.Left
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.CheckOnLeft">
-            <summary>
-            If true, the check field is placed left of the label, otherwise on the 
-            right.  Defaults to true.
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.HilightWhenMouseOver">
-            <summary>
-            True if the checkbox will draw itself with hilight colors when under the mouse
-            pointer.  Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.CanHaveKeyboardFocus">
-            <summary>
-            Set to true if this control can take the keyboard focus by being left-clicked on.
-            Defaults to false.
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBoxTemplate.HasFrameBorder">
-            <summary>
-            If true, the checkbox is sized to accomodate a border, and a frame is drawn
-            in the border by default.  Defaults to true.
-            </summary>
-        </member>
-        <member name="T:OchreGui.CheckBox">
-            <summary>
-            A checkbox control has a label and a checkable element that displays current state.  The state
-            is toggled by mouse selection, or by setting the IsChecked property.
-            </summary>
-        </member>
-        <member name="M:OchreGui.CheckBox.OnMouseButtonDown(OchreGui.MouseData)">
-            <summary>
-            Triggers appropriate events based on a mouse button down action.  Override to
-            add custom mouse button handling code.
-            </summary>
-            <param name="mouseData"></param>
-        </member>
-        <member name="M:OchreGui.CheckBox.Redraw">
-            <summary>
-            Draws the label and chec element based on current state.  Override to add custom
-            drawing code.
-            </summary>
-        </member>
-        <member name="E:OchreGui.CheckBox.CheckBoxToggled">
-            <summary>
-            Raised when the state of a checkbox has been toggled.  Get IsChecked to get
-            current state.
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBox.IsChecked">
-            <summary>
-            Get or set the current state of the checkbox
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBox.Label">
-            <summary>
-            Get the label string
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBox.CheckOnLeft">
-            <summary>
-            True if the check element appears left of the label, otherwise on right side
-            </summary>
-        </member>
-        <member name="P:OchreGui.CheckBox.LabelAlignment">
-            <summary>
-            Text alignment of the label
-            </summary>
-        </member>
-        <member name="T:OchreGui.ApplicationInfo">
-            <summary>
-            This class holds the options passed to Application.Start().
-            </summary>
-        </member>
-        <member name="M:OchreGui.ApplicationInfo.#ctor">
-            <summary>
-            Default constructor, sets data to defaults
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.Fullscreen">
-            <summary>
-            True if fulscreen, defaults to false
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.ScreenSize">
-            <summary>
-            The size of the screen.  This sets the screen resolution if Fullscreen is true,
-            otherwise affacts the system window size.  Defaults to 80x60 characters.
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.Title">
-            <summary>
-            The title of the system window - only applicable if Fullscreen is false
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.Font">
-            <summary>
-            The name of the font file to use
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.FontFlags">
-            <summary>
-            Information about the specified font as per TCODFontFlags
-            </summary>
-        </member>
-        <member name="P:OchreGui.ApplicationInfo.DefaultStyles">
-            <summary>
-            The ColorStyles that are passed down (by default) to child Windows.  Defaults to a 
-            pre-generated set of ColorStyles.
-            </summary>
-        </member>
-        <member name="T:OchreGui.Application">
-            <summary>
-            Main application class.  Override Setup() and Update() to add application-specific
-            setup code.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Application.Start(OchreGui.ApplicationInfo)">
-            <summary>
-            Initializes libtcod and starts the application's main loop.  This will loop 
-            until IsQuitting is set to true or the main system window is closed.
-            </summary>
-        </member>
-        <member name="M:OchreGui.Application.SetWindow(OchreGui.Window)">
-            <summary>
-            Sets the current Window, which will immediately begin to receive
-            framework messages.  Windows can be changed at any time.
-            </summary>
-            <param name="win"></param>
-        </member>
-        <member name="M:OchreGui.Application.Setup(OchreGui.ApplicationInfo)">
-            <summary>
-            Override and add implementation specific setup code after calling base method
-            </summary>
-            <param name="info"></param>
-        </member>
-        <member name="M:OchreGui.Application.Update">
-            <summary>
-            Called each iteration of the main loop (each frame).  
-            Override and add implentation specific update code after calling base method.
-            </summary>
-        </member>
-        <member name="E:OchreGui.Application.SetupEventHandler">
-            <summary>
-            Raised when the application is setting up.  This is raised after TCODInitRoot() has
-            been called (setting the screen size and font).
-            </summary>
-        </member>
-        <member name="E:OchreGui.Application.UpdateEventHandler">
-            <summary>
-            Raised each iteration of the main application loop
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.IsQuitting">
-            <summary>
-            If the application wants to quit.  Set to true to quit.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.DefaultStyles">
-            <summary>
-            The DefaultStyles that are passed to child Windows.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.ScreenSize">
-            <summary>
-            Gets the size of TCODConsole.root
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.ScreenRect">
-            <summary>
-            Gets a Rect representing the screen (or the system window).  The UpperLeft position
-            will always be 0,0.
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.CurrentWindow">
-            <summary>
-            Get the current window
-            </summary>
-        </member>
-        <member name="P:OchreGui.Application.Input">
-            <summary>
-            Get the current InputManager for the current Window
-            </summary>
-        </member>
-        <member name="T:OchreGui.InputManager">
-            <summary>
-            Handles all input polling and message dispatch to attached
-            Window
-            </summary>
-        </member>
-        <member name="M:OchreGui.InputManager.#ctor(OchreGui.Component)">
-            <summary>
-            Create an InputManager instance by providing the attached Window.
-            </summary>
-        </member>
-        <member name="M:OchreGui.InputManager.Update(System.UInt32)">
-            <summary>
-            Call on each update tick to perform input polling.  The InputManager instance
-            will send the appropriate user input messages to the attached window provided
-            during construction.
-            </summary>
-            <param name="ellapsed"></param>
         </member>
         <member name="T:OchreGui.TooltipEventArgs">
             <summary>
@@ -1912,6 +2318,298 @@
             origin point of a hover action.
             </summary>
         </member>
+        <member name="T:OchreGui.CheckBoxTemplate">
+            <summary>
+            Contains the data needed to construct a CheckBox object.  A CheckBox will, by default, automatically
+            generate its width based on the Label and MinimumWidth properties of the template, leaving space for
+            the check element, and will always
+            have a height of 3 (1 space for the label and 2 spaces for the borders).
+            </summary>
+        </member>
+        <member name="M:OchreGui.CheckBoxTemplate.#ctor">
+            <summary>
+            Default constructor, sets all properties to the default.
+            </summary>
+        </member>
+        <member name="M:OchreGui.CheckBoxTemplate.CalculateSize">
+            <summary>
+            Auto generates the size of the control based on the other options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.AutoSizeOverride">
+            <summary>
+            Set this to manually size the check box.  If empty (the default), then the 
+            check box will be autosized.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.Label">
+            <summary>
+            The text displayed by the checkbox.  Defaults to empty string ""
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.MinimumWidth">
+            <summary>
+            The minimum width of the button when autosizing.  This property is ignored if MinimumWidth is less 
+            than the automatically calculated size.  Defaults to 0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.LabelAlignment">
+            <summary>
+            If there is extra spacing in the label area, the label gets aligned
+            according to this.  Defautls to HorizontalAlignment.Left
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and check element.  Defaults to
+            VerticalAlignment.Center
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.CheckOnLeft">
+            <summary>
+            If true, the check field is placed left of the label, otherwise on the 
+            right.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.HilightWhenMouseOver">
+            <summary>
+            True if the checkbox will draw itself with hilight colors when under the mouse
+            pointer.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.CanHaveKeyboardFocus">
+            <summary>
+            Set to true if this control can take the keyboard focus.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBoxTemplate.HasFrameBorder">
+            <summary>
+            If true, a border will be drawn around the check box.  If autosizing, space for the
+            frame will be added.  Defaults to true.
+            </summary>
+        </member>
+        <member name="T:OchreGui.CheckBox">
+            <summary>
+            Represents a check box control.  A CheckBox has a label and a checkable element that displays the 
+            current state of the IsChecked property.  This state
+            is toggled by left mouse button clicks, or by setting the IsChecked property manually.
+            </summary>
+        </member>
+        <member name="M:OchreGui.CheckBox.#ctor(OchreGui.CheckBoxTemplate)">
+            <summary>
+            Construct a CheckBox instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.CheckBox.OnMouseButtonDown(OchreGui.MouseData)">
+            <summary>
+            Triggers appropriate events based on a mouse button down action.  Override to
+            add custom mouse button handling code.
+            </summary>
+            <param name="mouseData"></param>
+        </member>
+        <member name="M:OchreGui.CheckBox.Redraw">
+            <summary>
+            Draws the label and chec element based on current state.  Override to add custom
+            drawing code.
+            </summary>
+        </member>
+        <member name="E:OchreGui.CheckBox.CheckBoxToggled">
+            <summary>
+            Raised when the state of a checkbox has been toggled by user input.  Get IsChecked to get
+            current state.  Manually setting IsChecked property will not cause this event to be raised.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.IsChecked">
+            <summary>
+            Get or set the current checked state of the checkbox.  Setting this property will
+            not raise a CheckBoxToggled event.
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.Label">
+            <summary>
+            Get the label string
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.CheckOnLeft">
+            <summary>
+            True if the check element appears left of the label, otherwise on right side
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.LabelAlignment">
+            <summary>
+            Text alignment of the label
+            </summary>
+        </member>
+        <member name="P:OchreGui.CheckBox.VerticalAlign">
+            <summary>
+            The vertical alignment of the label and check element.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PigmentType">
+            <summary>
+            The various UI Pigment types used by the framework.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Window">
+            <summary>
+            The pigment used for the window drawing area
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.Tooltip">
+            <summary>
+            The pigment used for a tooltip
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.DragItem">
+            <summary>
+            The pigment used for an item that is being dragged
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameFocus">
+            <summary>
+            The pigment for the frame of a control that has the keyboard focus
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameInactive">
+            <summary>
+            The pigment used for the frame of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameHilight">
+            <summary>
+            The pigment used for the frame of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameNormal">
+            <summary>
+            The pigment used for the frame of a control when no other states are applicable.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameDepressed">
+            <summary>
+            The pigment used for the frame of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.FrameSelected">
+            <summary>
+            The pigment used for the frame of a control when it is selected.
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewFocus">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewInactive">
+            <summary>
+            The pigment used for the main area of a control that is inactive
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewHilight">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewNormal">
+            <summary>
+            The pigment used for the main area of a control that is hilighted (e.g. when
+            hilighted by mouse over state)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewDepressed">
+            <summary>
+            The pigment used for the main area of a control when it is depressed (e.g. when
+            a button is being pusehd)
+            </summary>
+        </member>
+        <member name="F:OchreGui.PigmentType.ViewSelected">
+            <summary>
+            The pigment used for the main area of a control when it is selected.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PigmentAlternatives">
+            <summary>
+            This class is simply a wrapper around a Dictionary using PigmentType as keys
+            and Pigment as values.  Also provides a Copy() method to make a copy
+            of this instance.
+            This class is used to pass a collection of alternative pigments to a widget in the
+            template.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentAlternatives.Copy">
+            <summary>
+            Performs a copy of this instance.  Since the Pigment class is
+            immutable, this is conceptually a deep copy.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.PigmentMap">
+            <summary>
+            Simply wraps an AlternativeMap object for code cleanliness.
+            This class is used to store the pigments for a UI object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults.
+            </summary>
+            <param name="defaults"></param>
+        </member>
+        <member name="M:OchreGui.PigmentMap.#ctor(OchreGui.Utility.IStaticDictionary{OchreGui.PigmentType,OchreGui.Pigment},System.Collections.Generic.Dictionary{OchreGui.PigmentType,OchreGui.Pigment})">
+            <summary>
+            Construct a PigmentMap instance given the defaults and a
+            Dictionary of alternatives.
+            </summary>
+            <param name="defaults"></param>
+            <param name="alternatives"></param>
+        </member>
+        <member name="T:OchreGui.InputManager">
+            <summary>
+            Handles all the input polling and message dispatch to the attached
+            Window.  An InputManager is contained in and controlled by an Application object.
+            </summary>
+        </member>
+        <member name="M:OchreGui.InputManager.#ctor(OchreGui.Component)">
+            <summary>
+            Create an InputManager instance by providing the attached Window.
+            </summary>
+        </member>
+        <member name="M:OchreGui.InputManager.Update(System.UInt32)">
+            <summary>
+            Called by the Application on each update tick to perform input polling.  The InputManager instance
+            will send the appropriate user input messages to the attached window provided
+            during construction.
+            </summary>
+            <param name="elapsed"></param>
+        </member>
+        <member name="M:OchreGui.InputManager.IsKeyDown(libtcod.TCODKeyCode)">
+            <summary>
+            Returns true if the specified <paramref name="key"/> is currently being
+            pushed.  This method is here for non-standard use of the framework - it is
+            typically better to use the normal keyboard messaging system provided by
+            components.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.WindowTemplate">
+            <summary>
+            When subclassing a type of Window, consider
+            also subclassing WindowTemplate to provide an interface for the client to specify
+            options.
+            </summary>
+        </member>
+        <member name="M:OchreGui.WindowTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
         <member name="M:OchreGui.WindowTemplate.CalculateSize">
             <summary>
             Returns the screen size.
@@ -1931,12 +2629,20 @@
             Redraw().  The Window handles all message dispatch to children automatically.
             </summary>
         </member>
+        <member name="M:OchreGui.Window.#ctor(OchreGui.WindowTemplate)">
+            <summary>
+            Construct a Window instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
         <member name="M:OchreGui.Window.AddManager(OchreGui.Manager)">
             <summary>
             Add a previously constructed Manager object to this window.  All added instances
             must be reference-unique, or this method will throw an ArgumentException.
             </summary>
             <param name="manager"></param>
+            <exception cref="T:System.ArgumentException">Thrown when the specified
+            <paramref name="manager"/> instance is already contained by this window.</exception>
         </member>
         <member name="M:OchreGui.Window.AddManagers(OchreGui.Manager[])">
             <summary>
@@ -1948,20 +2654,24 @@
         <member name="M:OchreGui.Window.RemoveManager(OchreGui.Manager)">
             <summary>
             Removes the specified manager from the Window.  The Window will wait until next tick
-            to actually remove the managers.
+            to actually remove the manager.
             </summary>
             <param name="manager"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="manager"/> is
+            null.</exception>
         </member>
         <member name="M:OchreGui.Window.AddControl(OchreGui.Control)">
             <summary>
             Adds a control instance to this window.  All controls must be reference-unique, or this
             method will throw an ArgumentException.  This method will also throw an ArgumentExeption
             if the control is too large to fit on the screen.  A newly added control may receive
-            a MouseEnter message if appropriate, and will always receive a SettingUp message if it
-            hasn't received one previously.
+            a MouseEnter message if the mouse is within it's region, and will always receive a 
+            SettingUp message if it hasn't received one previously.
             </summary>
             <param name="control"></param>
             <returns></returns>
+            <exception cref="T:System.ArgumentException">Thrown when the specified <paramref name="control"/>
+            is already contained by this window.</exception>
         </member>
         <member name="M:OchreGui.Window.AddControls(OchreGui.Control[])">
             <summary>
@@ -1974,6 +2684,8 @@
             Remove the provided control from the window.
             </summary>
             <param name="control"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="control"/>
+            is null.</exception>
         </member>
         <member name="M:OchreGui.Window.ContainsControl(OchreGui.Control)">
             <summary>
@@ -1988,6 +2700,8 @@
             are drawn over lower controls.
             </summary>
             <param name="control"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="control"/>
+            is null.</exception>
         </member>
         <member name="M:OchreGui.Window.MoveToBottom(OchreGui.Control)">
             <summary>
@@ -1995,16 +2709,22 @@
             are drawn first (covered up by higher controls).
             </summary>
             <param name="control"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="control"/>
+            is null.</exception>
         </member>
         <member name="M:OchreGui.Window.ReleaseKeyboard(OchreGui.Control)">
             <summary>
             Release the keyboard focus from the provided control.  The control will receive
             a ReleaseKB message (and raise the related RelaseKeyboardEvent)
             </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="control"/>
+            is null.</exception>
         </member>
-        <member name="M:OchreGui.Window.ForceTakeKeyboard(OchreGui.Control)">
+        <member name="M:OchreGui.Window.TakeKeyboard(OchreGui.Control)">
             <summary>
-            Forces the keyboard focus to the given control.
+            Forces the keyboard focus to the given control, sending a TakeKeyboardFocus
+            message to the specified control.  If a control currently has the
+            keyboard focus, that control will receive a ReleaseKeyboardFocus message.
             </summary>
         </member>
         <member name="M:OchreGui.Window.GetTopControlAt(OchreGui.Utility.Point)">
@@ -2015,10 +2735,16 @@
             <param name="screenPos"></param>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.Window.RequestTooltip(System.String,OchreGui.Utility.Point)">
+        <member name="M:OchreGui.Window.ShowTooltip(System.String,OchreGui.Utility.Point)">
             <summary>
             Request that this Window display a tooltip with the specified text near the
-            specified position in screen space.
+            specified position in screen space.  If the specified <paramref name="text"/>
+            is null or empty, then this method does nothing.
+            
+            The Control base class calls this method automatically when it receives a
+            MouseHoverBegin message.
+            See <see cref="M:OchreGui.Control.DetermineTooltipText"/> and 
+            <see cref="P:OchreGui.Control.TooltipText"/>
             </summary>
             <param name="text"></param>
             <param name="sPos"></param>
@@ -2027,6 +2753,18 @@
             <summary>
             Base method prints the frame if applicable.  Override to add custom drawing code.
             </summary>
+        </member>
+        <member name="M:OchreGui.Window.DetermineMainPigment">
+            <summary>
+            Returns the Pigment for the main window area.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Window.DetermineFramePigment">
+            <summary>
+            Returns the Pigment for the window frame.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:OchreGui.Window.OnDraw">
             <summary>
@@ -2097,9 +2835,29 @@
             add custom handling.
             </summary>
         </member>
+        <member name="M:OchreGui.Window.OnSettingUp">
+            <summary>
+            Called during a Window's setup, and is called only once after the Window is
+            set to the Application's Window with the Application.SetWindow method.
+            This base method checks to see if WindowPigments if null, and if so inherits
+            it's pigments from the parent application.
+            Override to add specific setup code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Window.Dispose(System.Boolean)">
+            <summary>
+            Override to add custom disposing code.
+            </summary>
+            <param name="isDisposing"></param>
+        </member>
         <member name="P:OchreGui.Window.ParentApplication">
             <summary>
             The parent Application instance.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Window.HasFrame">
+            <summary>
+            If true, a frame will be drawn around the border of the window.
             </summary>
         </member>
         <member name="P:OchreGui.Window.ControlList">
@@ -2109,12 +2867,12 @@
         </member>
         <member name="P:OchreGui.Window.CurrentKeyboardFocus">
             <summary>
-            Control that has currently has keyboard focus, null if none
+            Control that has currently has keyboard focus, null if none.
             </summary>
         </member>
         <member name="P:OchreGui.Window.CurrentUnderMouse">
             <summary>
-            Control that is current located under the mouse, null if none
+            The topmost Control that is currently located under the mouse, null if none
             </summary>
         </member>
         <member name="P:OchreGui.Window.LastLBDown">
@@ -2128,38 +2886,207 @@
             Control that is is the current origin of a drag action, null for none
             </summary>
         </member>
-        <member name="P:OchreGui.PanelTemplate.Size">
+        <member name="T:OchreGui.TextEntryValidations">
             <summary>
-            The size of the panel, defaults to 1 x 1.
+            Types of characters for use in entry validation.
             </summary>
         </member>
-        <member name="P:OchreGui.PanelTemplate.HasFrame">
+        <member name="F:OchreGui.TextEntryValidations.All">
             <summary>
-            True if a frame will initially be drawn around the panel.  Defaults to true.
+            Allow all printable characters (but no control codes)
             </summary>
         </member>
-        <member name="P:OchreGui.PanelTemplate.CanHaveKeyboardFocus">
+        <member name="F:OchreGui.TextEntryValidations.Letters">
             <summary>
-            True if the panel can receive the keyboard focus.  Defaults to false.
+            Allow only letters, uppercase or lowercase, and spaces
             </summary>
         </member>
-        <member name="P:OchreGui.PanelTemplate.HilightedWhenMouseOver">
+        <member name="F:OchreGui.TextEntryValidations.Numbers">
             <summary>
-            True if the panel will be drawn with hilighted colors when under the mouse pointer.
-            Defaults to false.
+            Allow only the digits 0 through 9
             </summary>
         </member>
-        <member name="M:OchreGui.Panel.GetMainStyle">
+        <member name="F:OchreGui.TextEntryValidations.Decimal">
             <summary>
-            base method returns the Styles.Window style.  Override to add
-            custom handling.
+            Allow plus, minus and decimal point signs along with numbers.
+            </summary>
+        </member>
+        <member name="F:OchreGui.TextEntryValidations.Symbols">
+            <summary>
+            Allow all printable symbols that are not numbers or letters.  Setting this
+            flag will effectively override the Decimal flag validation of the plus, minus
+            and decimal point symbols.
+            </summary>
+        </member>
+        <member name="T:OchreGui.TextEntryTemplate">
+            <summary>
+            Simple data structure for passing to textentry's constructor.  This allows
+            re-using the same setup parameters, for example, on multiple textentries.
+            Also allows use of named initializers.
+            </summary>
+        </member>
+        <member name="M:OchreGui.TextEntryTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.TextEntryTemplate.CalculateSize">
+            <summary>
+            Calculates the size of a TextEntry created with this template based on the other
+            properties.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:OchreGui.TextEntryTemplate.CalculateMaxCharacters">
+            <summary>
+            Returns this.MaximumCharacters.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.TextEntryTemplate.MaximumCharacters">
+            <summary>
+            Maximum number of accepted characters.  Defaults to 1.
+            </summary>
+        </member>
+        <member name="P:OchreGui.TextEntryTemplate.Validation">
+            <summary>
+            Characters allowed to be entered, defaults to All
+            </summary>
+        </member>
+        <member name="P:OchreGui.TextEntryTemplate.StartingField">
+            <summary>
+             The field of the text entry when first created.
+            </summary>
+        </member>
+        <member name="T:OchreGui.TextEntry">
+            <summary>
+            A text entry accepts general text input from the user.  The input can be validated by 
+            the maximum number of characters
+            and which characters are accepted.  The control must have keyboard focus to receive
+            input, and commits the changes to the text field when the enter key is pressed (by default).
+            Hitting the escape key or otherwise loosing the keyboard focus (by default) before hitting 
+            enter cancels the current text from being committed.
+            </summary>
+        </member>
+        <member name="M:OchreGui.TextEntry.#ctor(OchreGui.TextEntryTemplate)">
+            <summary>
+            Construct a TextEntry instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.TextEntry.ValidateField(System.String)">
+            <summary>
+            Returns true if the entry field is valid when a commit is about to occur.  For a
+            TextEntry, all text is validated by character, so this method always returns true.
+            Override to add custom field validation.
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.TextEntry.ValidateCharacter(System.Char)">
+            <summary>
+            Returns true if character is a valid entry.  Override to implement custom
+            validation.  Base method uses the property Validation to make a determination
+            if the specified character is valid.
+            </summary>
+            <param name="character"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.TextEntry.Validation">
+            <summary>
+            Get or set the character validation type for this control.  If a typed character is
+            not valid according to this property, then it will be ignored (not added to the 
+            entry field).
+            </summary>
+        </member>
+        <member name="P:OchreGui.TextEntry.DefaultField">
+            <summary>
+            Returns the default field of this entry if there is no valid previous or current field
+            Base method returns the empty string "".
+            </summary>
+        </member>
+        <member name="T:OchreGui.ScheduleCallback">
+            <summary>
+            A callback method for the Schedule object must conform to this delegate.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Schedule">
+            <summary>
+            This class holds a delelgate and an associated timing value for use with the AddSchedule
+            method in the Component class.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Schedule.#ctor(OchreGui.ScheduleCallback,System.UInt32)">
+            <summary>
+            Construct a Scheduler with the specified callback method, and number of
+            milliseconds between each callback.
+            </summary>
+            <param name="callback"></param>
+            <param name="delayMS"></param>
+        </member>
+        <member name="M:OchreGui.Schedule.Update(System.UInt32)">
+            <summary>
+            Update the Schedule according to the elapsed milliseconds since the last call to
+            this method.  This should be called every tick to provide accurate timing.
+            </summary>
+            <param name="elapsedMS"></param>
+        </member>
+        <member name="T:OchreGui.MenuItemSelectedEventArgs">
+            <summary>
+            Argument for a Menu.ItemSelected event.
+            </summary>
+        </member>
+        <member name="M:OchreGui.MenuItemSelectedEventArgs.#ctor(System.Int32)">
+            <summary>
+            Construct a MenuItemSelectedEventArgs instance given the index number of the
+            menu item that has been selected.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:OchreGui.MenuItemSelectedEventArgs.Index">
+            <summary>
+            The index of the menu item that has been selected.
+            </summary>
         </member>
         <member name="T:OchreGui.MenuItemData">
             <summary>
             Represents a single menu choice.
             </summary>
+        </member>
+        <member name="M:OchreGui.MenuItemData.#ctor(System.String,System.String)">
+            <summary>
+            Construct a MenuItemData instance given the label for this menu item
+            and an optional tooltip text.
+            </summary>
+            <param name="label"></param>
+            <param name="toolTip"></param>
+        </member>
+        <member name="P:OchreGui.MenuItemData.Label">
+            <summary>
+            The label of this menu item.
+            </summary>
+        </member>
+        <member name="P:OchreGui.MenuItemData.TooltipText">
+            <summary>
+            Optional tooltip text for this menu item.
+            </summary>
+        </member>
+        <member name="T:OchreGui.MenuTemplate">
+            <summary>
+            This class builds on the Control Template, and adds options specific to a Menu.
+            </summary>
+        </member>
+        <member name="M:OchreGui.MenuTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.MenuTemplate.CalculateSize">
+            <summary>
+            Calculate the size that a menu will be if created with this template.  The size is
+            calculated based on the other properties.
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:OchreGui.MenuTemplate.Items">
             <summary>
@@ -2183,12 +3110,30 @@
             by mosue over automatically.
             </summary>
         </member>
+        <member name="P:OchreGui.MenuTemplate.HasFrameBorder">
+            <summary>
+            True if a frame will be drawn around the menu.  If the menu is autosized, then
+            space for the border will be added.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.MenuTemplate.AutoSizeOverride">
+            <summary>
+            Set this to manually provide a size for the menu.  If this is empty (the default),
+            then the menu will be autosized.
+            </summary>
+        </member>
         <member name="T:OchreGui.Menu">
             <summary>
             A menu is similar to a list box, except it does not have a title and item selection
             immediately closes the menu.  A menu is also automatically closed (removed from
             parent window) when the mouse leaves the menu region.
             </summary>
+        </member>
+        <member name="M:OchreGui.Menu.#ctor(OchreGui.MenuTemplate)">
+            <summary>
+            Construct a Menu instance from the given template.
+            </summary>
+            <param name="template"></param>
         </member>
         <member name="M:OchreGui.Menu.GetItemLabel(System.Int32)">
             <summary>
@@ -2211,7 +3156,7 @@
         <member name="M:OchreGui.Menu.GetItemAt(OchreGui.Utility.Point)">
             <summary>
             Returns the index of the item at the given position, or -1 if there is not item
-            at that position.  The position is in local space coordinates.
+            at that position.  The position is given in local space coordinates.
             </summary>
             <param name="lPos"></param>
             <returns></returns>
@@ -2249,9 +3194,82 @@
             </summary>
             <param name="index"></param>
         </member>
+        <member name="E:OchreGui.Menu.ItemSelected">
+            <summary>
+            Raised when a menu item has been selected with a left mouse button click.
+            </summary>
+        </member>
         <member name="P:OchreGui.Menu.LabelAlignment">
             <summary>
             The alignment of the menu option labels.
+            </summary>
+        </member>
+        <member name="T:OchreGui.PanelTemplate">
+            <summary>
+            This class builds on the Control Template, and adds options specific to a Panel.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PanelTemplate.#ctor">
+            <summary>
+            Default constructor initializes properties to their defaults.
+            </summary>
+        </member>
+        <member name="M:OchreGui.PanelTemplate.CalculateSize">
+            <summary>
+            Calculates the size of the panel.  For a panel, the size is specified by the 
+            Size property; this method simply returns that property.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OchreGui.PanelTemplate.Size">
+            <summary>
+            The size of the panel, defaults to 1 x 1.
+            </summary>
+        </member>
+        <member name="P:OchreGui.PanelTemplate.HasFrame">
+            <summary>
+            True if a frame will initially be drawn around the panel.  Defaults to true.
+            </summary>
+        </member>
+        <member name="P:OchreGui.PanelTemplate.CanHaveKeyboardFocus">
+            <summary>
+            True if the panel can receive the keyboard focus.  Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OchreGui.PanelTemplate.HilightedWhenMouseOver">
+            <summary>
+            True if the panel will be drawn with hilighted colors when under the mouse pointer.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="T:OchreGui.Panel">
+            <summary>
+            A panel is a simple control whose size is manually set.  Other than drawin a frame,
+            a panel provides little default drawing or message handling code.
+            </summary>
+        </member>
+        <member name="M:OchreGui.Panel.#ctor(OchreGui.PanelTemplate)">
+            <summary>
+            Construct a Panel instance from the given template.
+            </summary>
+            <param name="template"></param>
+        </member>
+        <member name="M:OchreGui.Panel.DetermineMainPigment">
+            <summary>
+            Returns the pigment for the main area of the panel.  Base method returns
+            Pigments[PigmentType.Window]
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OchreGui.Manager">
+            <summary>
+            A Manager is basically a Coomponent that can be instatiated and added to a Window.
+            The proposed purpose of this class is to make division of gui logic more convenient.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Manager.ParentWindow">
+            <summary>
+            The parent window of this manager instance.
             </summary>
         </member>
     </members>

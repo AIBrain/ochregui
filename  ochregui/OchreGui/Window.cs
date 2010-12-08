@@ -447,6 +447,11 @@ namespace OchreGui
         protected override void Redraw()
         {
             base.Redraw();
+
+            if (HasFrame)
+            {
+                Canvas.PrintFrame("", DetermineFramePigment());
+            }
         }
 
         /// <summary>

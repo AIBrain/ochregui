@@ -57,7 +57,7 @@ namespace OchreGui.Demo
             ApplicationInfo appInfo = new ApplicationInfo()
             {
                 Title = "OchreGui Demo",
-                ScreenSize = new Size(80, 50),
+                ScreenSize = new Size(80, 70),
                 Font = "courier12x12_aa_tc.png",
                 FontFlags = libtcod.TCODFontFlags.LayoutTCOD,
             };

@@ -51,6 +51,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OchreExt\OchreExt.csproj">
+      <Project>{CAAE5703-CF5F-48AC-A066-1BDAB3782DFA}</Project>
+      <Name>OchreExt</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OchreGui\OchreGui.csproj">
       <Project>{11F299B6-F428-4245-A3D0-A5056AE0A72B}</Project>
       <Name>OchreGui</Name>
