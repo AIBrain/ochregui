@@ -90,6 +90,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("size", "The specified size must be equal to or smaller than the screen size");
             }
 
+            defaultPigment = new Pigment(0xffffff, 0x000000);
             Console = new TCODConsole(size.Width, size.Height);
             this.Size = size;
         }
