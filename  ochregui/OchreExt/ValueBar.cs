@@ -46,6 +46,12 @@ namespace OchreGui.Extended
 
         public Pigment BarPigment { get; set; }
 
+        public float MinimumBGIntensity { get; set; }
+
+        public float MinimumFGIntensity { get; set; }
+
+        public bool CanHaveKeyboardFocus { get; set; }
+
         public override Size CalculateSize()
         {
             return new Size(Width+2, 1);
@@ -71,6 +77,10 @@ namespace OchreGui.Extended
             rangeWidth = this.Size.Width - 2;
 
             BarPigment = template.BarPigment;
+
+            minimumBGIntensity = template.MinimumBGIntensity;
+            minimumFGIntensity = template.MinimumFGIntensity;
+            CanHaveKeyboardFocus = template.CanHaveKeyboardFocus;
         }
         #endregion
         #region Public Properties
@@ -132,8 +142,12 @@ namespace OchreGui.Extended
                     intensity = 0f;
                 }
 
-                bg = DetermineMainPigment().Background.ReplaceValue(intensity);
-                fg = DetermineMainPigment().Foreground.ReplaceValue(intensity);
+                bg = DetermineMainPigment().Background.ReplaceValue(
+                    Math.Max(minimumBGIntensity,intensity));
+
+                fg = DetermineMainPigment().Foreground.ReplaceValue(
+                    Math.Max(minimumFGIntensity, intensity));
+
                 Canvas.PrintChar(x+1, 0,
                     (int)libtcod.TCODSpecialCharacter.HorzLine,
                     new Pigment(fg,bg));
@@ -141,6 +155,8 @@ namespace OchreGui.Extended
         }
         #endregion
         #region Private
+        private float minimumBGIntensity;
+        private float minimumFGIntensity;
         private int rangeWidth;
         #endregion
     }

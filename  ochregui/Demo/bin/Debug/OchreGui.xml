@@ -2621,6 +2621,16 @@
             True if a frame is drawn around the window initially.
             </summary>
         </member>
+        <member name="P:OchreGui.WindowTemplate.TooltipFGAlpha">
+            <summary>
+            The foreground alpha for any tooltips shown on this window.  Default to 1.0.
+            </summary>
+        </member>
+        <member name="P:OchreGui.WindowTemplate.TooltipBGAlpha">
+            <summary>
+            The background alpha for any tooltips shown on this window.  Defaults to 0.6.
+            </summary>
+        </member>
         <member name="T:OchreGui.Window">
             <summary>
             A Window acts as both a drawing region and a container for controls.  A Window is always
@@ -2858,6 +2868,16 @@
         <member name="P:OchreGui.Window.HasFrame">
             <summary>
             If true, a frame will be drawn around the border of the window.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Window.TooltipFGAlpha">
+            <summary>
+            The foreground alpha for any tooltips shown on this window.
+            </summary>
+        </member>
+        <member name="P:OchreGui.Window.TooltipBGAlpha">
+            <summary>
+            The background alpha for any tooltips shown on this window.
             </summary>
         </member>
         <member name="P:OchreGui.Window.ControlList">

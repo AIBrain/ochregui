@@ -84,7 +84,8 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         public void DrawToScreen()
         {
-            canvas.ToScreenAlpha(sPos, 1.0f, 0.6f);
+            canvas.ToScreenAlpha(sPos, parentWindow.TooltipFGAlpha, 
+                parentWindow.TooltipBGAlpha);
         }
         // /////////////////////////////////////////////////////////////////////////////////
 
