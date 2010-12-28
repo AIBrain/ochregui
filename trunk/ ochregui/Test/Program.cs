@@ -36,7 +36,7 @@ namespace Test
 
             MyWindow win = new MyWindow(new WindowTemplate()
             {
-                HasFrame = true
+                HasFrame = true,
             });
 
             SetWindow(win);
@@ -63,6 +63,7 @@ namespace Test
                 MinimumWidth = 10,
                 HasFrameBorder = false,
                 LabelAlignment = HorizontalAlignment.Center,
+                Tooltip = "Testing Tootlip"
             });
 
             CheckBox cb2 = new CheckBox(new CheckBoxTemplate()
@@ -94,7 +95,29 @@ namespace Test
                 CheckOnLeft = false,
             });
 
-            AddControls(cb1, cb3);
+            ValueBar vb = new ValueBar(new ValueBarTemplate()
+            {
+                UpperLeftPos = new Point(1,12),
+                MaximumValue = 100,
+                StartingValue = 50,
+                MinimumBGIntensity = .3f,
+                MinimumFGIntensity = .5f,
+                Width = 15,
+                Tooltip = "Testing Tooltip"
+            });
+
+            AddControls(cb1, cb3,vb);
+
+            AddSchedule(new Schedule(Callback, 2));
+        }
+
+        int test = 5;
+
+        void Callback()
+        {
+            int x = 6;
+
+            test += x;
         }
 
     }

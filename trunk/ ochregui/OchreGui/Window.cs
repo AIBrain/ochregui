@@ -42,12 +42,25 @@ namespace OchreGui
         public WindowTemplate()
         {
             HasFrame = false;
+
+            TooltipFGAlpha = 1.0f;
+            TooltipBGAlpha = 0.6f;
         }
 
         /// <summary>
         /// True if a frame is drawn around the window initially.
         /// </summary>
         public bool HasFrame { get; set; }
+
+        /// <summary>
+        /// The foreground alpha for any tooltips shown on this window.  Default to 1.0.
+        /// </summary>
+        public float TooltipFGAlpha { get; set; }
+
+        /// <summary>
+        /// The background alpha for any tooltips shown on this window.  Defaults to 0.6.
+        /// </summary>
+        public float TooltipBGAlpha { get; set; }
 
         /// <summary>
         /// Returns the screen size.
@@ -83,6 +96,8 @@ namespace OchreGui
             this.managerList = new List<Manager>();
 
             HasFrame = template.HasFrame;
+            TooltipBGAlpha = template.TooltipBGAlpha;
+            TooltipFGAlpha = template.TooltipFGAlpha;
 		}
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
@@ -98,6 +113,15 @@ namespace OchreGui
         /// </summary>
         public bool HasFrame { get; set; }
 
+        /// <summary>
+        /// The foreground alpha for any tooltips shown on this window.
+        /// </summary>
+        public float TooltipFGAlpha { get; protected set; }
+
+        /// <summary>
+        /// The background alpha for any tooltips shown on this window.
+        /// </summary>
+        public float TooltipBGAlpha { get; protected set; }
         // /////////////////////////////////////////////////////////////////////////////////
         #endregion
         #region Public Methods
