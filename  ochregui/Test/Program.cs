@@ -106,6 +106,8 @@ namespace Test
                 Tooltip = "Testing Tooltip"
             });
 
+            Pigment p = new Pigment(0xffffff, 0x334455);
+
             AddControls(cb1, cb3,vb);
 
             AddSchedule(new Schedule(Callback, 2));
