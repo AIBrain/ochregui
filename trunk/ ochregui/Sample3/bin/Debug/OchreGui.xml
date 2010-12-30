@@ -2267,6 +2267,33 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:OchreGui.Canvas.GetHorAlign(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32)">
+            <summary>
+            Gets the position of a text string within the given field with the specified
+            horizontal alignment.
+            </summary>
+            <param name="lPos">The position of the left side of the field</param>
+            <param name="str"></param>
+            <param name="align"></param>
+            <param name="fieldLength">The length (width) of the field</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="str"/> is
+            null</exception>
+        </member>
+        <member name="M:OchreGui.Canvas.GetHVAlign(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,OchreGui.VerticalAlignment,OchreGui.Utility.Size)">
+            <summary>
+            Returns the position of the given text aligned both horizontally and vertically
+            within the field defined by the upper left position and size.
+            </summary>
+            <param name="lPos"></param>
+            <param name="str"></param>
+            <param name="hAlign"></param>
+            <param name="vAlign"></param>
+            <param name="fieldSize"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="str"/> is
+            null</exception>
+        </member>
         <member name="M:OchreGui.Canvas.Finalize">
             <summary>
             Default finalizer calls Dispose.

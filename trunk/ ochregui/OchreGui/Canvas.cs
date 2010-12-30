@@ -896,8 +896,24 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
-        private static Point GetHorAlign(Point lPos, string str, HorizontalAlignment align, int fieldLength)
+        /// <summary>
+        /// Gets the position of a text string within the given field with the specified
+        /// horizontal alignment.
+        /// </summary>
+        /// <param name="lPos">The position of the left side of the field</param>
+        /// <param name="str"></param>
+        /// <param name="align"></param>
+        /// <param name="fieldLength">The length (width) of the field</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="str"/> is
+        /// null</exception>
+        public static Point GetHorAlign(Point lPos, string str, HorizontalAlignment align, int fieldLength)
         {
+            if (str == null)
+            {
+                throw new ArgumentNullException("str");
+            }
+
             int startX = 0;
 
             switch (align)
@@ -918,8 +934,25 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
 
         // /////////////////////////////////////////////////////////////////////////////////
-        private static Point GetHVAlign(Point lPos, string str, HorizontalAlignment hAlign, VerticalAlignment vAlign, Size fieldSize)
+        /// <summary>
+        /// Returns the position of the given text aligned both horizontally and vertically
+        /// within the field defined by the upper left position and size.
+        /// </summary>
+        /// <param name="lPos"></param>
+        /// <param name="str"></param>
+        /// <param name="hAlign"></param>
+        /// <param name="vAlign"></param>
+        /// <param name="fieldSize"></param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="str"/> is
+        /// null</exception>
+        public static Point GetHVAlign(Point lPos, string str, HorizontalAlignment hAlign, VerticalAlignment vAlign, Size fieldSize)
         {
+            if (str == null)
+            {
+                throw new ArgumentNullException("str");
+            }
+
             int startX = 0;
             int startY = 0;
 

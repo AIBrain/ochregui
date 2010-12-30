@@ -333,6 +333,11 @@ namespace OchreGui
             }
         }
         static readonly string colorCodeStop = "\x08";
+
+        public override string ToString()
+        {
+            return red.ToString("x2") + green.ToString("x2") + blue.ToString("x2");
+        }
         #endregion
         #region Private Fields
         // /////////////////////////////////////////////////////////////////////////////////
@@ -542,6 +547,11 @@ namespace OchreGui
                 Background.GetCode());
 
             return str;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1}", Foreground.ToString(), Background.ToString());
         }
         #endregion
         #region Private Fields
