@@ -153,8 +153,8 @@ namespace OchreGui
                 if (data.Label == null)
                     data.Label = "";
 
-                if (data.Label.Length > width)
-                    width = data.Label.Length;
+                if (Canvas.TextLength(data.Label) > width)
+                    width = Canvas.TextLength(data.Label);
             }
 
             int height = Items.Count;

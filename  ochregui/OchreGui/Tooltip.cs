@@ -67,7 +67,7 @@ namespace OchreGui
         // /////////////////////////////////////////////////////////////////////////////////
         public Tooltip(string text, Point sPos, Window parentWindow)
         {
-            size = new Size(text.Length + 2, 3);
+            size = new Size(Canvas.TextLength(text) + 2, 3);
             this.parentWindow = parentWindow;
 
             AutoPosition(sPos);

@@ -56,29 +56,31 @@ namespace Test
         {
             base.OnSettingUp();
 
+            Color yellow = Color.DARK_AMBER;
+            Color blue = Color.BLUE;
+
             CheckBox cb1 = new CheckBox(new CheckBoxTemplate()
             {
                 UpperLeftPos = new Point(1,1),
-                Label = "check1",
-                MinimumWidth = 10,
+                Label = yellow.DoForegroundCode() + " A check" + blue.DoBackgroundCode() + "box",
+                MinimumWidth = 13,
                 HasFrameBorder = false,
-                LabelAlignment = HorizontalAlignment.Center,
-                Tooltip = "Testing Tootlip"
+                //LabelAlignment = HorizontalAlignment.Center,
+                Tooltip = "Testing" + blue.DoBackgroundCode() + " Tootlip"
             });
 
-            CheckBox cb2 = new CheckBox(new CheckBoxTemplate()
+            Button b1 = new Button(new ButtonTemplate()
             {
-                UpperLeftPos = new Point(1,3),
-                Label = "check2",
-                HasFrameBorder = false,
-                AutoSizeOverride = new Size(11,1),
-                LabelAlignment = HorizontalAlignment.Center,
+                UpperLeftPos = new Point(1,2),
+                Label = yellow.DoForegroundCode() + "A " + blue.DoBackgroundCode()+ "button",
+                MinimumWidth = 11,
+                LabelAlignment = HorizontalAlignment.Center
             });
 
             CheckBox cb3 = new CheckBox(new CheckBoxTemplate()
             {
                 UpperLeftPos = new Point(1, 5),
-                Label = "check3",
+                Label = "check 3",
                 MinimumWidth = 10,
                 HasFrameBorder = false,
                 LabelAlignment = HorizontalAlignment.Center,
@@ -108,7 +110,7 @@ namespace Test
 
             Pigment p = new Pigment(0xffffff, 0x334455);
 
-            AddControls(cb1, cb3,vb);
+            AddControls(cb1, b1, cb3,vb);
 
             AddSchedule(new Schedule(Callback, 2));
         }

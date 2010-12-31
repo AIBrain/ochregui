@@ -165,8 +165,8 @@ namespace OchreGui
                 if (i.Label == null)
                     i.Label = "";
 
-                if (i.Label.Length > width)
-                    width = i.Label.Length;
+                if (Canvas.TextLength(i.Label) > width)
+                    width = Canvas.TextLength(i.Label);
             }
 
             width += 2; // room for the radio element

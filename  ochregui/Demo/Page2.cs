@@ -79,7 +79,13 @@ namespace OchreGui.Demo
 
             CheckBoxTemplate cb7 = new CheckBoxTemplate()
             {
-                Label = "Checkbox ",
+                Label = Color.CYAN.DoForegroundCode() + "C" + 
+                    Color.RED.DoForegroundCode() + "o"+
+                    Color.BLUE.DoForegroundCode() + "l"+
+                    Color.BRASS.DoForegroundCode() + "o"+
+                    Color.DARK_LIME.DoForegroundCode() + "r"+
+                    Color.LIGHT_MAGENTA.DoForegroundCode() + "s" + 
+                    Color.StopColorCode + "!! ",
                 CheckOnLeft = false,
                 LabelAlignment = HorizontalAlignment.Center,
                 HasFrameBorder = false,

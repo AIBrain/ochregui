@@ -72,7 +72,7 @@ namespace OchreGui.Extended
             if (Label == null)
                 Label = "";
 
-            int width = Label.Length;
+            int width = Canvas.TextLength(Label);
             int height = 1;
 
             width += CalculateFieldWidth(MaximumValue,MinimumValue);

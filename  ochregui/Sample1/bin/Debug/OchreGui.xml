@@ -1619,10 +1619,21 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:OchreGui.Color.GetCode">
+        <member name="M:OchreGui.Color.DoForegroundCode">
             <summary>
-            Returns the embedded code for this color
-            <note>Embedded colors are currently not working correctly</note>
+            Returns a string that will change the foreground color of the text to this color.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Color.DoBackgroundCode">
+            <summary>
+            Returns a string that will change the background color of the text to this color.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Color.DoDefaultColors">
+            <summary>
+            Returns a string that will set the colors of the text back to default
             </summary>
             <returns></returns>
         </member>
@@ -1668,20 +1679,17 @@
         </member>
         <member name="P:OchreGui.Color.CodeForeground">
             <summary>
-            Returns the embedded foreground color code.
-            <note>Embedded colors are currently not working correctly</note>
+            Returns the foreground color code string.
             </summary>
         </member>
         <member name="P:OchreGui.Color.CodeBackground">
             <summary>
-            Returns the embedded background color code.
-            <note>Embedded colors are currently not working correctly</note>
+            Returns the background color code string.
             </summary>
         </member>
-        <member name="P:OchreGui.Color.CodeStop">
+        <member name="P:OchreGui.Color.StopColorCode">
             <summary>
-            Returns the embedded stop code
-            <note>Embedded colors are currently not working correctly</note>
+            Returns the stop color code string.
             </summary>
         </member>
         <member name="T:OchreGui.Pigment">
@@ -2265,6 +2273,14 @@
             <summary>
             Get the size, in pixels, of a single character, as per TCODSystem.getCharSize().
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OchreGui.Canvas.TextLength(System.String)">
+            <summary>
+            Returns the length (width) of the given text string when printed, taking into account
+            embedded color codes.
+            </summary>
+            <param name="str"></param>
             <returns></returns>
         </member>
         <member name="M:OchreGui.Canvas.GetHorAlign(OchreGui.Utility.Point,System.String,OchreGui.HorizontalAlignment,System.Int32)">

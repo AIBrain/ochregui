@@ -75,7 +75,7 @@ namespace OchreGui.Extended
             {
                 if (!string.IsNullOrEmpty(word))
                 {
-                    if ((currVirtualPos + word.Length >= LineLength) &&
+                    if ((currVirtualPos + Canvas.TextLength(word) >= LineLength) &&
                         (word[0] != '\n'))
                     {
                         buffer.Enqueue(new Atom('\n'));
