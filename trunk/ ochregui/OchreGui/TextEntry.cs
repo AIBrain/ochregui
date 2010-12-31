@@ -115,7 +115,7 @@ namespace OchreGui
             if (Label == null)
                 Label = "";
 
-            int len = Label.Length;
+            int len = Canvas.TextLength(Label);
 
             int frameSize = 0;
 
@@ -244,7 +244,7 @@ namespace OchreGui
 
             if (Validation.IsSet(TextEntryValidations.Symbols))
             {
-                if("`~!@#$|^&*()_+-={};:'\",<.>/?".Contains(character.ToString()))
+                if("`~!@#$%|^&*()_+-={};:'\",<.>/?".Contains(character.ToString()))
                 {
                     valid = true;
                 }

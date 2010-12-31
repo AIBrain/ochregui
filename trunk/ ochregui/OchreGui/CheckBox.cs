@@ -115,7 +115,7 @@ namespace OchreGui
                 return AutoSizeOverride;
             }
 
-            int width = Label.Length + 1;
+            int width = Canvas.TextLength(Label) + 1;
             int height = 1;
 
             if (HasFrameBorder)

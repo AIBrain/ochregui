@@ -74,7 +74,7 @@ namespace OchreGui.Extended
 
             if (!string.IsNullOrEmpty(Label))
             {
-                width += Label.Length + 1;
+                width += Canvas.TextLength(Label) + 1;
             }
 
             width += NumberEntryTemplate.CalculateFieldWidth(MaximumValue, MinimumValue);

@@ -263,7 +263,8 @@ namespace OchreGui
             if (pigment != null)
                 SetPigment(pigment);
 
-            Console.print(x, y, text);
+            //Console.print(x, y, text);
+            Print(x, y, text);
 
             if (pigment != null)
                 SetPigment(defaultPigment);
@@ -426,7 +427,7 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("fieldSize", "The specified height of fieldSize is less than 1");
             }
             
-            int trim = fieldSize.Width - text.Length;
+            int trim = fieldSize.Width - Canvas.TextLength(text);
 
             if (trim < 0)
             {
@@ -891,9 +892,76 @@ namespace OchreGui
             Console.setBackgroundFlag(pigment.BackgroundFlag);
             Console.setForegroundColor(pigment.Foreground.GetTCODColor());
         }
+
+        private void Print(int x, int y, string str)
+        {
+            int cx = x;
+            TCODColor bg = Console.getBackgroundColor();
+            TCODColor fg = Console.getForegroundColor();
+            int i = 0;
+
+            while(i < str.Length)
+            {
+                char c = str[i];
+                if (c == Color.CodeForeground[0])
+                {
+                    int r = str[i + 1];
+                    int g = str[i + 2];
+                    int b = str[i + 3];
+                    Console.setForegroundColor(new TCODColor(r, g, b));
+                    i += 4;
+                }
+                else if (c == Color.CodeBackground[0])
+                {
+                    int r = str[i + 1];
+                    int g = str[i + 2];
+                    int b = str[i + 3];
+                    Console.setBackgroundColor(new TCODColor(r, g, b));
+                    i += 4;
+                }
+                else if (c == Color.StopColorCode[0])
+                {
+                    Console.setForegroundColor(fg);
+                    Console.setBackgroundColor(bg);
+                    i++;
+                }
+                else
+                {
+                    Console.putChar(cx, y, c);
+                    i++;
+                    cx++;
+                }
+            }
+        }
+
         // /////////////////////////////////////////////////////////////////////////////////
         private Pigment defaultPigment;
         // /////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Returns the length (width) of the given text string when printed, taking into account
+        /// embedded color codes.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static int TextLength(string str)
+        {
+            int len = str.Length;
+
+            foreach (char c in str)
+            {
+                if (c == Color.CodeBackground[0] || c == Color.CodeForeground[0])
+                {
+                    len = len - 4;
+                }
+                else if (c == Color.StopColorCode[0])
+                {
+                    len = len - 1;
+                }
+            }
+
+            return len;
+        }
 
         // /////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -919,11 +987,11 @@ namespace OchreGui
             switch (align)
             {
                 case HorizontalAlignment.Center:
-                    startX = (fieldLength - str.Length) / 2;
+                    startX = (fieldLength - Canvas.TextLength(str)) / 2;
                     break;
 
                 case HorizontalAlignment.Right:
-                    startX = fieldLength - str.Length;
+                    startX = fieldLength - Canvas.TextLength(str);
                     break;
             }
 
@@ -959,11 +1027,11 @@ namespace OchreGui
             switch (hAlign)
             {
                 case HorizontalAlignment.Center:
-                    startX = (fieldSize.Width - str.Length) / 2;
+                    startX = (fieldSize.Width - Canvas.TextLength(str)) / 2;
                     break;
 
                 case HorizontalAlignment.Right:
-                    startX = (fieldSize.Width - str.Length);
+                    startX = (fieldSize.Width - Canvas.TextLength(str));
                     break;
             }
 
