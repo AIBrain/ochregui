@@ -80,8 +80,9 @@ namespace Test
             CheckBox cb3 = new CheckBox(new CheckBoxTemplate()
             {
                 UpperLeftPos = new Point(1, 5),
-                Label = "check 3",
-                MinimumWidth = 10,
+                Label = yellow.DoForegroundCode() + "che" +
+                    Color.StopColorCode + "cbox 3",
+                AutoSizeOverride = new Size(5,3),
                 HasFrameBorder = false,
                 LabelAlignment = HorizontalAlignment.Center,
                 CheckOnLeft = false,
@@ -110,7 +111,7 @@ namespace Test
 
             Pigment p = new Pigment(0xffffff, 0x334455);
 
-            AddControls(cb1, b1, cb3,vb);
+            AddControls(cb3);
 
             AddSchedule(new Schedule(Callback, 2));
         }
