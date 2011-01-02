@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using OchreGui.Utility;
 using libtcod;
+using System.Text;
 
 namespace OchreGui
 {
@@ -335,11 +336,9 @@ namespace OchreGui
 
             Point pos = GetHorAlign(new Point(x, y), text, alignment, fieldLength);
 
-            int trim = fieldLength - text.Length;
-
-            if (trim < 0)
+            if (fieldLength < TextLength(text))
             {
-                text = text.Substring(0, text.Length + trim);
+                text = TrimText(text, fieldLength);
             }
 
             PrintString(pos, text, pigment);
@@ -427,11 +426,9 @@ namespace OchreGui
                 throw new ArgumentOutOfRangeException("fieldSize", "The specified height of fieldSize is less than 1");
             }
             
-            int trim = fieldSize.Width - Canvas.TextLength(text);
-
-            if (trim < 0)
+            if (fieldSize.Width < TextLength(text))
             {
-                text = text.Substring(0, text.Length + trim);
+                text = TrimText(text, fieldSize.Width);
             }
 
             Point pos = GetHVAlign(new Point(x, y), text, hAlign, vAlign, fieldSize);
@@ -930,6 +927,9 @@ namespace OchreGui
                     Console.putChar(cx, y, c);
                     i++;
                     cx++;
+
+                    if (cx >= this.Size.Width)
+                        return;
                 }
             }
         }
@@ -940,7 +940,8 @@ namespace OchreGui
 
         /// <summary>
         /// Returns the length (width) of the given text string when printed, taking into account
-        /// embedded color codes.
+        /// embedded color codes.  Use this method instead of string.Length for strings
+        /// with embedded color codes.
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -961,6 +962,48 @@ namespace OchreGui
             }
 
             return len;
+        }
+
+        /// <summary>
+        /// Trims the specified string to the specified width, ignoring
+        /// color control codes.  Use this method instead of string.Substring()
+        /// for strings with embedded color codes.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string TrimText(string text,int width)
+        {
+            StringBuilder str = new StringBuilder();
+
+            int i = 0;
+            int w = 0;
+            while (w < width)
+            {
+                char c = text[i];
+
+                if (c == Color.CodeBackground[0] || c == Color.CodeForeground[0])
+                {
+                    str.Append(c);
+                    str.Append(text[i + 1]);
+                    str.Append(text[i + 2]);
+                    str.Append(text[i + 3]);
+
+                    i += 4;
+                }
+                else if (c == Color.StopColorCode[0])
+                {
+                    str.Append(c);
+                    i++;
+                }
+                else
+                {
+                    str.Append(c);
+                    i++;
+                    w++;
+                }
+            }
+
+            return str.ToString();
         }
 
         // /////////////////////////////////////////////////////////////////////////////////
