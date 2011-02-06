@@ -432,7 +432,7 @@ namespace OchreGui
             for(int i = ControlList.Count-1;i>=0;i--)
             {
                 Control c = ControlList[i];
-                if (c.ScreenRect.Contains(screenPos))
+                if (c.ScreenRect.Contains(screenPos) && c.IsActive)
                 {
                     retControl = c;
                     break;

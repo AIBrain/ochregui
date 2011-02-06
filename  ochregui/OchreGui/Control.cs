@@ -398,7 +398,9 @@ namespace OchreGui
 
 		/// <summary>
 		/// If false, notifies framework that it does not want to receive user input messages.  This
-        /// control will stil receive system messages.
+        /// control will stil receive system messages.  Input messages will propagate under
+        /// inactive controls - this allows inactive controls to be placed over other controls
+        /// without blocking messages.
 		/// </summary>
 		public bool IsActive { get; set; }
 
